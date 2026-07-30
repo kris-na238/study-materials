@@ -9,15 +9,6 @@ My Favourite projects mention 1 or 2
  - Willow
 
  --------------
-I'm a backend-focused full-stack engineer passionate about building scalable distributed systems.
-
-I have seven years of experience in software development.
-
-My core expertise is in JavaScript, Node.js, NestJS, AWS and React.js. 
-
-Over the years, I've primarily worked on designing scalable REST APIs, microservices, cloud-native applications, and backend systems with a strong focus on performance, scalability and maintainability.
-
-
 
 I'm a backend-focused full-stack engineer with seven years of experience in software development, specializing in building scalable backend and distributed systems. 
 
