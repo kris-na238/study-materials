@@ -1,4 +1,18 @@
-Introduction
+----------------------Syllbus----------------------
+1.System Design : 2 hours
+2.DSA : 1 hour
+3.NodeJS/NestJS : 1 hour
+4.ReactJS : 2 hour
+5.Python : 2 hour
+6.AWS : 1 hour
+7.Database Systems : 1 hour
+8.FullScale Mock Project Development : 2.5 hour
+9.Mock-Interview : 1 hour
+
+
+
+
+----------------------Introduction----------------------
 
 Level-1 
 I'm a backend-focused full-stack engineer with seven years of experience in software development, specializing in building scalable backend and distributed systems. 
