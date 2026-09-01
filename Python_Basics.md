@@ -1,7 +1,9 @@
 Goal: Become interview ready of 4 year experience
+
 Flow of topics/questions:
-Basics Of Any language
+
     A. Language Fundamentals
+    
         Why, when and by whom the Language was developed?
             Python was created by Guido van Rossum and first released in 1991 while he was working at CWI (Centrum Wiskunde & Informatica) in the Netherlands. He began the project in December 1989 as a hobby to keep himself occupied during the Christmas holidays, as a successor to the ABC language he had worked on earlier. ABC was easy to learn but not extensible enough for real-world use, so Guido wanted a language that combined ABC's readability with the extensibility and practicality needed for systems programming. He named it "Python" after the British comedy show "Monty Python's Flying Circus," not the snake, reflecting his intent to make programming fun. Python's development has since been guided by the Python Software Foundation, with major milestones being Python 2.0 (2000) and Python 3.0 (2008), the latter being a backward-incompatible redesign to clean up language inconsistencies.
 
