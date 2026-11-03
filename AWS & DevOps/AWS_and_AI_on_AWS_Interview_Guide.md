@@ -15,7 +15,7 @@ Each section explains **what the service is, why it exists, key concepts, real-w
 4. Messaging & Integration: [SQS](#19-sqs-simple-queue-service) · [SNS](#20-sns-simple-notification-service) · [EventBridge](#21-eventbridge) · [Kinesis & MSK](#22-kinesis--msk) · [Step Functions](#23-step-functions) · [API Gateway](#24-api-gateway) · [AppSync](#25-appsync)
 5. Security & Identity: [IAM](#26-iam-identity-and-access-management) · [Organizations/SCP/Control Tower](#27-aws-organizations-scps-rcps-control-tower) · [Identity Center & Cognito](#28-iam-identity-center--cognito) · [KMS/Secrets/SSM](#29-kms-secrets-manager-ssm-parameter-store) · [Security Services](#30-security-services-waf-shield-guardduty-inspector-security-hub-macie-cloudtrail-config) · [Verified Permissions/Access](#31-verified-permissions--verified-access)
 6. Observability: [CloudWatch](#32-cloudwatch) · [X-Ray, ADOT, AMP, AMG](#33-x-ray-adot-managed-prometheus--grafana)
-7. Architecture: [Well-Architected](#34-well-architected-framework) · [HA & DR](#35-high-availability--disaster-recovery) · [Multi-Region & Cells](#36-multi-region--cell-based-architecture) · [Resilience Patterns](#37-distributed-system-patterns-on-aws) · [Cost/FinOps](#38-cost-optimization--finops) · [Migration 7 Rs](#39-migration-strategies-the-7-rs) · [Shared Responsibility](#40-shared-responsibility-model)
+7. Architecture: [Well-Architected](#34-well-architected-framework) · [HA & DR](#35-high-availability--disaster-recovery) · [Multi-Region & Cells](#36-multi-region--cell-based-architecture) · [Architecture Styles & Patterns](#37-architecture-styles--distributed-system-patterns) · [Cost/FinOps](#38-cost-optimization--finops) · [Migration 7 Rs](#39-migration-strategies-the-7-rs) · [Shared Responsibility](#40-shared-responsibility-model)
 8. IaC & CI/CD: [CloudFormation](#41-cloudformation) · [CDK](#42-aws-cdk) · [SAM](#43-aws-sam) · [CodePipeline/Build/Deploy](#44-codepipeline-codebuild-codedeploy)
 
 **Part 2 — AI / GenAI on AWS**
@@ -1310,7 +1310,62 @@ With 8 workers and simple sharding into 4 shards of 2 workers, a poison customer
 
 ---
 
-## 37. Distributed System Patterns on AWS
+## 37. Architecture Styles & Distributed System Patterns
+
+### 37A. Architecture Styles: Monolith vs Microservices vs Serverless vs Event-Driven
+
+**What they are:**
+- **Monolith (incl. modular monolith):** One deployable unit containing all business capabilities, usually one database. A *modular monolith* enforces clear internal module boundaries while still deploying as one unit. On AWS: EC2/ASG, Beanstalk, a single ECS service.
+- **Microservices:** The system is split into small, independently deployable services, each owning one business capability (a *bounded context*) and **its own data store**. Services talk over APIs (sync) or events (async). On AWS: ECS/EKS/Lambda per service, API Gateway/ALB, a database per service, Cloud Map/Service Connect/VPC Lattice for discovery.
+- **Serverless:** A way of *running* code (not a decomposition style): no servers to manage, scale-to-zero, pay-per-use, event-triggered. On AWS: Lambda, API Gateway, DynamoDB, S3, SQS/SNS, EventBridge, Step Functions, Fargate, Aurora Serverless.
+- **Event-driven architecture (EDA):** Components communicate by producing and reacting to **events** (facts that happened, e.g. `OrderPlaced`) through a broker, rather than calling each other directly. On AWS: EventBridge, SNS, SQS, Kinesis, MSK, DynamoDB Streams.
+
+These are **not mutually exclusive**: a typical modern AWS system is *microservices*, many of them *serverless*, communicating in an *event-driven* way.
+
+**Comparison**
+| | Monolith | Microservices | Serverless | Event-driven |
+|---|---|---|---|---|
+| Deployment | Single unit | Independent per service | Per function/workflow | Per producer/consumer |
+| Scaling | Whole app | Per service | Automatic, per request | Consumers scale independently |
+| Coupling | Tight (in-process) | Loose via API contracts | Depends on design | Loosest (producer unaware of consumers) |
+| Data | Shared DB, ACID transactions | DB per service, eventual consistency | Managed stores | Eventual consistency, event logs |
+| Ops complexity | Low | High (networking, observability, CI/CD per service) | Low infrastructure, harder distributed debugging | Tracing and ordering/duplication handling |
+| Best for | Small teams, early products, simple domains | Large orgs, many teams, different scaling needs | Spiky/unpredictable load, event glue, small teams | Async workflows, integrations, real-time reactions, extensibility |
+| Main risks | Slow deploys, scaling limits, "big ball of mud" | **Distributed monolith**, network failures, data consistency | Cold starts, limits (15 min), vendor lock-in, cost at sustained high load | Hard to trace flows, duplicates, out-of-order events, schema evolution |
+
+**Key concepts to know**
+- **Bounded context / Domain-Driven Design (DDD):** Service boundaries follow business capabilities, not technical layers.
+- **Database per service:** No shared tables. Share data via APIs or events.
+- **Sync vs async communication:** REST/gRPC (simple, immediate answer, temporal coupling) vs events/queues (resilient, decoupled, eventually consistent).
+- **Choreography vs orchestration:** Services react to events independently (EventBridge) vs a central coordinator drives the flow (Step Functions).
+- **Event types:** *Event notification* (thin, "something changed — fetch details") vs *event-carried state transfer* (fat event containing the data) vs *event sourcing* (events are the source of truth).
+- **API Gateway / BFF pattern, service discovery, distributed tracing, contract testing.**
+- **Conway's Law:** System architecture mirrors team structure. Microservices work best with autonomous teams owning services end-to-end.
+
+### Interview Questions
+
+**Q1. Monolith vs microservices — how do you decide?**
+Start from the organization and the problem, not from fashion. A (modular) monolith fits small teams, a new product whose domain boundaries are still unclear, and cases where simplicity and speed matter most. It gives one deployment, easy local testing and ACID transactions. Microservices pay off when many teams need to deploy independently, when parts of the system have very different scaling, availability or technology needs, and when domain boundaries are well understood. The costs are real: network failures, eventual consistency, distributed tracing, many pipelines, and platform investment (CI/CD, observability, service mesh/discovery). A common senior answer is "modular monolith first, then extract services along proven boundaries using the Strangler Fig pattern."
+
+**Q2. What is a "distributed monolith" and how do you avoid it?**
+It's a system split into services that still have to be deployed together and fail together. Typical causes: a shared database, chatty synchronous call chains (A → B → C → D for every request), shared libraries containing business logic, and lock-step releases caused by breaking API changes. You get the costs of microservices with none of the benefits. Avoid it by drawing boundaries around business capabilities (DDD), giving each service its own data, preferring async events for cross-domain communication, versioning APIs and keeping changes backward compatible, using consumer-driven contract tests (e.g. Pact), and checking that each service can actually be deployed on its own.
+
+**Q3. Is serverless the same as microservices? When would you choose serverless?**
+No. Microservices is about *how you split* the system. Serverless is about *how you run* it. A microservice can run on Lambda, on Fargate or on EC2, and a monolith can even run on Lambda (a "Lambdalith"). Choose serverless for event-driven or spiky workloads, scale-to-zero needs, small teams that want minimal ops, and glue/integration logic. Prefer containers for steady high-throughput services (often cheaper), long-running or stateful processes, WebSockets/long connections, GPU needs, or when portability matters. Many AWS systems mix the two: containers for core APIs, Lambda/Step Functions/EventBridge for async processing.
+
+**Q4. What are the benefits and challenges of event-driven architecture?**
+Benefits: loose coupling (producers don't know their consumers, so new consumers can be added without changing producers), resilience (a down consumer catches up later from its queue), independent scaling, natural fit for real-time reactions and audit trails, and replay (EventBridge archive, Kinesis retention). Challenges: eventual consistency in the UI, **duplicate delivery** (consumers must be idempotent), **ordering** (needs SQS FIFO/Kinesis per-key ordering), flows that are hard to see and debug (needs correlation IDs and distributed tracing), schema evolution (schema registry, additive-only changes, versioned `detail-type`), and poison messages (DLQs and redrive).
+
+**Q5. Design an e-commerce order flow using microservices and events on AWS.**
+The Order service (ECS/Lambda + DynamoDB) validates the request, writes the order and an outbox record in one transaction, and returns `202 Accepted`. DynamoDB Streams → EventBridge Pipes publishes `OrderPlaced` to a custom EventBridge bus. Rules route the event to Payment (through an SQS queue), Inventory, Notification and Analytics (Firehose → S3). The multi-step payment → inventory → shipping transaction with compensations runs in a Step Functions **saga** inside the order domain (orchestration), while the domains themselves talk through events (choreography). Each consumer is idempotent, has a DLQ and alarms, and trace IDs are propagated through event metadata. The order status shown to the client updates asynchronously (polling or AppSync subscription).
+
+**Q6. Synchronous (REST/gRPC) vs asynchronous (events/queues) communication between services — when to use each?**
+Use **sync** when the caller needs an immediate answer to continue (a read query, validating a price at checkout), and protect it with timeouts, retries with backoff and jitter, circuit breakers and fallbacks. Use **async** for anything that doesn't need an immediate result (sending emails, updating search indexes, downstream processing), for absorbing spikes, and for decoupling availability (the producer keeps working while a consumer is down). A rule of thumb is to keep the synchronous request path short (ideally one or two hops) and push everything else to events.
+
+**Q7. How do you handle data consistency and queries across microservices that each own their database?**
+Give up distributed ACID transactions (two-phase commit doesn't scale and couples services). Instead use **sagas** with compensating actions for multi-service writes, the **transactional outbox** pattern to reliably publish events with state changes, and **idempotent consumers**. For queries that need data from several services, use **API composition** (a BFF/aggregator calls the services) or build **CQRS read models**: subscribe to events and build a denormalized view (e.g. OpenSearch or a DynamoDB table) optimized for that query. Make the eventual consistency visible in the UX (status fields like `PENDING` → `CONFIRMED`).
+
+### 37B. Distributed System Patterns on AWS
 
 **Patterns frequently asked**
 - **Idempotency:** Same request applied multiple times has the same effect. Idempotency keys stored in DynamoDB with conditional writes; Powertools idempotency utility.
