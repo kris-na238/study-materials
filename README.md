@@ -8,7 +8,7 @@ A personal, self-contained knowledge base for senior software engineering interv
 |---|---|---|
 | [System Design](System%20Design/) | 20 core system design topics with 10+ interview questions each | `System-Design-master-guide.md` |
 | [DSA](DSA/) | Top interview patterns across 100 practice problems (problem, optimal solution, complexity, alternatives) | `DSA_Interview_Patterns_Full.md` |
-| [Backend](Backend/) | Node.js, NestJS, Python, and general programming language fundamentals | `Nodejs-Senior-interview-guide.md`, `NestJS_Senior_Interview_Questions.md`, `Python_Basics.md`, `Python_interview_prep.md`, `Programming_language_Basics_.md` |
+| [Backend](Backend/) | Node.js, NestJS, Python, and general programming language fundamentals | `Nodejs-Senior-interview-guide.md`, `NestJS_Senior_Interview_Questions.md`, `Python/Python_Interview_Guide.md`, `Programming_language_Basics_.md` |
 | [Frontend](Frontend/) | React senior-level interview guide | `React-senior-interview-guide.md` |
 | [DB](DB/) | MySQL, PostgreSQL, and MongoDB interview guide | `Database_Systems_Interview_Guide.md` |
 | [AI](AI/) | AI/LLM-related notes | — |
@@ -25,3 +25,4 @@ A personal, self-contained knowledge base for senior software engineering interv
 1. Pick a subject folder based on the interview round you're prepping for.
 2. Read the guide top-to-bottom — each is structured with a table of contents and ordered roughly by how often topics come up in real interviews.
 3. To add a new subject, copy the prompt in `Study_Doc_Prompt_Template.md`, replace `{{SUBJECT}}`, and run it to generate a matching guide.
+
