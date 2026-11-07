@@ -7,7 +7,7 @@ A personal, self-contained knowledge base for senior software engineering interv
 | Folder | Topic | Key file(s) |
 |---|---|---|
 | [System Design](System%20Design/) | 20 core system design topics with 10+ interview questions each | `System-Design-master-guide.md` |
-| [DSA](DSA/) | Top interview patterns across 100 practice problems (problem, optimal solution, complexity, alternatives) | `DSA_Interview_Patterns_Full.md` |
+| [DSA](DSA/) | Complete DSA guide: 22 pattern chapters in 5 parts, 165 problems covering all of the Blind 75 (problem, approach, optimal JS solution, complexity, alternatives), plus a one-page revision sheet, pattern-recognition cheat sheets and a JS toolkit | `DSA_Complete_Guide.md` |
 | [Backend](Backend/) | Node.js, NestJS, Python, and general programming language fundamentals | `Nodejs-Senior-interview-guide.md`, `NestJS_Senior_Interview_Questions.md`, `Python/Python_Interview_Guide.md`, `Programming_language_Basics_.md` |
 | [Frontend](Frontend/) | React senior-level interview guide | `React-senior-interview-guide.md` |
 | [DB](DB/) | MySQL, PostgreSQL, and MongoDB interview guide | `Database_Systems_Interview_Guide.md` |
