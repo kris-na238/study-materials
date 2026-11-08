@@ -10,7 +10,7 @@ A personal, self-contained knowledge base for senior software engineering interv
 | [DSA](DSA/) | Complete DSA guide: 22 pattern chapters in 5 parts, 165 problems covering all of the Blind 75 (problem, approach, optimal JS solution, complexity, alternatives), plus a one-page revision sheet, pattern-recognition cheat sheets and a JS toolkit | `DSA_Complete_Guide.md` |
 | [Backend](Backend/) | Node.js, NestJS, Python, and general programming language fundamentals | `Nodejs-Senior-interview-guide.md`, `NestJS_Senior_Interview_Questions.md`, `Python/Python_Interview_Guide.md`, `Programming_language_Basics_.md` |
 | [Frontend](Frontend/) | React senior-level interview guide | `React-senior-interview-guide.md` |
-| [DB](DB/) | MySQL, PostgreSQL, and MongoDB interview guide | `Database_Systems_Interview_Guide.md` |
+| [DB](DB/) | DB fundamentals, SQL (MySQL/PostgreSQL), MongoDB, Redis, query practice, scenarios | `00_Revision_Cheatsheet.md` … `06_Scenario_Questions.md` |
 | [AI](AI/) | AI/LLM-related notes | — |
 | [Spritual](Spritual/) | Personal notes, unrelated to interview prep | — |
 
