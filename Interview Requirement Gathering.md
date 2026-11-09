@@ -61,7 +61,7 @@
     - System Design - Done
     - Node.js -       Done 
     - React.js -      Done
-    - DB Systems -    
+    - DB Systems -    Done
     - AWS & DevOps -  Done
     - Python -        Done
     - DSA :           Done
