@@ -356,6 +356,61 @@ function Uncontrolled() {
 **Scenario:** *"Warning: A component is changing an uncontrolled input to be controlled."*
 The `value` started as `undefined` and later became a string. Fix: always set an initial value, e.g. `useState('')`, or `value={name ?? ''}`.
 
+**Quick comparison**
+
+| Aspect | Controlled | Uncontrolled |
+|---|---|---|
+| Source of truth | React state | DOM |
+| Value prop | `value` / `checked` | `defaultValue` / `defaultChecked` |
+| Read value with | state variable | `ref.current.value` / `FormData` |
+| Re-render per keystroke | Yes | No |
+
+**More gotchas**
+- **`value` without `onChange`** makes the input read-only, and React warns. Add `onChange`, or use `readOnly` / `defaultValue`.
+- **`defaultValue` only sets the initial value.** Changing it later does nothing. To re-initialize, remount the input with a new `key`.
+- **Checkboxes and radios** use `checked` / `defaultChecked` and are read with `.checked`, not `.value`.
+- **`ref.current` is `null` during the first render.** Read it only in event handlers or effects. Changing a ref never causes a re-render, so don't render `ref.current.value` in JSX.
+- **Libraries:** React Hook Form is mostly uncontrolled (refs, fast). Formik is controlled (state).
+
+**Uncontrolled forms with many inputs** (see [3.5 `useRef`](#35-useref))
+
+Don't call `useRef` once per field, and never inside a loop (Rules of Hooks). Pick one of these:
+
+```jsx
+// A) One ref on the <form> + FormData: inputs only need a `name`
+const formRef = useRef(null);
+const submit = e => {
+  e.preventDefault();
+  const fd = new FormData(formRef.current);   // or new FormData(e.target)
+  const data = Object.fromEntries(fd);
+  data.skills = fd.getAll('skills');           // checkbox group / multi-select
+  formRef.current.reset();                     // clears every field
+};
+// Unchecked checkboxes are left out of FormData entirely.
+
+// B) One ref object + callback refs (how React Hook Form's register() works)
+const inputs = useRef({});
+const register = name => el => {
+  if (el) inputs.current[name] = el;          // on mount
+  else delete inputs.current[name];           // on unmount (el === null)
+};
+// <input ref={register('email')} />
+// On error: inputs.current.email.focus()
+
+// C) Dynamic list: an array of refs (OTP boxes, repeated fields)
+const refs = useRef([]);
+// {Array.from({ length: 6 }).map((_, i) =>
+//   <input key={i} maxLength={1} ref={el => (refs.current[i] = el)}
+//          onChange={e => e.target.value && refs.current[i + 1]?.focus()} />)}
+// const otp = refs.current.map(el => el.value).join('');
+```
+
+**Mixing both:** keep values the UI depends on in state (controlled), and add a `ref` only for DOM work such as `focus()`, `scrollIntoView()` or reading `files[0]`.
+
+**At component level:** the same idea applies to your own components. `<Modal isOpen={open} onClose={...} />` is controlled because the parent owns the state, while a modal that tracks its own `isOpen` is uncontrolled. Good components support both: they use `value` if it's passed and otherwise fall back to internal state from `defaultValue` (see [5.5](#55-controlled-component-pattern--prop-getters)).
+
+**One-line answer:** *"Controlled means React state drives the input through `value` + `onChange`, so React is the single source of truth. Uncontrolled means the DOM keeps the value and we read it through a `ref` or `FormData` on submit. I use controlled inputs for live validation and dynamic UI, and uncontrolled ones for simple or large forms and file inputs. For many uncontrolled fields I use one form ref with `FormData`, or a single ref object filled by callback refs."*
+
 ---
 
 ### 1.9 Lifting State Up, Prop Drilling & Composition
@@ -385,6 +440,62 @@ function Layout({ sidebar, children }) {
 
 **Scenario:** *"You're passing `theme` through 6 levels."*
 First ask whether the in-between components could take `children` instead. If many unrelated deep components need it (theme, locale, auth), that's a good fit for Context.
+
+**Lifting state up: before and after**
+
+Data only flows down, so siblings can't share state with each other directly. Move the state to their common parent, then pass the **value** down and a **setter callback** down too, so a child can send changes back up.
+
+```jsx
+// ❌ Before: SearchBar owns `query`, so ResultsList can't see it
+function SearchBar() { const [query, setQuery] = useState(''); /* ... */ }
+
+// ✅ After: the parent is the single source of truth
+function SearchPage() {
+  const [query, setQuery] = useState('');
+  return (
+    <>
+      <SearchBar query={query} onQueryChange={setQuery} />  {/* sends changes up */}
+      <ResultsList query={query} />                          {/* reads the value */}
+    </>
+  );
+}
+function SearchBar({ query, onQueryChange }) {
+  return <input value={query} onChange={e => onQueryChange(e.target.value)} />;
+}
+```
+The user types, `onQueryChange` fires, the parent's state updates, and both children re-render with the new `query`. `SearchBar` is now a **controlled component** (see 1.8).
+
+**Rule:** keep state *as low as possible, but as high as necessary*. Lifting it too high makes unrelated parts of the page re-render. The reverse move, **moving state down**, is a performance fix (see [7.3](#73-avoiding-unnecessary-re-renders-structural-techniques)).
+
+**Why prop drilling hurts**
+
+```jsx
+function App()           { const [user] = useState({ name: 'Krishna' }); return <Layout user={user} />; }
+function Layout({ user }) { return <Sidebar user={user} />; }   // doesn't use it
+function Sidebar({ user }) { return <Avatar user={user} />; }   // doesn't use it
+function Avatar({ user })  { return <img alt={user.name} />; }  // the only real user
+```
+- The middle components are **coupled** to data they don't care about.
+- Renaming a prop or adding a field means editing **every level**.
+- The middle components **re-render** whenever the prop changes.
+- It's harder to trace where a prop is actually used.
+
+Drilling through **1–2 levels is fine and normal**. It's only a problem when it goes deep or repeats in many places.
+
+**Why composition comes first:** there's no new API, data flow stays explicit, and there's a performance benefit: an element passed as `children` was created by the parent, so it doesn't re-render when the wrapper's own state changes (see 2.3 and 7.3). Context comes next, because every consumer re-renders when its `value` changes, so it suits global data that **rarely changes** (see [3.7](#37-usecontext) and [6.2](#62-context-api--its-limits)).
+
+**Decision summary**
+
+| Situation | Use |
+|---|---|
+| Siblings need the same data | **Lift state** to the closest common parent |
+| Passing through 1–2 levels | Plain props (fine) |
+| Middle components only pass data along | **Composition** (`children` or slot props, see [5.8](#58-composition-vs-inheritance)) |
+| Many distant components need global data that rarely changes (theme, locale, auth) | **Context** |
+| Large or frequently changing global state, needs selective subscriptions | **Zustand / Redux** (see [6.3](#63-redux--redux-toolkit), [6.4](#64-zustand-jotai-recoil-mobx)) |
+| Data fetched from the server | **React Query / SWR** (server state, not UI state) |
+
+**One-line answer:** *"Lifting state up means moving shared state to the closest common parent so siblings stay in sync. That can lead to prop drilling, where props pass through components that don't use them. I fix it with composition first, then Context for global data that rarely changes, and a state library for large or frequently changing state."*
 
 ---
 
@@ -417,6 +528,70 @@ function Item({ id, onDelete }) {
 
 **Follow-up:** *"Why was the change from document to root in React 17 important?"* It lets several React versions run on the same page (micro-frontends, gradual upgrades) without their event systems interfering with each other.
 
+**Why React wraps events:** the same API in every browser, plus React controls the event system. It can prioritise events (a click is more urgent than a mousemove in concurrent rendering) and make bubbling follow the **React tree**.
+
+**React vs HTML syntax**
+
+| HTML / DOM | React |
+|---|---|
+| `onclick="handle()"` (lowercase, string) | `onClick={handle}` (camelCase, function) |
+| `return false` stops the default action | ❌ doesn't work. Call `e.preventDefault()` |
+| `addEventListener('click', fn)` | JSX prop `onClick={fn}` |
+
+**Passing arguments, and the "Too many re-renders" bug**
+```jsx
+<button onClick={handleClick}>             // ✅ React calls it on click
+<button onClick={handleClick()}>           // ❌ runs during render
+<button onClick={() => deleteItem(id)}>    // ✅ wrap it to pass arguments
+<button onClick={setCount(count + 1)}>     // ❌ sets state during render → infinite loop
+```
+
+**How delegation works**
+```
+Click on <button> → the native event bubbles up the DOM → React's single listener on #root
+  → React finds the component path in its fiber tree → builds a SyntheticEvent
+  → calls the onClick handlers along that path (bubble order)
+```
+Benefits: one listener instead of thousands, and elements added later work automatically.
+
+**Capture vs bubble phase:** handlers run in the bubble phase by default. Add `Capture` to the prop name for the capture phase.
+```jsx
+<div onClickCapture={() => log(1)} onClick={() => log(4)}>
+  <button onClickCapture={() => log(2)} onClick={() => log(3)}>Click</button>
+</div>
+// Order: 1 → 2 → 3 → 4
+```
+
+**`stopPropagation` vs `preventDefault`** (often confused)
+
+| Method | What it does | Example |
+|---|---|---|
+| `e.stopPropagation()` | Stops the event reaching **parent handlers** | A Delete button inside a clickable row |
+| `e.preventDefault()` | Stops the **browser's default action** | A form submit reloading the page, a link navigating |
+
+**`e.target` vs `e.currentTarget`:** `target` is what was actually clicked (could be an inner `<span>`). `currentTarget` is the element the handler is attached to. Use `currentTarget` to read the owner's `data-*` attributes.
+
+**Event pooling (React 16 and earlier):** React reused event objects, so after the handler finished, `e.target` was `null` inside `setTimeout` or `await` unless you called `e.persist()`. React 17 removed pooling, and `e.persist()` now does nothing.
+
+**Other differences from the native DOM**
+- **`onChange` fires on every keystroke**, like the native `input` event. The native `change` event only fires on blur.
+- **Portals:** events bubble through the **React tree**, not the DOM tree. A click inside a portal still reaches its React parent's `onClick` (see [5.6](#56-portals)).
+- **`onScroll` doesn't bubble** in React 17+.
+- **`window` / `document` events** (resize, keyboard shortcuts, clicks outside an element) need `addEventListener` in `useEffect`, **with cleanup**:
+  ```jsx
+  useEffect(() => {
+    const onResize = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+  ```
+
+**More scenarios**
+- *"My form reloads the page on submit."* Call `e.preventDefault()` in `onSubmit`.
+- *"Too many re-renders" on a button.* You wrote `onClick={fn()}` instead of `onClick={fn}` or `onClick={() => fn()}`.
+
+**One-line answer:** *"React passes handlers a SyntheticEvent, a cross-browser wrapper around the native event with the same API. Instead of a listener per element, it uses event delegation: one listener per event type on the root container (since React 17), and bubbling follows the React tree. Pooling was removed in React 17. Handlers take a function reference, `stopPropagation` stops parent handlers, and `preventDefault` stops the browser's default action."*
+
 ---
 
 ### 1.11 Pure Components & Keeping Render Pure
@@ -427,6 +602,8 @@ A render must be a **pure function** of props + state + context:
 - **No side effects during render**: no API calls, no mutating outside variables, no `setState` on other components, no DOM changes.
 
 React may call render **more than once**: StrictMode double-renders in dev, and concurrent rendering can throw a render away and start again. Side effects in render would then run several times.
+
+**Why purity matters:** React relies on it to skip, repeat, pause or reorder renders safely. `React.memo`, `useMemo`, concurrent features and the React Compiler all assume that rendering the same input again gives the same output.
 
 ```jsx
 // ❌ Impure: mutates external variable
@@ -441,7 +618,24 @@ function Good({ items }) {
   const sorted = [...items].sort((a, b) => a.name.localeCompare(b.name));
   return <List items={sorted} />;
 }
+
+// ✅ Local mutation is fine: the array is created during this render
+function Grid({ rows }) {
+  const cells = [];
+  rows.forEach(r => cells.push(<Cell key={r.id} {...r} />));
+  return <div>{cells}</div>;
+}
 ```
+
+**Where side effects go instead**
+
+| Side effect | Put it in |
+|---|---|
+| Caused by a user action (submit, click, track a button) | **Event handler** (preferred) |
+| Caused by the component appearing or data changing (fetch, subscribe, "screen viewed") | **`useEffect`** |
+| Other non-deterministic values during render (`Math.random()`, `Date.now()`) | Compute them in a handler or effect, or once in `useState(() => ...)` |
+
+**Don't confuse this with `PureComponent` / `React.memo`:** "keeping render pure" is a **rule** for how you write any component. `PureComponent` (class) and `React.memo` (function) are **optimisations** that skip a re-render when a shallow comparison finds the props unchanged. Skipping is only safe *because* render is pure (see 4.3 and 7.2).
 
 **Scenario:** *"An analytics event fires twice in development."* It was called during render, or in an effect without proper handling. StrictMode exposes this. Move it to an event handler (for user actions) or an effect (for "screen viewed"), and make it idempotent (safe to run twice).
 
@@ -498,6 +692,39 @@ A general tree diff costs O(n³). React gets **O(n)** by using two heuristics:
 
 **Tip:** "Virtual DOM is fast" is a myth. The real benefit is that you get **declarative code with good-enough performance**, without hand-writing DOM updates. Svelte and Solid skip the VDOM altogether.
 
+**Common misconception: React does NOT read the real DOM to diff**
+
+Both trees in the comparison are **virtual** (JS objects). The old tree is kept in memory from the previous render. The real DOM is only **written to**, during commit.
+
+```
+setState → Render: re-run the component → NEW virtual tree
+         → Diff: NEW virtual tree vs OLD virtual tree (from memory)
+         → Commit: apply only the changes to the real DOM
+         → the NEW tree becomes the "old" tree for the next update
+```
+- React builds a **new** tree rather than editing the old one in place.
+- Only the component whose state changed **and its children** re-render, not the whole app (unless a child is memoised, see 7.2).
+- In modern React, this "virtual DOM" is the **Fiber tree**. React keeps a *current* tree (on screen) and a *work-in-progress* tree (the new render), and swaps them after commit (see 2.5).
+
+**The tip, explained: why the VDOM isn't faster than the DOM**
+
+```js
+// Hand-written: you already know what changed
+countEl.textContent = 1;
+// React: re-render → build tree → diff → countEl.textContent = 1  (the same final DOM operation + extra work)
+```
+The VDOM is **overhead**. It's fast compared with re-rendering the whole page (`innerHTML = ...`), not compared with precise manual updates. What you gain is **declarative code** (`UI = f(state)`): you describe the result and React works out the minimal DOM changes. That means fewer bugs from forgotten UI updates, a predictable UI, and performance that's good enough, with `memo` and virtualization for the hot spots.
+
+| Framework | How it updates the DOM |
+|---|---|
+| **React** | Re-run the component → new VDOM → diff → patch |
+| **Svelte** | A **compiler** generates precise DOM updates at build time |
+| **Solid** | **Signals**: each piece of state updates exactly the DOM nodes that use it, with no re-running and no diff |
+
+So the VDOM is an **implementation choice**, not the source of speed.
+
+**One-line answer:** *"When state changes, React re-renders the affected components into a new virtual tree, diffs it against the previous virtual tree kept in memory, and applies only the minimal changes to the real DOM during commit. It never reads the real DOM to diff. The VDOM isn't faster than direct DOM updates. Its value is declarative code with good-enough performance, and Svelte and Solid show you can get that without a VDOM."*
+
 ---
 
 ### 2.2 Reconciliation Heuristics: Position, Type, Key
@@ -533,6 +760,28 @@ function Parent() {
 }
 ```
 Every render creates a **new component type**, so React sees a different type and remounts `Child`, losing its state and focus each time. Define components at module level.
+
+**Identity decides re-render vs remount**
+
+React asks: *"Is this the same component as last time?"*
+- **Same type + position + key** → the same component. React **keeps** it (state + DOM) and **re-renders** it with new props.
+- **Any of them changed** → a different component. React **unmounts** the old one and **mounts** a new one, so the **state resets**.
+
+| | **Re-render** | **Remount** |
+|---|---|---|
+| What happens | The component function is called again | The old instance is destroyed and a new one created |
+| State | ✅ Kept | ❌ Lost (back to initial values) |
+| DOM nodes | Reused, only the changes patched | Removed and recreated |
+| Effects | Re-run only if their deps changed | Cleanup for the old instance, then all effects run fresh |
+| Caused by | State change, parent re-render, Context change | A changed type, key or position |
+
+A common misconception: a change of identity doesn't cause a *re-render*, it causes a *remount*. And a component re-renders whenever its parent does, **even when its identity is unchanged** (unless it's memoised). Identity only decides whether React **keeps** the instance or **replaces** it.
+
+**Reordering a list with stable keys** → React matches items by key and **moves** the existing DOM nodes. Nothing is remounted, and each item keeps its own state. With `key={index}`, React matches by **position**, so after a reorder, the instance at position 0 receives another item's data but keeps the old state (the "wrong row stays checked" bug, see 1.5).
+
+**Remounting on purpose:** change the key to reset a component, e.g. `<ProfileForm key={userId} />` gives a fresh form for each user.
+
+**One-line answer:** *"React identifies each element by its type, position and key. If they match the previous render, it keeps the instance and its state and just re-renders it with new props. If any of them changes, it unmounts the old instance and mounts a new one, resetting the state. With stable keys, reordered items are moved, not recreated."*
 
 ---
 
@@ -628,37 +877,121 @@ Fiber makes **concurrent features** possible. Wrap the list update in `startTran
 
 **Tip:** You don't use Fiber directly. Explain it as **the thing that makes interruptible rendering, Suspense and transitions possible**.
 
+**You call the APIs, Fiber does the scheduling**
+
+`startTransition`, `useTransition` and `useDeferredValue` are **public APIs you use in your own code**. Fiber is the internal engine that carries them out. React can't guess which updates are less important, so by default it treats every `setState` from an event as **urgent**. These APIs are how you tell it otherwise.
+
+| | You (your code) | Fiber (internal) |
+|---|---|---|
+| Role | **Mark** updates as non-urgent | **Schedule** them: low-priority lane, render in pieces, interrupt, throw away outdated renders |
+| Tools | `startTransition` / `useTransition` (wrap the **state update**), `useDeferredValue` (wrap the **value**, when you don't own the `setState`) | Lanes, the interruptible work loop, the scheduler, `current` / `workInProgress` trees |
+
+```jsx
+const [isPending, startTransition] = useTransition();
+const handleChange = (e) => {
+  setQuery(e.target.value);                              // urgent: the input updates immediately
+  startTransition(() => setResults(filter(e.target.value))); // non-urgent: can be interrupted
+};
+
+const deferredQuery = useDeferredValue(query);   // lags behind `query` while React is busy
+<SlowList query={deferredQuery} />               // memoise SlowList so it's actually skipped
+```
+
+**What Fiber does with a transition:** it puts the update in a low-priority lane and renders it fiber by fiber, yielding to the browser between pieces. When a keystroke (high priority) arrives, it pauses or abandons the half-finished render, handles the keystroke, and then restarts the transition with the latest value. Thanks to double buffering, the half-built tree is never shown. (Details in [8.2](#82-usetransition--starttransition) and [8.3](#83-usedeferredvalue).)
+
+**One-line answer:** *"`startTransition`, `useTransition` and `useDeferredValue` are public APIs that developers call to mark updates as non-urgent. Fiber is the internal engine that makes them work: it gives those updates a low-priority lane and renders them in interruptible pieces, so urgent updates like typing can cut in."*
+
 ---
 
 ### 2.6 Batching (Automatic Batching in React 18)
 
 **Explanation**
-**Batching** means grouping several state updates into **one re-render**.
-
-- **React 17**: batched only inside React event handlers. Updates in `setTimeout`, promises or native listeners each caused their own render.
-- **React 18 (`createRoot`)**: **automatic batching everywhere**.
-- Opt out with `flushSync` (rarely needed, e.g. to measure the DOM right after an update).
+**Batching** means React **collects several state updates** and does **one re-render** for all of them, instead of one render per `setState`.
 
 ```jsx
 function handleClick() {
-  setCount(c => c + 1);
-  setFlag(f => !f);
-  // React 17 & 18: ONE render
+  setCount(c => c + 1);   // queued
+  setFlag(f => !f);       // queued
+  setName('Krishna');     // queued
+  // → React re-renders ONCE, with all 3 changes
 }
-
-fetch('/api').then(() => {
-  setCount(c => c + 1);
-  setFlag(f => !f);
-  // React 17: TWO renders · React 18: ONE render
-});
-
-import { flushSync } from 'react-dom';
-flushSync(() => setItems(next));    // DOM updated synchronously here
-listRef.current.lastChild.scrollIntoView();
 ```
+**Analogy:** a waiter takes **the whole table's order** and then goes to the kitchen once, instead of running to the kitchen after every dish someone orders.
+
+**Why batch?**
+1. **Performance:** 3 updates mean 1 render + 1 DOM commit, instead of 3 renders + 3 commits.
+2. **Consistency:** the UI never shows a **half-updated state**, e.g. `count` updated but `flag` not yet.
+
+**How it works (simplified)**
+```
+setCount(...)  → added to the update queue, no render yet
+setFlag(...)   → added to the update queue, no render yet
+               → your function finishes
+React          → processes the whole queue → ONE render → ONE commit
+```
+`setState` **doesn't re-render immediately**. It schedules an update, and React applies everything in the queue together when the current code finishes.
+
+**React 17 vs React 18**
+
+| Where the updates happen | React 17 | React 18 (`createRoot`) |
+|---|---|---|
+| React event handler (`onClick`) | ✅ Batched (1 render) | ✅ Batched |
+| `setTimeout` / `setInterval` | ❌ Not batched (1 render per update) | ✅ Batched |
+| Promise `.then` / after `await` | ❌ Not batched | ✅ Batched |
+| Native `addEventListener` handlers | ❌ Not batched | ✅ Batched |
+
+```jsx
+fetch('/api/user').then(data => {
+  setUser(data);
+  setLoading(false);
+  // React 17: 2 renders (and for a moment, user is set but loading is still true)
+  // React 18: 1 render
+});
+```
+- **Why did React 17 only batch event handlers?** It batched by setting an "I'm inside a React event" flag. Code in `setTimeout` or `.then` runs **later**, after that flag has been switched off. React 18 batches **by time** instead: any updates queued in the same tick are processed together, wherever they come from.
+- Automatic batching everywhere only applies with **`createRoot`**. The legacy `ReactDOM.render` keeps the React 17 behaviour.
+
+**A related trap: updater function vs value**
+```jsx
+// ❌ Ends up +1, not +3: `count` is the same constant in all three calls
+setCount(count + 1);   // 0 → 1
+setCount(count + 1);   // count is STILL 0 → 1
+setCount(count + 1);   // → 1
+
+// ✅ Ends up +3: each updater receives the latest queued value
+setCount(c => c + 1);  // 0 → 1
+setCount(c => c + 1);  // 1 → 2
+setCount(c => c + 1);  // 2 → 3
+```
+Use the **updater form** whenever the new state depends on the previous state.
+
+**Opting out with `flushSync` (rare)**
+Use it when you need the DOM updated **straight away**, for example to measure it or scroll to a newly added item:
+```jsx
+import { flushSync } from 'react-dom';
+
+const addMessage = (msg) => {
+  flushSync(() => {
+    setMessages(m => [...m, msg]);   // render + commit happen right here
+  });
+  listRef.current.lastChild.scrollIntoView();  // the new <li> already exists in the DOM
+};
+```
+Without `flushSync`, the new `<li>` wouldn't be in the DOM yet when `scrollIntoView` runs. ⚠️ It forces a synchronous render and hurts performance, so use it only when you really need it.
 
 **Scenario:** *"After `setCount(count + 1)`, `console.log(count)` shows the old value."*
-State updates are **queued**, not applied straight away. `count` is a constant in the current render's closure. The new value shows up on the next render. If you need the next value now, compute it into a variable first: `const next = count + 1; setCount(next); use(next);`.
+- `setState` only **queues** the update. Nothing has re-rendered yet.
+- `count` is a **constant** in this render's closure. It never changes inside this function call.
+- The new value shows up in the **next render**.
+
+Fix: compute the value first and use the variable: `const next = count + 1; setCount(next); sendToAnalytics(next);`. To react to the change *after* the render, use `useEffect(() => ..., [count])`.
+
+**More scenarios**
+- *"Three `setCount(count + 1)` calls only add 1."* All three read the same `count` from this render. Use `setCount(c => c + 1)`.
+- *"Our app re-renders twice after a fetch in React 17."* No batching outside event handlers. Upgrading to React 18 with `createRoot` fixes it, or wrap the updates in `unstable_batchedUpdates` in React 17.
+- *"I need to scroll to the new item right after adding it."* Use `flushSync`, or do the scroll in a `useLayoutEffect`.
+
+**One-line answer:** *"Batching groups several state updates into one re-render, for performance and so the UI never shows a half-updated state. React 17 batched only inside React event handlers, while React 18 with `createRoot` batches automatically everywhere, including timeouts, promises and native listeners. `setState` only queues an update, so the variable keeps its old value until the next render. Use the updater form for sequential updates, and `flushSync` to opt out when you need the DOM updated immediately."*
 
 ---
 
@@ -1360,6 +1693,17 @@ class Row extends React.PureComponent {
 
 **Scenario:** *"PureComponent didn't help, it still re-renders."* The parent passes new object or function references each render. Hoist the constants out, and bind handlers once.
 
+**`PureComponent` vs `React.memo`**
+
+| | `PureComponent` | `React.memo` |
+|---|---|---|
+| Used with | Class components | Function components |
+| Compares | **Props and state** (shallow) | **Props only** (shallow) |
+| Custom comparison | Override `shouldComponentUpdate` (returns `true` to **render**) | 2nd argument `arePropsEqual` (returns `true` to **skip**) |
+| State updates | Skipped if the state is shallowly equal | Always re-render, but `useState` bails out when the new value is the same (`Object.is`) |
+
+Note that the two custom-comparison functions return opposite things, which interviewers like to ask about. In new code, the React Compiler handles memoisation automatically (see 7.11).
+
 ---
 
 ### 4.4 Error Boundaries (still class-only)
@@ -2029,6 +2373,10 @@ const Row = React.memo(RowImpl, (prev, next) => prev.item.version === next.item.
 
 **Scenario:** *"React.memo isn't working, the component still re-renders."*
 Check for: (1) inline objects, arrays or functions in props; (2) `children` passed as JSX (a new element every time); (3) the component uses Context that changed; (4) its own state changed. Use the Profiler's **"Why did this render?"** to find out which.
+
+**Props only:** `memo` compares **props**, not state. A component's own state change or a Context change always re-renders it. Setting state to the **same** value (`Object.is`) bails out on its own, with or without `memo`. (Class `PureComponent` compares props **and** state, see 4.3.)
+
+**With the React Compiler:** the compiler adds the equivalent of `memo`, `useMemo` and `useCallback` automatically at build time, so new code rarely needs a manual `React.memo`. It's still useful in codebases without the compiler, or as an explicit escape hatch (see [7.11](#711-react-compiler)).
 
 ---
 
@@ -7976,6 +8324,15 @@ Keep the feed in a cache (React Query or a store) so it isn't refetched, and sav
 ---
 
 ## Revision Cheat Sheet
+
+**Doubts to revise**
+-  Diffrence between Library and framework and package
+-  JSX?
+-  why component name should start with capital letter?
+-  Should I copy props into state?
+-  A child needs to change data shown in its sibling. How?"
+-  "Users report that after deleting an item, the input text appears in the wrong row."
+-  
 
 | § | Topic | One-line takeaway |
 |---|---|---|
