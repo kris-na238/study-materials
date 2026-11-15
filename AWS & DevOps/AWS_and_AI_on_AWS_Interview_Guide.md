@@ -34,13 +34,66 @@ Each section explains **what the service is, why it exists, key concepts, real-w
 **Purpose:** Full control over the OS, runtime, networking and storage when managed/serverless options don't fit (legacy apps, licensed software, GPU workloads, custom kernels, long-running stateful processes).
 
 **Key concepts**
-- **Instance families:** `t` (burstable, CPU credits), `m` (general purpose), `c` (compute), `r`/`x` (memory), `i`/`d` (storage/NVMe), `p`/`g` (GPU), `trn`/`inf` (AWS ML chips). Suffix `g` = Graviton (ARM), e.g. `m7g`.
-- **Nitro System:** AWS hypervisor offloading networking/storage/security to dedicated hardware → near-bare-metal performance, enables ENA, EBS-optimized by default.
-- **AMI:** Machine image (OS + software); region-scoped, can be copied/shared.
-- **User data:** Bootstrap script run on first boot (cloud-init).
-- **Instance metadata (IMDS):** `169.254.169.254` — IMDSv2 (session tokens) is required for security (mitigates SSRF credential theft).
-- **Placement groups:** *Cluster* (low latency, same rack — HPC), *Spread* (max 7 per AZ, distinct hardware — critical instances), *Partition* (Kafka/HDFS/Cassandra — rack-aware).
-- **Storage:** EBS (network block, persistent) vs Instance Store (ephemeral NVMe, lost on stop).
+- **Instance types & families:** An instance type sets the vCPU, memory, network bandwidth and local storage. Naming: `m7g.large` = family `m`, generation `7`, attribute `g`, size `large`. Newer generations usually give better price-performance at the same or lower price, so default to the latest one. The families, attributes and sizes are explained in the tables below.
+
+**Instance families**
+
+| Family | Category | What it's optimised for | Typical use cases | Examples |
+|---|---|---|---|---|
+| `t` | General purpose (burstable) | Low **baseline** CPU with the ability to **burst** using CPU credits (see the burstable bullet below). Cheapest way to run small workloads that are idle most of the time | Dev/test, small websites, low-traffic APIs, bastion hosts, CI agents that run occasionally | `t3`, `t3a`, `t4g` |
+| `m` | General purpose (balanced) | A balanced ratio of CPU to memory (about **1 vCPU : 4 GiB**) with fixed, consistent performance. The safe default when you don't know the workload's profile yet | Web and app servers, microservices, backend services, small/medium databases, caching fleets | `m7i`, `m7g`, `m8g`, `m7i-flex` |
+| `c` | Compute optimised | A high ratio of CPU to memory (about **1 vCPU : 2 GiB**) with high-performance processors. You pay for CPU, not for memory you don't need | Batch processing, video encoding, high-traffic web servers, game servers, scientific modelling, ML inference on CPU, ad serving | `c7i`, `c7g`, `c8g`, `c7gn` |
+| `r` | Memory optimised | A high ratio of memory to CPU (about **1 vCPU : 8 GiB**), for workloads that keep large data sets in RAM | Relational and NoSQL databases, in-memory caches (Redis), real-time analytics, JVM apps with large heaps | `r7i`, `r7g`, `r8g`, `r7iz` |
+| `x` | Memory optimised (extra large) | Even more memory per vCPU (about **1 : 16** up to **1 : 32**), with up to several TiB per instance | SAP HANA, large in-memory databases, big in-memory analytics, electronic design automation (EDA) | `x2idn`, `x2iedn`, `x8g` |
+| `u` | High memory | Multiple **terabytes** of RAM (up to tens of TiB) in a single instance | The largest SAP HANA and in-memory database deployments | `u7i-12tb`, `u7in-32tb` |
+| `z` | Memory optimised (high frequency) | Very high **single-core clock speed** plus plenty of memory | Workloads licensed per core (pay for fewer, faster cores), EDA, some relational databases, gaming | `z1d` |
+| `i` | Storage optimised (IOPS) | Large, very fast **local NVMe SSD** (instance store) with very high random IOPS and low latency. Remember the data is **ephemeral** | NoSQL databases (Cassandra, MongoDB, ScyllaDB), OLTP databases with replication, search engines (OpenSearch), real-time analytics | `i4i`, `i4g`, `i7ie` |
+| `d` | Storage optimised (dense) | Large amounts of **local HDD** storage at a low cost per TB, with high sequential throughput | Hadoop/HDFS, data lakes, distributed file systems, log processing, data warehousing | `d3`, `d3en` |
+| `p` | Accelerated computing (GPU, high end) | The most powerful **NVIDIA GPUs** with fast GPU-to-GPU interconnect and very high network bandwidth (EFA) for multi-node training | Training large ML and generative AI models, HPC simulations | `p4d`, `p5`, `p5e`, `p6` |
+| `g` | Accelerated computing (GPU, graphics/inference) | Cheaper NVIDIA GPUs aimed at graphics and **inference** rather than large-scale training | ML inference, small/medium model training and fine-tuning, video transcoding, 3D rendering, game streaming, remote workstations | `g5`, `g6`, `g6e` |
+| `trn` | Accelerated computing (AWS Trainium) | AWS-designed **Trainium** ML chips for training, with lower cost per training run than comparable GPUs | Training deep learning and generative AI models with the Neuron SDK | `trn1`, `trn2` |
+| `inf` | Accelerated computing (AWS Inferentia) | AWS-designed **Inferentia** chips for low-cost, high-throughput **inference** | Serving LLMs, recommendation, vision and speech models at scale | `inf2` |
+| `f` | Accelerated computing (FPGA) | Programmable **FPGA** hardware you can configure for custom acceleration | Genomics, financial analytics, real-time video processing, custom hardware acceleration | `f2` |
+| `hpc` | HPC optimised | High core counts with high-bandwidth, low-latency networking (EFA), priced for large tightly coupled jobs | Weather forecasting, computational fluid dynamics, crash simulations | `hpc7g`, `hpc7a` |
+| `mac` | macOS | Apple Mac hardware (Intel or Apple silicon) running macOS on **Dedicated Hosts** | Building, signing and testing iOS/macOS apps in CI | `mac2`, `mac2-m2pro` |
+
+**Attributes (letters after the generation)**
+
+| Attribute | Meaning | Example |
+|---|---|---|
+| `g` | AWS **Graviton** (ARM) processor: usually the best price-performance | `m7g`, `c8g` |
+| `a` | **AMD** processor: usually a bit cheaper than Intel | `m7a`, `t3a` |
+| `i` | **Intel** processor | `m7i`, `c7i` |
+| `d` | Has **local NVMe** instance-store disks | `m6gd`, `c6id` |
+| `n` | **Higher network bandwidth** | `c7gn`, `m6in` |
+| `e` | **Extra** memory or storage | `x2iedn`, `i7ie` |
+| `z` | **High CPU frequency** | `r7iz`, `m5zn` |
+| `b` | **Higher EBS** (block storage) performance | `r5b` |
+| `-flex` | Lower price; delivers full CPU most of the time but not guaranteed 100% of the time | `m7i-flex` |
+
+**Sizes:** `nano` → `micro` → `small` → `medium` → `large` → `xlarge` → `2xlarge` … `48xlarge`. Each step up roughly **doubles** vCPU and memory (and the price) within a family. `metal` gives you the whole physical server with no hypervisor, for software that needs direct hardware access or its own virtualization.
+
+**How to choose:** start with `m` (or `t` for small/dev), measure with CloudWatch (plus the CloudWatch Agent for memory), then move to `c` if CPU-bound or `r` if memory-bound. Use Compute Optimizer for recommendations, and prefer Graviton when your software supports ARM (see Q4).
+
+- **Burstable instances (`t3`/`t4g`) & CPU credits:** They run at a **baseline** CPU (e.g. 20% for `t3.medium`), **earn credits** while below it and **spend credits** to burst above it. *Standard mode*: when credits run out, the CPU is **throttled to baseline**, so the app suddenly slows down. *Unlimited mode* (default for `t3`/`t4g`): it keeps bursting, but you **pay extra** for surplus credits if average usage stays above baseline. Good for dev/test and low, spiky workloads. A `t` instance that's busy all the time is cheaper and more predictable as an `m`/`c`.
+- **Nitro System:** AWS's modern virtualization platform. Networking, EBS storage, monitoring and security run on **dedicated Nitro cards**, and a lightweight hypervisor handles only CPU and memory. Result: near-bare-metal performance, more of the host's resources available to you, ENA enhanced networking, EBS-optimized by default, bare-metal (`.metal`) instance options, and **Nitro Enclaves** (isolated environments for processing sensitive data). Every current-generation instance runs on Nitro.
+- **AMI (Amazon Machine Image):** The template an instance is launched from: OS + pre-installed software + configuration + block device mapping (which volumes to attach). **Region-scoped**, but can be copied to other regions (e.g. for DR) and shared with other accounts or AWS Organizations. Sources: AWS-provided (Amazon Linux 2023, Ubuntu, Windows), Marketplace, or **custom "golden" AMIs** built with EC2 Image Builder or Packer. Baking dependencies into an AMI makes launches faster and more consistent than installing them at boot.
+- **Instance lifecycle (stop vs terminate vs hibernate):**
+  - **Stop** (EBS-backed only): the OS shuts down and the EBS volumes are kept. No compute charge while stopped, but you **still pay for EBS** (and Elastic IPs). On start, the instance usually lands on a **different physical host**, keeps its **private IP**, and gets a **new public IP** unless it has an Elastic IP. Instance store data is lost.
+  - **Terminate:** the instance is permanently deleted. The **root EBS volume is deleted by default** (`DeleteOnTermination=true`). Extra data volumes are kept by default, so check this flag to avoid losing data or paying for orphaned volumes. Use **termination protection** on critical instances.
+  - **Hibernate:** RAM contents are saved to the (encrypted) EBS root volume, and on start the instance **resumes where it left off** (processes and in-memory caches intact). Must be enabled at launch. Useful for apps with long warm-up times. ASG warm pools can use hibernated instances.
+  - **Reboot:** same host, same public IP, nothing is lost.
+- **Public IP vs Elastic IP vs private IP:** The **private IP** is fixed for the life of the instance and used inside the VPC. The auto-assigned **public IP** comes from an AWS pool and is **released on every stop/start**. An **Elastic IP** is a static public IPv4 address owned by your account that you can move between instances (all public IPv4 addresses are billed hourly since 2024, see §7). In production, avoid depending on instance IPs at all: put instances behind a **load balancer** or a **DNS name**.
+- **Key pairs & access:** A key pair (RSA or ED25519) is used for SSH to Linux, or to decrypt the Windows admin password. AWS keeps only the **public key** (placed in `~/.ssh/authorized_keys` at launch), and you download the **private `.pem` key once**. AWS can't recover it. Alternatives that avoid managing keys: **EC2 Instance Connect** (pushes a short-lived public key through an IAM-authorized API call) and **SSM Session Manager** (no inbound port 22 at all, IAM-controlled, sessions logged). Session Manager is the best-practice default.
+- **IAM roles & instance profiles:** The way an app on EC2 gets AWS permissions (e.g. read from S3) **without access keys on disk**. You attach an IAM role to the instance through an **instance profile** (a container for the role). AWS delivers **temporary credentials** through IMDS and **rotates them automatically**, and the AWS SDKs/CLI pick them up with no code changes. Never hard-code keys or put them in user data. Apply least privilege to the role.
+- **Security groups:** The instance-level virtual firewall attached to the instance's network interface: **stateful**, **allow rules only**, default deny for inbound and allow for outbound. Rules can reference other security groups (e.g. DB-SG allows 5432 only from App-SG), which keeps working as IPs change. See §7 for SG vs NACL.
+- **User data:** A bootstrap script (shell or cloud-init) that runs **as root on the first boot only** by default, e.g. install packages, pull config, start the app. Limited to 16 KB. It's readable by anyone on the instance through IMDS, so **never put secrets in it**: fetch them from Secrets Manager or Parameter Store using the instance role. For fast and reliable scaling, keep user data short and bake the heavy setup into the AMI.
+- **Instance metadata (IMDS):** A local endpoint at `169.254.169.254` that lets an instance learn about itself: instance ID, AZ, IPs, user data, the role's **temporary credentials**, and Spot interruption notices. **IMDSv2** (session tokens) is required for security because it mitigates SSRF credential theft (see Q3). Enforce it in launch templates or with account-level defaults.
+- **Status checks & recovery:** *System status check*: AWS-side problem with the host (power, network, hardware). Fix by stop/start, which moves the instance to new hardware. *Instance status check*: problem inside your OS (kernel panic, full disk, misconfigured network). Fix by checking the system log or serial console. *Attached EBS status check*: an attached volume is unreachable. **Auto-recovery** (on by default for supported types) or a CloudWatch alarm action can recover an instance on a system failure, keeping its IDs, IPs and EBS volumes.
+- **Placement groups:** Control how instances are placed on hardware. *Cluster*: packed close together in one AZ for the lowest latency and highest throughput between nodes (HPC, tightly coupled jobs), at the cost of a shared failure domain. *Spread*: each instance on distinct hardware (max **7 running instances per AZ** per group), for a small number of critical instances that must not fail together. *Partition*: groups of instances on separate racks with no shared hardware between partitions, for large distributed, rack-aware systems (Kafka, HDFS, Cassandra).
+- **Storage:** **EBS** = network-attached block volume. Persistent, independent of the instance's lifecycle, AZ-scoped, can be snapshotted, resized and changed in type while attached (see §14). **Instance store** = NVMe disks physically attached to the host. Very fast, but **ephemeral**: data is lost on stop, terminate, hibernate or host failure (see Q6). **EFS** = a shared NFS file system that many instances across AZs can mount at once.
+- **Monitoring:** CloudWatch collects CPU, network, disk I/O and status check metrics (5-minute basic, 1-minute with detailed monitoring). **Memory and disk-space usage are not visible from the hypervisor**, so you need the **CloudWatch Agent** for them. **Compute Optimizer** recommends right-sizing based on usage history.
+- **Shared responsibility:** AWS secures the physical hosts, network and hypervisor. **You** are responsible for the guest OS (patching, e.g. with SSM Patch Manager), security groups, IAM roles, data encryption (EBS encryption) and the application.
 
 **Pricing models**
 | Model | Discount | Use for |
@@ -72,6 +125,27 @@ Work layer by layer: (1) instance status checks — system check failure → sto
 
 **Q6. Instance store vs EBS — when would you use instance store?**
 Instance store is physically attached NVMe — very high IOPS and low latency, but data is lost on stop/terminate/host failure. Use it for caches, scratch space, buffers, or replicated data stores where replication provides durability (Cassandra, Kafka with replication factor 3, Elasticsearch). Use EBS for anything that must survive instance lifecycle.
+
+**Q7. The instance's public IP changed after a stop/start and clients broke. Why, and how do you fix it?**
+Auto-assigned public IPv4 addresses come from an AWS pool and are released on stop. On start, the instance (usually on a new host) gets a new one. A reboot keeps it, and the private IP never changes. Quick fix: attach an **Elastic IP**, which stays with your account and can be moved to a replacement instance. Better fix: don't let clients depend on an instance IP at all. Put the instance behind an **ALB/NLB** (or Global Accelerator if you need static IPs) and point a **Route 53** record at it. That also lets you replace or scale instances without anyone noticing.
+
+**Q8. An app on a `t3` instance was fine for hours and then suddenly became slow. What happened?**
+Most likely it **ran out of CPU credits**. Burstable instances earn credits below their baseline and spend them while bursting. With sustained load the balance drains, and in **standard mode** the CPU is throttled to baseline (e.g. 20%), so latency jumps. Confirm with the CloudWatch `CPUCreditBalance` and `CPUUtilization` metrics. Fixes: switch to **unlimited mode** (keeps performance but bills surplus credits), or, if the load is steady, move to a fixed-performance `m`/`c` instance, which is usually cheaper than paying for unlimited credits all the time. Use Compute Optimizer to pick the size.
+
+**Q9. An application on EC2 needs to read from S3. How do you give it credentials?**
+Create an IAM role with a least-privilege policy (e.g. `s3:GetObject` on one bucket prefix) and attach it to the instance through an **instance profile**. The SDK automatically fetches **temporary credentials** from IMDS and AWS rotates them, so there are no keys in code, config files, environment variables or user data. Enforce IMDSv2 so an SSRF bug can't leak those credentials. If the bucket is only accessed from the VPC, add an S3 gateway endpoint and a bucket policy restricting access to that endpoint. Long-lived access keys on an instance are a red flag in any review.
+
+**Q10. You've lost the private key (`.pem`) for a Linux instance. How do you get back in?**
+AWS stores only the public key, so the private key can't be recovered. Options: (1) **SSM Session Manager**, if the SSM agent is running and the instance role has `AmazonSSMManagedInstanceCore`. Then add a new key to `authorized_keys`. (2) **EC2 Instance Connect**, if it's installed (default on Amazon Linux/Ubuntu AMIs) and port 22 is reachable. (3) **EC2 Serial Console** for OS-level recovery. (4) Last resort: stop the instance, detach the root volume, attach it to a helper instance, edit `~/.ssh/authorized_keys`, then reattach and start. Or create an AMI and launch a new instance with a new key. Long term: use Session Manager and stop depending on SSH keys.
+
+**Q11. Stop vs terminate vs hibernate: what happens to data, IPs and billing?**
+*Stop*: EBS volumes are kept (you pay for storage, not compute), instance store is wiped, private IP is kept, public IP is released, and the instance usually moves to a new host on start. *Terminate*: the instance is gone, the root volume is deleted by default (`DeleteOnTermination=true`), and extra volumes are kept unless the flag is set. *Hibernate*: like stop, but RAM is saved to the encrypted root EBS volume, so on start the app resumes with its in-memory state (it must be enabled at launch). Typical traps: someone terminates instead of stopping and loses the root volume, or orphaned volumes keep billing after termination. Use termination protection, snapshots or AWS Backup, and tag-based cleanup.
+
+**Q12. How do you make an application running on EC2 highly available?**
+Run it in an **Auto Scaling Group across at least 2–3 AZs**, behind an **ALB** with health checks, and use ELB health checks in the ASG so broken instances are replaced (see §2). Keep instances **stateless**: sessions go to ElastiCache/DynamoDB, files to S3/EFS, and the database to **RDS/Aurora Multi-AZ**. Launch from a golden AMI through a launch template so replacements are identical and boot fast. Provision for static stability (N-1 AZs can carry full load). Use Route 53 health checks and a second region if you need regional DR.
+
+**Q13. How do you reduce EC2 costs?**
+(1) **Right-size**: use Compute Optimizer and CloudWatch Agent memory metrics, since many instances are over-provisioned. (2) Move to **latest generation / Graviton** instances for better price-performance. (3) **Commit** to the steady baseline with Savings Plans, and use **Spot** for fault-tolerant capacity (see Q1). (4) **Auto-scale** and **schedule** non-prod environments to stop at nights and weekends (Instance Scheduler). (5) Clean up **waste**: unattached EBS volumes, old snapshots, idle Elastic IPs/public IPv4 addresses, and stopped instances nobody uses. (6) Move gp2 volumes to **gp3**. (7) Consider whether the workload belongs on Fargate or Lambda instead. Track with Cost Explorer and cost allocation tags.
 
 ---
 
