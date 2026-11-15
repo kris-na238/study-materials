@@ -4,21 +4,24 @@ A personal, self-contained knowledge base for senior software engineering interv
 
 ## Contents
 
-| Folder | Topic | Key file(s) |
+| Folder | Topic | Guides |
 |---|---|---|
-| [System Design](System%20Design/) | 20 core system design topics with 10+ interview questions each | `System-Design-master-guide.md` |
-| [DSA](DSA/) | Complete DSA guide: 22 pattern chapters in 5 parts, 165 problems covering all of the Blind 75 (problem, approach, optimal JS solution, complexity, alternatives), plus a one-page revision sheet, pattern-recognition cheat sheets and a JS toolkit | `DSA_Complete_Guide.md` |
-| [Backend](Backend/) | Node.js, NestJS, Python, and general programming language fundamentals | `Nodejs-Senior-interview-guide.md`, `NestJS_Senior_Interview_Questions.md`, `Python/Python_Interview_Guide.md`, `Programming_language_Basics_.md` |
-| [Frontend](Frontend/) | React senior-level interview guide | `React-senior-interview-guide.md` |
-| [DB](DB/) | DB fundamentals, SQL (MySQL/PostgreSQL), MongoDB, Redis, query practice, scenarios | `00_Revision_Cheatsheet.md` … `06_Scenario_Questions.md` |
-| [AI](AI/) | AI/LLM-related notes | — |
-| [Spritual](Spritual/) | Personal notes, unrelated to interview prep | — |
+| System Design | 20 core system design topics with 10+ interview questions each | [System Design Guide](System%20Design/System_Design_Interview_Guide.md) · [1M Requests/sec](System%20Design/Lets_handle_1_miilion_per_request.md) · [URL Shortener](System%20Design/Products/Url_Shortner.md) · [Links](System%20Design/links.md) |
+| DSA | Complete DSA guide: 22 pattern chapters in 5 parts, 165 problems covering all of the Blind 75 (problem, approach, optimal JS solution, complexity, alternatives), plus a one-page revision sheet, pattern-recognition cheat sheets and a JS toolkit | [DSA Complete Guide](DSA/DSA_Complete_Guide.md) · [Links](DSA/links.md) |
+| Backend | Node.js, NestJS, Python, and general programming language fundamentals | [Node.js](Backend/NodeJs/Nodejs-Complete-Guide.md) · [NestJS](Backend/NodeJs/NestJS_Senior_Interview_Questions.md) · [Python](Backend/Python/Python_Interview_Guide.md) · [Language Basics](Backend/Programming_language_Basics_.md) · [Links](Backend/links.md) |
+| Frontend | React senior-level interview guide | [React Complete Guide](Frontend/ReactJS/React-Complete-Topic-Guide.md) · [Links](Frontend/links.md) |
+| DB | DB fundamentals, SQL (MySQL/PostgreSQL), MongoDB, Redis, query practice, scenarios | [Cheatsheet](DB/00_Revision_Cheatsheet.md) · [Fundamentals](DB/01_DB_Fundamentals.md) · [SQL](DB/02_SQL_Databases.md) · [MongoDB](DB/03_NoSQL_MongoDB.md) · [Redis](DB/04_Redis.md) · [Query Practice](DB/05_Query_Practice.md) · [Scenarios](DB/06_Scenario_Questions.md) · [Links](DB/links.md) |
+| AWS & DevOps | AWS, AI on AWS, and DevOps interview prep | [AWS & AI on AWS](AWS%20%26%20DevOps/AWS_and_AI_on_AWS_Interview_Guide.md) · [DevOps](AWS%20%26%20DevOps/DevOps_Interview_Guide.md) |
+| AI | AI/LLM-related notes | [Links](AI/links.md) |
+| Spritual | Personal notes, unrelated to interview prep | [Realization](Spritual/realization.md) · [Links](Spritual/links.md) |
 
 ## Other files
 
-- **[Operation_Architect.md](Operation_Architect.md)** — Interview syllabus/schedule and a two-level self-introduction script (experience summary + project deep-dives).
-- **[Study_Doc_Prompt_Template.md](Study_Doc_Prompt_Template.md)** — Reusable prompt template for generating a new subject-wise study guide in the same format as the existing ones. Swap in `{{SUBJECT}}` to produce a new doc.
-- **[InterviwerLLD.drawio.svg](InterviwerLLD.drawio.svg)** — Low-level design diagram (draw.io).
+- **[Interview Requirement Gathering](Interview%20Requirement%20Gathering.md)**
+- **[Operation_Architect.md](Utility/Operation_Architect.md)** — Interview syllabus/schedule and a two-level self-introduction script (experience summary + project deep-dives).
+- **[Study_Doc_Prompt_Template.md](Utility/Study_Doc_Prompt_Template.md)** — Reusable prompt template for generating a new subject-wise study guide in the same format as the existing ones. Swap in `{{SUBJECT}}` to produce a new doc.
+- **[InterviwerLLD.drawio.svg](Utility/InterviwerLLD.drawio.svg)** — Low-level design diagram (draw.io).
+- **[Utility links](Utility/links.md)**
 
 ## How to use this repo
 
