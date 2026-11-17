@@ -1109,26 +1109,76 @@ function ChatRoom({ roomId }) {
 ```
 
 **Race conditions in fetching** (asked very often):
+
+A **race condition** happens when several requests are in flight and they **come back in a different order** than they were sent, so a slow, outdated response **overwrites** a newer one. The network never guarantees response order: server load, caching and retries all change the timing.
+
+```jsx
+// ❌ Buggy
+useEffect(() => {
+  fetch(`/api/users/${id}`).then(r => r.json()).then(data => setUser(data));
+}, [id]);
+```
+```
+t=0ms    click Profile 1 → request A sent (slow: 2 s)
+t=100ms  click Profile 2 → request B sent (fast: 300 ms)
+t=400ms  B returns → setUser(profile 2) ✅
+t=2000ms A returns → setUser(profile 1) ❌ the UI says "Profile 2" but shows profile 1
+```
+Real-world examples: search-as-you-type ("re" results arriving after "react" results), switching tabs or filters quickly, pagination.
+
+**Fix 1: `ignore` flag (skip stale responses)**
 ```jsx
 useEffect(() => {
-  let ignore = false;
+  let ignore = false;                       // belongs to THIS effect run
   fetch(`/api/users/${id}`)
     .then(r => r.json())
     .then(data => { if (!ignore) setUser(data); });
-  return () => { ignore = true; };     // a stale response is ignored
+  return () => { ignore = true; };          // a stale response is ignored
 }, [id]);
+```
+Each effect run has **its own** `ignore` (a closure). When `id` changes, React runs the **previous effect's cleanup first**, which sets *that* run's `ignore = true`. When the old response arrives, it sees `true` and does nothing.
+```
+id=1: ignore₁ = false, request A sent
+id=2: cleanup → ignore₁ = true; new run: ignore₂ = false, request B sent
+B returns → ignore₂ false → setUser(B) ✅
+A returns → ignore₁ true  → skipped ✅
+```
+⚠️ The old request still completes over the network. Its result is just thrown away.
 
-// or abort the request entirely
+**Fix 2: `AbortController` (cancel the old request)**
+```jsx
 useEffect(() => {
   const ctrl = new AbortController();
   fetch(`/api/users/${id}`, { signal: ctrl.signal }).then(r => r.json()).then(setUser)
-    .catch(e => { if (e.name !== 'AbortError') setError(e); });
+    .catch(e => { if (e.name !== 'AbortError') setError(e); });   // aborting is not an error
   return () => ctrl.abort();
 }, [id]);
 ```
+`ctrl.abort()` **cancels the request in the browser**: the promise rejects with `AbortError`, so `setUser` never runs for the outdated request. The `catch` ignores `AbortError` so you don't show an error for a cancellation you caused yourself.
+
+| | `ignore` flag | `AbortController` |
+|---|---|---|
+| Prevents stale data | ✅ | ✅ |
+| Cancels the network request (saves bandwidth and server work) | ❌ | ✅ |
+| Works with any async code | ✅ | Only APIs that accept a `signal` (fetch, axios) |
+
+Both also stop **setState after unmount**, because the cleanup also runs on unmount.
+
+**Fix 3 (production answer): React Query / SWR**
+```jsx
+const { data: user, isLoading, error } = useQuery({
+  queryKey: ['user', id],                   // each id has its own cache entry
+  queryFn: ({ signal }) => fetch(`/api/users/${id}`, { signal }).then(r => r.json()),
+});
+```
+Results are stored **per key**, so a late response for `['user', 1]` can never overwrite `['user', 2]`. You also get caching, de-duplication, retries and automatic cancellation through `signal` (see [6.5](#65-react-query--swr-server-state)).
+
+**Search-as-you-type:** combine **debouncing** (fewer requests) with **AbortController** (cancel the ones still in flight). Debouncing alone doesn't prevent races, because two requests can still overlap.
 
 **Scenario:** *"User clicks profile 1 then quickly profile 2, but sees profile 1's data."*
-Request 1 came back after request 2 and overwrote it. Fix with the `ignore` flag or `AbortController` above. In production, use React Query / SWR, which handle this for you.
+Request 1 came back after request 2 and overwrote it. Fix it in the effect's cleanup with the `ignore` flag or an `AbortController` (ignoring the `AbortError`). In production, use React Query / SWR, which key results per request and cancel outdated ones automatically.
+
+**One-line answer:** *"A fetch race condition happens when responses arrive out of order and an outdated one overwrites newer state. In `useEffect`, the cleanup prevents it: an `ignore` flag discards stale responses, or an `AbortController` cancels the previous request. React Query / SWR solve it by keying results per request."*
 
 **Common mistakes**
 ```jsx
@@ -1297,30 +1347,62 @@ Separate booleans (`isLoading`, `isError`) allow combinations that should be imp
 Context passes data deep down the tree **without prop drilling**. Good for app-wide values that change rarely: theme, locale, auth user, feature flags.
 
 ```jsx
-const ThemeContext = createContext('light');
+// 1. Create the context. Default `null` so a missing Provider can be detected.
+const ThemeContext = createContext(null);
 
-function App() {
+// 2. Provider component: owns the state and exposes a memoised value
+function ThemeProvider({ children }) {
   const [theme, setTheme] = useState('light');
-  const value = useMemo(() => ({ theme, setTheme }), [theme]);   // stable value
+  const toggleTheme = useCallback(
+    () => setTheme(t => (t === 'light' ? 'dark' : 'light')),
+    []
+  );
+  const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]);   // stable reference
+  // React 19: you can render ThemeContext directly instead of ThemeContext.Provider
   return (
-    <ThemeContext.Provider value={value}>   {/* React 19: <ThemeContext value={value}> */}
-      <Page />
+    <ThemeContext.Provider value={value}>
+      {children}
     </ThemeContext.Provider>
   );
 }
 
-function ThemeToggle() {
-  const { theme, setTheme } = useContext(ThemeContext);
-  return <button onClick={() => setTheme(t => (t === 'light' ? 'dark' : 'light'))}>{theme}</button>;
-}
-
-// Good practice: custom hook with a guard
+// 3. Custom hook with a guard: consumers never touch the raw context
 function useTheme() {
   const ctx = useContext(ThemeContext);
-  if (!ctx) throw new Error('useTheme must be used inside ThemeProvider');
+  if (!ctx) throw new Error('useTheme must be used inside <ThemeProvider>');
   return ctx;
 }
+
+// 4. Usage: Layout passes no theme props, but Header still gets the theme
+function App() {
+  return (
+    <ThemeProvider>
+      <Layout />
+    </ThemeProvider>
+  );
+}
+
+function Layout() {
+  return <main><Header /></main>;   // knows nothing about theme
+}
+
+function Header() {
+  const { theme, toggleTheme } = useTheme();
+  return (
+    <header className={'header header--' + theme}>
+      <button onClick={toggleTheme}>
+        Switch to {theme === 'light' ? 'dark' : 'light'}
+      </button>
+    </header>
+  );
+}
 ```
+
+Why this shape:
+- **`createContext(null)`** makes the guard in `useTheme` work. With a default like `'light'`, a component outside the Provider would silently get the wrong value.
+- **Provider as its own component taking `children`**: when the theme changes, `ThemeProvider` re-renders, but `children` (`<Layout />`) is the same element created by `App`, so `Layout` is skipped. Only components that call `useTheme` re-render.
+- **`useMemo` + `useCallback`** keep `value` the same object between renders unless `theme` actually changes.
+- **Expose `toggleTheme`, not `setTheme`**: consumers get an intent-based API and can't set an invalid theme.
 
 **Performance pitfall:** **every consumer re-renders** when the Provider's `value` changes (by reference). `React.memo` doesn't stop it.
 
@@ -1330,6 +1412,33 @@ Fixes:
 2. **Separate state and dispatch** into two contexts. Components that only dispatch won't re-render.
 3. **Memoise the `value`** object.
 4. Use a **store with selectors** (Zustand, Redux) for state that changes often.
+
+```jsx
+// Fix 2: separate state and dispatch
+const CountStateContext = createContext(null);
+const CountDispatchContext = createContext(null);
+
+function CountProvider({ children }) {
+  const [count, dispatch] = useReducer((c, action) => (action === 'inc' ? c + 1 : c - 1), 0);
+  return (
+    <CountDispatchContext.Provider value={dispatch}>   {/* dispatch never changes */}
+      <CountStateContext.Provider value={count}>
+        {children}
+      </CountStateContext.Provider>
+    </CountDispatchContext.Provider>
+  );
+}
+
+function CountDisplay() {
+  const count = useContext(CountStateContext);       // re-renders when count changes
+  return <p>{count}</p>;
+}
+
+function IncrementButton() {
+  const dispatch = useContext(CountDispatchContext); // never re-renders on count change
+  return <button onClick={() => dispatch('inc')}>+1</button>;
+}
+```
 
 ---
 
@@ -1343,24 +1452,111 @@ They help in only **two cases**:
 1. **Expensive calculations** (filtering/sorting thousands of items).
 2. **Referential stability**: the value is passed to a `React.memo` child, or used as an effect/hook dependency.
 
+**useMemo vs useCallback**
+| | `useMemo` | `useCallback` |
+|---|---|---|
+| Caches | The **result** of a function | The **function itself** |
+| Returns | A value (number, array, object…) | A function |
+| Runs your function? | Yes, during render, when deps change | No. You call it later (event, effect, child) |
+| Syntax | `useMemo(() => value, deps)` | `useCallback(fn, deps)` |
+| Without it | The calculation re-runs every render | A new function object is created every render |
+| Problem it solves | Repeating slow work | A new reference breaking `React.memo` or re-running effects |
+| Typical use | Filtered/sorted lists, derived totals, stable objects (e.g. a context `value`) | Handlers passed to memoised children, functions used in `useEffect` deps |
+| Pointless when | The calculation is cheap and the result isn't passed to anything memoised | The child isn't memoised and the function isn't a dependency |
+| Relationship | General tool | Shortcut: `useCallback(fn, deps)` = `useMemo(() => fn, deps)` |
+
+#### `useMemo` example 1: skip an expensive calculation
 ```jsx
-function ProductList({ products, query, onSelect }) {
-  // 1. expensive computation
-  const filtered = useMemo(
-    () => products.filter(p => p.name.toLowerCase().includes(query.toLowerCase())),
-    [products, query]
+function UserTable({ users, sortBy }) {        // users: 10,000 rows
+  const [darkMode, setDarkMode] = useState(false);
+
+  // ✅ Sorts only when users or sortBy change
+  const sorted = useMemo(
+    () => [...users].sort((a, b) => a[sortBy].localeCompare(b[sortBy])),
+    [users, sortBy]
   );
+  // ❌ Without useMemo, toggling dark mode would re-sort 10,000 rows
 
-  // 2. stable callback for a memoised child
-  const handleSelect = useCallback(id => onSelect(id), [onSelect]);
+  return (
+    <div className={darkMode ? 'dark' : 'light'}>
+      <button onClick={() => setDarkMode(d => !d)}>Toggle theme</button>
+      <ul>{sorted.map(u => <li key={u.id}>{u.name}</li>)}</ul>
+    </div>
+  );
+}
+```
 
-  return filtered.map(p => <ProductRow key={p.id} product={p} onSelect={handleSelect} />);
+#### `useMemo` example 2: keep an object stable for an effect
+```jsx
+function ChatRoom({ roomId, serverUrl }) {
+  const [message, setMessage] = useState('');
+
+  // ✅ Same object until roomId or serverUrl change
+  const options = useMemo(() => ({ roomId, serverUrl }), [roomId, serverUrl]);
+
+  useEffect(() => {
+    const conn = createConnection(options);
+    conn.connect();
+    return () => conn.disconnect();
+  }, [options]);
+  // ❌ Without useMemo: a new object every render, so typing a message reconnects the chat
+
+  return <input value={message} onChange={e => setMessage(e.target.value)} />;
+}
+```
+
+#### `useCallback` example 1: stable handler for a memoised child
+```jsx
+function TodoApp() {
+  const [todos, setTodos] = useState([]);
+  const [text, setText] = useState('');
+
+  // ✅ Same function every render, so TodoList skips re-rendering while you type
+  const handleDelete = useCallback(id => {
+    setTodos(prev => prev.filter(t => t.id !== id));
+  }, []);   // no deps needed thanks to the functional updater
+  // ❌ Without useCallback: a new function every keystroke, so React.memo sees a changed prop
+
+  return (
+    <>
+      <input value={text} onChange={e => setText(e.target.value)} />
+      <TodoList todos={todos} onDelete={handleDelete} />
+    </>
+  );
 }
 
-const ProductRow = React.memo(function ProductRow({ product, onSelect }) {
-  return <li onClick={() => onSelect(product.id)}>{product.name}</li>;
+const TodoList = React.memo(function TodoList({ todos, onDelete }) {
+  return todos.map(t => <li key={t.id} onClick={() => onDelete(t.id)}>{t.title}</li>);
 });
 ```
+
+#### `useCallback` example 2: function used as an effect dependency
+```jsx
+function SearchResults({ query }) {
+  const [results, setResults] = useState([]);
+
+  // ✅ New function only when query changes
+  const fetchResults = useCallback(async () => {
+    const res = await fetch('/api/search?q=' + encodeURIComponent(query));
+    setResults(await res.json());
+  }, [query]);
+
+  useEffect(() => { fetchResults(); }, [fetchResults]);
+  // ❌ Without useCallback: a new function every render, so the effect fetches after every render
+
+  return <ul>{results.map(r => <li key={r.id}>{r.title}</li>)}</ul>;
+}
+```
+
+#### Same thing, two ways (and a common mistake)
+```jsx
+const a = useCallback(() => console.log('hi'), []);
+const b = useMemo(() => () => console.log('hi'), []);   // identical to a
+
+const c = useMemo(() => console.log('hi'), []);         // ❌ runs once and caches undefined (the result), not the function
+```
+
+**Memory trick:** `useMemo` remembers the **answer**, `useCallback` remembers the **question** (the function).
 
 **Scenario:** *"A teammate wrapped every function in `useCallback`. Good?"*
 No. If the child isn't memoised, a stable function reference doesn't help, and you still pay for the hook and its dependency comparison. Memoisation has a cost (memory, comparisons, harder-to-read code). **Measure with the Profiler first.** The **React Compiler** (React 19 era) now memoises automatically, which mostly removes the need to do this by hand.
