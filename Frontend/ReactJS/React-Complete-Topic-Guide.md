@@ -4,6 +4,7 @@
 >
 
 **How each subtopic is laid out**
+
 - **Explanation**: what to say in the interview
 - **Code**: the smallest example that proves you understand it
 - **Scenario**: a "what would you do if…" question and the answer
@@ -155,6 +156,7 @@ const el = _jsx('h1', { className: 'title', children: ['Hello ', name] });
 ```
 
 JSX rules:
+
 - Return **one root** (or a Fragment).
 - `className` not `class`, `htmlFor` not `for`, camelCase events (`onClick`).
 - `{}` embeds any **expression** (not statements: no `if`/`for` inside; use ternary/`&&`/`map`).
@@ -203,6 +205,7 @@ No. Class components still work and get support. Migrate step by step: write new
 ### 1.4 Props vs State & One-Way Data Flow
 
 **Explanation**
+
 - **Props**: inputs passed from parent → child. **Read-only** in the child.
 - **State**: data owned by the component that changes over time; updating it triggers a re-render.
 - **One-way data flow**: data goes **down** via props; changes go **up** via callbacks. This makes it easy to trace where a value comes from.
@@ -318,6 +321,7 @@ function Columns() {
 ### 1.8 Controlled vs Uncontrolled Components
 
 **Explanation**
+
 - **Controlled**: React state is the single source of truth. `value` + `onChange`.
 - **Uncontrolled**: the DOM keeps the value; you read it via `ref` or `FormData` when needed. `defaultValue` sets the initial value.
 
@@ -366,6 +370,7 @@ The `value` started as `undefined` and later became a string. Fix: always set an
 | Re-render per keystroke | Yes | No |
 
 **More gotchas**
+
 - **`value` without `onChange`** makes the input read-only, and React warns. Add `onChange`, or use `readOnly` / `defaultValue`.
 - **`defaultValue` only sets the initial value.** Changing it later does nothing. To re-initialize, remount the input with a new `key`.
 - **Checkboxes and radios** use `checked` / `defaultChecked` and are read with `.checked`, not `.value`.
@@ -416,6 +421,7 @@ const refs = useRef([]);
 ### 1.9 Lifting State Up, Prop Drilling & Composition
 
 **Explanation**
+
 - **Lifting state up**: move state to the closest common parent of the components that need it.
 - **Prop drilling**: passing props through components that don't use them, only to reach a deep child. It's annoying and makes components tightly coupled.
 - Fixes, in order of preference: **composition (`children`)** → **Context** → **state library**.
@@ -475,6 +481,7 @@ function Layout({ user }) { return <Sidebar user={user} />; }   // doesn't use i
 function Sidebar({ user }) { return <Avatar user={user} />; }   // doesn't use it
 function Avatar({ user })  { return <img alt={user.name} />; }  // the only real user
 ```
+
 - The middle components are **coupled** to data they don't care about.
 - Renaming a prop or adding a field means editing **every level**.
 - The middle components **re-render** whenever the prop changes.
@@ -574,6 +581,7 @@ Benefits: one listener instead of thousands, and elements added later work autom
 **Event pooling (React 16 and earlier):** React reused event objects, so after the handler finished, `e.target` was `null` inside `setTimeout` or `await` unless you called `e.persist()`. React 17 removed pooling, and `e.persist()` now does nothing.
 
 **Other differences from the native DOM**
+
 - **`onChange` fires on every keystroke**, like the native `input` event. The native `change` event only fires on blur.
 - **Portals:** events bubble through the **React tree**, not the DOM tree. A click inside a portal still reaches its React parent's `onClick` (see [5.6](#56-portals)).
 - **`onScroll` doesn't bubble** in React 17+.
@@ -587,6 +595,7 @@ Benefits: one listener instead of thousands, and elements added later work autom
   ```
 
 **More scenarios**
+
 - *"My form reloads the page on submit."* Call `e.preventDefault()` in `onSubmit`.
 - *"Too many re-renders" on a button.* You wrote `onClick={fn()}` instead of `onClick={fn}` or `onClick={() => fn()}`.
 
@@ -598,6 +607,7 @@ Benefits: one listener instead of thousands, and elements added later work autom
 
 **Explanation**
 A render must be a **pure function** of props + state + context:
+
 - Same input → same JSX output.
 - **No side effects during render**: no API calls, no mutating outside variables, no `setState` on other components, no DOM changes.
 
@@ -672,11 +682,13 @@ React can call render more than once, pause it or discard the result, especially
 
 **Explanation**
 The Virtual DOM is a lightweight **JS object tree** describing the UI. On every update:
+
 1. React builds a new element tree.
 2. It **diffs** the new tree against the previous one (**reconciliation**).
 3. It applies only the minimal changes to the real DOM.
 
 A general tree diff costs O(n³). React gets **O(n)** by using two heuristics:
+
 1. **Different element type → throw away the whole subtree** and rebuild it (`<div>` → `<span>`, or `ComponentA` → `ComponentB`).
 2. **Keys** identify children across renders within a list.
 
@@ -702,6 +714,7 @@ setState → Render: re-run the component → NEW virtual tree
          → Commit: apply only the changes to the real DOM
          → the NEW tree becomes the "old" tree for the next update
 ```
+
 - React builds a **new** tree rather than editing the old one in place.
 - Only the component whose state changed **and its children** re-render, not the whole app (unless a child is memoised, see 7.2).
 - In modern React, this "virtual DOM" is the **Fiber tree**. React keeps a *current* tree (on screen) and a *work-in-progress* tree (the new render), and swaps them after commit (see 2.5).
@@ -764,6 +777,7 @@ Every render creates a **new component type**, so React sees a different type an
 **Identity decides re-render vs remount**
 
 React asks: *"Is this the same component as last time?"*
+
 - **Same type + position + key** → the same component. React **keeps** it (state + DOM) and **re-renders** it with new props.
 - **Any of them changed** → a different component. React **unmounts** the old one and **mounts** a new one, so the **state resets**.
 
@@ -789,6 +803,7 @@ A common misconception: a change of identity doesn't cause a *re-render*, it cau
 
 **Explanation**
 A component re-renders when:
+
 1. **Its state changes**: `setState` with a value that's different by `Object.is`.
 2. **Its parent re-renders**: by default *all* children re-render, whether or not their props changed.
 3. **A context it consumes changes**.
@@ -833,6 +848,7 @@ If `Object.is(old, new)` is true, React **bails out** (skips the render). It may
 ### 2.4 Render Phase vs Commit Phase
 
 **Explanation**
+
 | Render phase | Commit phase |
 |---|---|
 | React calls your components, builds the new tree, diffs it | React applies the DOM changes |
@@ -860,6 +876,7 @@ function Demo() {
 Fiber (React 16) is the **rewrite of the reconciler**. Each component instance is a **fiber node**: a JS object with `type`, `props`, `stateNode`, `child`/`sibling`/`return` pointers, `memoizedState` (the hooks list), `lanes` (priority) and effect flags.
 
 Why it matters:
+
 - The old "stack reconciler" walked the tree recursively and **couldn't stop** until it finished, so big updates blocked the main thread and dropped frames.
 - Fiber turns the tree walk into a **loop over linked nodes**, so React can **pause, prioritise, resume or abandon** work.
 - **Double buffering**: there's a `current` tree (on screen) and a `workInProgress` tree (being built). On commit, they swap.
@@ -919,6 +936,7 @@ function handleClick() {
 **Analogy:** a waiter takes **the whole table's order** and then goes to the kitchen once, instead of running to the kitchen after every dish someone orders.
 
 **Why batch?**
+
 1. **Performance:** 3 updates mean 1 render + 1 DOM commit, instead of 3 renders + 3 commits.
 2. **Consistency:** the UI never shows a **half-updated state**, e.g. `count` updated but `flag` not yet.
 
@@ -948,6 +966,7 @@ fetch('/api/user').then(data => {
   // React 18: 1 render
 });
 ```
+
 - **Why did React 17 only batch event handlers?** It batched by setting an "I'm inside a React event" flag. Code in `setTimeout` or `.then` runs **later**, after that flag has been switched off. React 18 batches **by time** instead: any updates queued in the same tick are processed together, wherever they come from.
 - Automatic batching everywhere only applies with **`createRoot`**. The legacy `ReactDOM.render` keeps the React 17 behaviour.
 
@@ -980,6 +999,7 @@ const addMessage = (msg) => {
 Without `flushSync`, the new `<li>` wouldn't be in the DOM yet when `scrollIntoView` runs. ⚠️ It forces a synchronous render and hurts performance, so use it only when you really need it.
 
 **Scenario:** *"After `setCount(count + 1)`, `console.log(count)` shows the old value."*
+
 - `setState` only **queues** the update. Nothing has re-rendered yet.
 - `count` is a **constant** in this render's closure. It never changes inside this function call.
 - The new value shows up in the **next render**.
@@ -987,6 +1007,7 @@ Without `flushSync`, the new `<li>` wouldn't be in the DOM yet when `scrollIntoV
 Fix: compute the value first and use the variable: `const next = count + 1; setCount(next); sendToAnalytics(next);`. To react to the change *after* the render, use `useEffect(() => ..., [count])`.
 
 **More scenarios**
+
 - *"Three `setCount(count + 1)` calls only add 1."* All three read the same `count` from this render. Use `setCount(c => c + 1)`.
 - *"Our app re-renders twice after a fetch in React 17."* No batching outside event handlers. Upgrading to React 18 with `createRoot` fixes it, or wrap the updates in `unstable_batchedUpdates` in React 17.
 - *"I need to scroll to the new item right after adding it."* Use `flushSync`, or do the scroll in a `useLayoutEffect`.
@@ -999,6 +1020,7 @@ Fix: compute the value first and use the variable: `const next = count + 1; setC
 
 **Explanation**
 `<React.StrictMode>` is a **development-only** tool that surfaces bugs early:
+
 - **Renders components twice** → catches impure renders.
 - **Runs effects mount → unmount → mount** → catches missing cleanups.
 - Warns about deprecated APIs (string refs, `findDOMNode`, legacy lifecycles).
@@ -1053,6 +1075,7 @@ StrictMode mounts, unmounts and remounts components in development to reveal mis
 
 **Explanation**
 `const [state, setState] = useState(initial)` adds local state. Key points:
+
 - **Functional updates** `setX(prev => ...)` when the next value depends on the previous one. They're safe with batching and stale closures.
 - **Lazy initialisation** `useState(() => expensive())`: the function runs only on the first render.
 - **Immutability**: always create new objects/arrays; React compares with `Object.is`.
@@ -1230,6 +1253,7 @@ Point out that each one adds an extra render and can get out of sync. Replace th
 ### 3.4 `useLayoutEffect` vs `useEffect`
 
 **Explanation**
+
 - `useEffect`: runs **after paint**, without blocking it. Use it for most side effects.
 - `useLayoutEffect`: runs **synchronously after DOM mutation, before paint**. Use it when you must **measure the layout and change it** before the user sees anything (to avoid flicker).
 - Overusing `useLayoutEffect` blocks painting and hurts performance. It also does nothing on the server (React warns during SSR).
@@ -1261,6 +1285,7 @@ function Tooltip({ targetRect, children }) {
 `useRef(initial)` returns a **mutable object `{ current }`** that persists for the component's lifetime. **Changing `.current` does not re-render.**
 
 Uses:
+
 1. **DOM access**: focus, scroll, measure, media playback.
 2. **Values that survive renders without being shown**: timer IDs, previous values, "is mounted", the latest callback.
 
@@ -1291,6 +1316,7 @@ function usePrevious(value) {
 ```
 
 **ref vs state**
+
 | | `useState` | `useRef` |
 |---|---|---|
 | Triggers re-render | Yes | No |
@@ -1307,6 +1333,7 @@ function usePrevious(value) {
 `const [state, dispatch] = useReducer(reducer, initialState)`. It puts state transitions in one **pure function**.
 
 Prefer it over `useState` when:
+
 - State has several related fields that change together (`status`, `data`, `error`).
 - The next state depends on the previous one in complex ways.
 - You want transition logic that's easy to test and can be pulled out of the component.
@@ -1399,6 +1426,7 @@ function Header() {
 ```
 
 Why this shape:
+
 - **`createContext(null)`** makes the guard in `useTheme` work. With a default like `'light'`, a component outside the Provider would silently get the wrong value.
 - **Provider as its own component taking `children`**: when the theme changes, `ThemeProvider` re-renders, but `children` (`<Layout />`) is the same element created by `App`, so `Layout` is skipped. Only components that call `useTheme` re-render.
 - **`useMemo` + `useCallback`** keep `value` the same object between renders unless `theme` actually changes.
@@ -1408,6 +1436,7 @@ Why this shape:
 
 **Scenario:** *"The whole app re-renders on every keystroke in a form whose state lives in Context."*
 Fixes:
+
 1. **Split contexts** by how often they change (e.g. `UserContext` vs `FormContext`).
 2. **Separate state and dispatch** into two contexts. Components that only dispatch won't re-render.
 3. **Memoise the `value`** object.
@@ -1445,14 +1474,17 @@ function IncrementButton() {
 ### 3.8 `useMemo` & `useCallback`
 
 **Explanation**
+
 - `useMemo(() => compute(a, b), [a, b])` caches a **computed value**.
 - `useCallback(fn, [deps])` caches a **function reference**. It's the same as `useMemo(() => fn, deps)`.
 
 They help in only **two cases**:
+
 1. **Expensive calculations** (filtering/sorting thousands of items).
 2. **Referential stability**: the value is passed to a `React.memo` child, or used as an effect/hook dependency.
 
 **useMemo vs useCallback**
+
 | | `useMemo` | `useCallback` |
 |---|---|---|
 | Caches | The **result** of a function | The **function itself** |
@@ -1611,6 +1643,7 @@ function useOnlineStatus() {
 ### 3.10 Rules of Hooks (and Why)
 
 **Explanation**
+
 1. Call hooks **only at the top level**: never inside conditions, loops, nested functions or after an early return.
 2. Call hooks **only from function components or custom hooks**.
 
@@ -1688,6 +1721,7 @@ function useLatest(value) {
 A custom hook is a **function starting with `use`** that calls other hooks. It shares **stateful logic**, not state: every component that calls it gets its own copy of the state.
 
 Design guidelines:
+
 - Name it after what it does (`useOnlineStatus`, not `useEffectForOnline`).
 - Return a tuple `[value, setter]` for simple hooks, an object `{ data, error, isLoading }` for more.
 - Keep returned functions stable (`useCallback`) when people will put them in dependency arrays.
@@ -1838,6 +1872,7 @@ function UserProfile({ userId }) {
 ### 4.2 `setState` Behaviour
 
 **Explanation**
+
 - `this.setState(partial)` **merges** shallowly with the current state (unlike `useState`, which **replaces** it).
 - It's batched and asynchronous. Use the **updater form** when the new state depends on the previous one.
 - The second argument is a callback that runs after the update is applied.
@@ -1874,6 +1909,7 @@ class Btn extends React.Component {
 ### 4.3 `PureComponent` & `shouldComponentUpdate`
 
 **Explanation**
+
 - `shouldComponentUpdate(nextProps, nextState)` returns `false` to skip a render.
 - `React.PureComponent` implements it with a **shallow comparison** of props and state.
 - The function-component equivalent is `React.memo(Component, arePropsEqual?)`.
@@ -1975,6 +2011,7 @@ const Dashboard = withAuth(DashboardPage);
 ```
 
 **Drawbacks:**
+
 - "Wrapper hell" in DevTools.
 - **Prop collisions** (two HOCs both inject `data`).
 - Hard to see where a prop comes from.
@@ -2060,6 +2097,7 @@ That's "prop explosion". Refactor to compound components so consumers put the pi
 ### 5.4 Container vs Presentational
 
 **Explanation**
+
 - **Presentational**: how things *look*. Get data via props, no data fetching, easy to test and use in Storybook.
 - **Container**: how things *work*. Fetch data, hold state, pass props down.
 
@@ -2307,6 +2345,7 @@ Context is enough for values that **change rarely** and are read widely (theme, 
 Redux = **single store**, state changed only by **dispatching actions** to **pure reducers**. Predictable, can be debugged with time travel, has middleware.
 
 **Redux Toolkit (RTK)** is the official, recommended way to write Redux:
+
 - `configureStore`: sets up devtools and thunk middleware.
 - `createSlice`: generates action creators and reducers, and uses **Immer** so you can write "mutating" code safely.
 - `createAsyncThunk`: async flows.
@@ -2369,6 +2408,7 @@ const selectVisible = createSelector([s => s.todos, s => s.filter], (todos, f) =
 ### 6.4 Zustand, Jotai, Recoil, MobX
 
 **Explanation**
+
 | Library | Model | Pros | Cons |
 |---|---|---|---|
 | **Zustand** | Small hook-based store, selectors | ~1KB, no Provider, little boilerplate | Less structure for very large teams |
@@ -2412,6 +2452,7 @@ React Query for server state plus Zustand for the small amount of global client 
 Server state is different from client state: **someone else owns it**, it can get **out of date**, it's shared across components, and it needs caching, retries and de-duplication.
 
 React Query (TanStack Query) gives you:
+
 - **Caching by query key**: `['user', id]`
 - **De-duplication**: 10 components using the same key make 1 request
 - **Stale-while-revalidate**: show cached data immediately, refetch in the background
@@ -2473,6 +2514,7 @@ Use an optimistic update: in `onMutate`, update the cache straight away; roll ba
 
 **Explanation**
 Ask these questions in order:
+
 1. **Is it derived?** → compute it, don't store it.
 2. **Does it come from the server?** → React Query / SWR / RTK Query.
 3. **Should it survive a refresh / be shareable via link?** → URL params.
@@ -2513,6 +2555,7 @@ Keep it as local as possible. URL for shareable state, React Query for server da
 ### 7.1 The Optimisation Mindset
 
 **Explanation**
+
 1. **Measure first**: React DevTools Profiler, Chrome Performance tab, Lighthouse, Web Vitals.
 2. Find the **real bottleneck**: is it re-renders, a slow single render, network, bundle size, images, or layout thrashing?
 3. Fix with the **simplest** technique: change the structure first (move state down, pass children), then memoise.
@@ -2542,6 +2585,7 @@ First, which part is slow? **Initial load** points to bundle size, network, SSR 
 `React.memo(Component)` skips re-rendering when props are **shallowly equal** to the last render's props.
 
 It works only if:
+
 - The component re-renders **often** with the **same props**, and
 - Rendering it is **expensive** enough to matter, and
 - Props are **referentially stable** (primitives, memoised objects and functions).
@@ -2604,6 +2648,7 @@ const name = useStore(s => s.user.name);    // not useStore(s => s)
 ```
 
 **Other quick wins:**
+
 - Stable keys in lists.
 - Don't define components inside components.
 - Don't create new objects in render if they're passed to memoised children or used as deps.
@@ -2648,6 +2693,7 @@ async function exportPdf() {
 ```
 
 Notes:
+
 - `lazy` needs a **default export** (or `.then(m => ({ default: m.Named }))`).
 - Wrap lazy components in an **Error Boundary** too: chunk loading can fail after a deploy ("ChunkLoadError").
 - Don't split too finely: too many tiny chunks means too many requests.
@@ -2700,6 +2746,7 @@ function BigList({ rows }) {
 ### 7.6 Debouncing & Throttling in React
 
 **Explanation**
+
 - **Debounce**: run *after* the user stops for N ms (search input, autosave).
 - **Throttle**: run at most once every N ms (scroll, resize, mouse move).
 
@@ -2736,6 +2783,7 @@ useEffect(() => { if (debouncedQuery) search(debouncedQuery); }, [debouncedQuery
 
 **Explanation**
 Images are usually the biggest part of a page's weight, and often its **LCP** element.
+
 - Modern formats: **AVIF / WebP**.
 - Responsive sizes: `srcset` + `sizes`.
 - `loading="lazy"` for images below the fold. **Don't** lazy-load the LCP hero image; give it `fetchpriority="high"`.
@@ -2763,6 +2811,7 @@ Images are usually the biggest part of a page's weight, and often its **LCP** el
 
 **Explanation**
 **React DevTools → Profiler tab:**
+
 1. Click record, do the slow interaction, stop.
 2. The **Flamegraph** shows each commit and how long each component took to render.
 3. The **Ranked** view sorts components by render time.
@@ -2787,6 +2836,7 @@ Images are usually the biggest part of a page's weight, and often its **LCP** el
 ### 7.9 Web Vitals: LCP, INP, CLS
 
 **Explanation**
+
 | Metric | Measures | Good | Common React fixes |
 |---|---|---|---|
 | **LCP**: Largest Contentful Paint | Loading: when the main content appears | ≤ 2.5s | SSR/SSG, optimise hero image, smaller JS, preload, CDN |
@@ -2809,6 +2859,7 @@ onLCP(sendToAnalytics); onINP(sendToAnalytics); onCLS(sendToAnalytics);
 ### 7.10 Bundle Size & Tree Shaking
 
 **Explanation**
+
 - **Analyse**: `rollup-plugin-visualizer` (Vite), `webpack-bundle-analyzer`, `source-map-explorer`.
 - **Tree shaking** removes unused exports. It needs **ES modules** and no side effects (`"sideEffects": false` in `package.json`).
 - Common problems: `import _ from 'lodash'` (whole library) → `import debounce from 'lodash/debounce'` or `lodash-es`; `moment` → `date-fns` / `dayjs`; icon libraries imported all at once.
@@ -2878,6 +2929,7 @@ For most new code, yes. It adds memoisation automatically at build time, as long
 Before React 18, rendering was **synchronous and couldn't be interrupted**: once started, React blocked the main thread until it finished.
 
 **Concurrent rendering** lets React:
+
 - **Prepare several versions of the UI** at once.
 - **Interrupt** low-priority rendering to handle urgent updates (typing, clicking).
 - **Throw away** stale work.
@@ -2967,11 +3019,13 @@ const SlowList = React.memo(function SlowList({ query }) { /* heavy */ });
 `<Suspense fallback={...}>` shows a fallback while something inside it is **not ready** ("suspends").
 
 What can suspend:
+
 - `React.lazy` components (code).
 - Data via **Suspense-enabled libraries** (React Query `useSuspenseQuery`, Relay, Next.js RSC) or React 19's `use(promise)`.
 - *Not* a plain `useEffect` fetch.
 
 Patterns:
+
 - **Nesting** boundaries for progressive loading (page shell → sidebar → content).
 - Boundaries placed **where the user expects a loading state**.
 - Pair with **Error Boundaries** for failures.
@@ -3008,6 +3062,7 @@ function ProductHeader({ id }) {
 Traditional SSR is **all-or-nothing**: fetch all data → render the whole HTML → send it → download all JS → hydrate everything. The slowest part blocks the whole page.
 
 React 18 **streaming SSR** (`renderToPipeableStream` / `renderToReadableStream`) with Suspense:
+
 1. Sends the HTML shell and fallbacks **straight away**.
 2. **Streams** each Suspense boundary's HTML as its data resolves (with inline scripts that put it in place).
 3. **Selective hydration**: hydrates parts independently, and **prioritises the part the user is interacting with**.
@@ -3136,6 +3191,7 @@ function Thread({ messages, sendMessage }) {
 
 **Explanation**
 `use(resource)` reads a **promise** or **context** during render.
+
 - With a **promise**: the component **suspends** until it resolves; a rejection goes to the nearest Error Boundary.
 - With **context**: like `useContext`, but **can be called conditionally** or inside loops (the only hook that can).
 - The promise must be **cached/stable**. Create it in a Server Component, a loader or a cache, not in the same component's render (that would create a new promise every render and loop forever).
@@ -3172,6 +3228,7 @@ function Heading({ show }) {
 ### 9.4 Other React 19 Changes
 
 **Explanation**
+
 - **`ref` as a prop**: no more `forwardRef` for function components.
 - **`<Context>` as a provider**: `<ThemeContext value="dark">` instead of `.Provider`.
 - **Ref cleanup functions**: a callback ref can return a cleanup.
@@ -3266,6 +3323,7 @@ React 19.2 (October 2025) added two APIs that are now common interview topics.
 ```
 
 Things to mention:
+
 - **Pre-rendering** only fetches data through Suspense-enabled sources (such as `use`). Data fetched in an Effect isn't loaded, because Effects don't run while hidden.
 - **The DOM stays**, so a hidden `<video>` keeps playing unless a cleanup Effect pauses it.
 - `<Activity>` boundaries also allow **selective hydration**, even when nothing is hidden.
@@ -3358,6 +3416,7 @@ function TimeZone() {
 ```
 
 **Other changes**
+
 - Server Components can render a Context imported from a `'use client'` module directly (`<UserContext value={user}>`), so no wrapper Provider is needed. They still can't create one.
 - **Trusted Types** support: values like `TrustedHTML` are no longer converted to strings.
 - A slow Transition no longer blocks unrelated Transitions.
@@ -3399,6 +3458,7 @@ Move to 18.3 first and fix its deprecation warnings. Run the official codemods, 
 ### 10.1 CSR vs SSR vs SSG vs ISR
 
 **Explanation**
+
 | Strategy | HTML built | Pros | Cons | Use for |
 |---|---|---|---|---|
 | **CSR**: Client-Side Rendering | In the browser, after JS loads | Simple hosting (static), rich interactivity | Blank page until JS runs, weaker SEO, slow LCP on low-end devices | Dashboards, admin tools, apps behind login |
@@ -3424,6 +3484,7 @@ function Widget() { const { data } = useQuery({ queryKey: ['w'], queryFn }); }
 ```
 
 **Scenario:** *"Choose a rendering strategy for an e-commerce site."*
+
 - Home/category pages: **ISR** (fast, mostly static).
 - Product page: **ISR** for product content plus **CSR or streamed** price/stock (must be fresh).
 - Cart/checkout: **SSR or CSR** (personal, no SEO).
@@ -3469,6 +3530,7 @@ export default function AddToCart({ productId }) {
 ```
 
 **Key rules:**
+
 - `'use client'` marks a **boundary**: everything that file imports becomes client code too.
 - Props passed from Server → Client must be **serialisable** (no functions, except Server Actions; no class instances).
 - Push `'use client'` **as far down the tree as possible**.
@@ -3484,6 +3546,7 @@ export default function AddToCart({ productId }) {
 **Hydration** = React on the client attaches event listeners and state to HTML that the **server already rendered**, instead of rebuilding the DOM. The client's first render must produce **the same output** as the server's.
 
 **Common causes of mismatches:**
+
 - `Date.now()`, `new Date().toLocaleString()` (time zones/locales differ), `Math.random()`
 - `typeof window !== 'undefined'` branches in render
 - Reading `localStorage` during render
@@ -3546,6 +3609,7 @@ middleware.ts         ← runs before requests (auth redirects, i18n, A/B)
 ```
 
 **Caching layers** (often asked; the defaults changed in Next 15 and again in 16; see [10.6](#106-nextjs-15--16-cache-components-proxyts--async-apis)):
+
 - Request memoisation (same `fetch` de-duplicated within one render)
 - Data cache (`fetch` cache, `revalidate`, `revalidateTag`)
 - Full route cache (static HTML/RSC)
@@ -3569,6 +3633,7 @@ export const config = { matcher: ['/dashboard/:path*'] };
 ### 10.5 SEO in React Apps
 
 **Explanation**
+
 - CSR-only apps rely on crawlers running JS: slower and less reliable (and many social/link-preview bots don't run JS at all).
 - Use **SSR/SSG** for pages that should be found by search.
 - **Metadata**: `<title>`, meta description, canonical URL, Open Graph/Twitter cards (Next `generateMetadata`, React 19 `<title>`).
@@ -3626,6 +3691,7 @@ async function getProducts() {
 | `refresh()` | Only uncached data needs refreshing (Server Actions only) | Doesn't touch the cache |
 
 **Other changes to know**
+
 - **`proxy.ts` replaces `middleware.ts`**: rename the file and the exported function. It runs on the Node.js runtime. `middleware.ts` still works for Edge use cases but is deprecated.
 - **Request APIs are async**: `await params`, `await searchParams`, `await cookies()`, `await headers()`. Synchronous access was removed in 16.
 - **Turbopack is the default bundler** (`--webpack` opts out).
@@ -3983,6 +4049,7 @@ function SignupForm() {
 ### 12.2 React Hook Form & Formik
 
 **Explanation**
+
 - **React Hook Form (RHF)**: **uncontrolled** by default (uses refs), so typing **doesn't re-render** the whole form. Small, fast, great TS support. The current industry default.
 - **Formik**: controlled, one state object; more re-renders, and less actively maintained.
 
@@ -4088,6 +4155,7 @@ function Total() {
 ```
 
 **Strategies:**
+
 - Uncontrolled inputs (RHF) / split into memoised sections.
 - **Multi-step wizard**: one form state across steps (`FormProvider`), validate each step, keep progress in URL/session storage.
 - **Auto-save**: debounce `watch` → save as a draft; show "Saved" / "Saving…"; handle conflicts.
@@ -4127,6 +4195,7 @@ Use `useFieldArray` with stable IDs as keys, isolate re-renders with `useWatch` 
 An Error Boundary is a **class component** that catches **errors thrown during rendering, in lifecycle methods and in constructors of its children**, and renders a fallback UI instead of unmounting the whole app (React unmounts the whole tree on an uncaught render error).
 
 **It does NOT catch:**
+
 - Errors in **event handlers** (use try/catch)
 - **Async** code (`setTimeout`, promises) unless you re-throw the error into render
 - **SSR** errors
@@ -4216,6 +4285,7 @@ window.addEventListener('error', e => logError(e.error));
 ```
 
 **Error UX levels:**
+
 - **Field-level**: validation messages.
 - **Component-level**: inline error + retry.
 - **Page-level**: error boundary / `error.tsx`.
@@ -4229,6 +4299,7 @@ window.addEventListener('error', e => logError(e.error));
 ### 13.3 Fallback UI, Retries & Logging
 
 **Explanation**
+
 - **Retries with exponential backoff** for network errors. React Query retries 3 times by default.
 - **Don't retry** 4xx errors (except 408/429).
 - **Graceful degradation**: show cached/stale data with a "couldn't refresh" note instead of an error screen.
@@ -4276,6 +4347,7 @@ A clear message, a way to recover such as a retry button, and as much of the wor
 ### 14.1 Testing Philosophy: Pyramid vs Trophy
 
 **Explanation**
+
 - **Testing pyramid**: many unit tests, fewer integration tests, few E2E tests.
 - **Testing trophy** (Kent C. Dodds), common for frontend: **static analysis** (TS, ESLint) → **unit** → **integration (the biggest layer)** → **E2E**.
 - Integration tests (rendering a feature with real child components and a mocked network) give the **most confidence for the cost**.
@@ -4333,6 +4405,7 @@ test('shows validation error for invalid email', async () => {
 ```
 
 **`getBy` vs `queryBy` vs `findBy`:**
+
 | | Not found | Async | Use for |
 |---|---|---|---|
 | `getBy*` | throws | no | element should be there |
@@ -4465,6 +4538,7 @@ test('user can checkout', async ({ page }) => {
 ### 14.6 Snapshot Testing & Visual Regression
 
 **Explanation**
+
 - **Snapshot tests** store the rendered output and fail when it changes.
   - ✅ Good for small, stable output (serialisers, error messages).
   - ❌ Large snapshots get approved without anyone reading them, and break on every markup change, so they protect very little.
@@ -4507,6 +4581,7 @@ Only for small, stable output. Large snapshots get approved without being read, 
 ### 15.1 Styling Approaches Compared
 
 **Explanation**
+
 | Approach | How | Pros | Cons |
 |---|---|---|---|
 | **Plain CSS / BEM** | global stylesheets | No tooling, fast | Global namespace collisions |
@@ -4544,6 +4619,7 @@ const Button = styled.button`
 ### 15.2 CSS-in-JS Trade-offs
 
 **Explanation**
+
 - **Runtime cost**: styles are created and injected while rendering, which slows renders (most noticeable on large lists and low-end devices).
 - **SSR**: you have to collect styles per request to avoid unstyled content flashing.
 - **Bundle**: the library's runtime (~10–15KB).
@@ -4586,6 +4662,7 @@ const Bar = styled.div`width: ${p => p.percent}%;`;
 A design system = **design tokens** (colours, spacing, typography, radii) + **components** + **guidelines** + **documentation** (Storybook).
 
 Build vs buy:
+
 - **Headless** (Radix UI, Headless UI, React Aria): behaviour and accessibility only; you add the styles. Most flexible.
 - **Styled** (MUI, Chakra, Ant Design, Mantine): fast to start, harder to make look like your brand.
 - **shadcn/ui**: copies Radix + Tailwind components **into your repo**, so you own the code.
@@ -4655,6 +4732,7 @@ function Button({ label, variant = 'primary', onClick, children }: ButtonProps) 
 ```
 
 **Children types:**
+
 - `React.ReactNode`: anything renderable (string, number, element, array, null). **Use this for children.**
 - `React.ReactElement`: a single JSX element only.
 - `JSX.Element`: what JSX expressions return.
@@ -4838,6 +4916,7 @@ Extend `React.ComponentProps<'button'>` (or `ComponentPropsWithoutRef`), then sp
 React **escapes all values in JSX by default**: `<div>{userInput}</div>` is safe, even if `userInput = "<script>…"`.
 
 What's still dangerous in React:
+
 1. `dangerouslySetInnerHTML` with untrusted HTML.
 2. **`javascript:` URLs** in `href`/`src`.
 3. Writing to the DOM directly via refs (`ref.current.innerHTML = …`).
@@ -4876,6 +4955,7 @@ function safeUrl(url) {
 }
 <a href={safeUrl(user.website)} target="_blank" rel="noopener noreferrer">Website</a>
 ```
+
 - React 16.9+ **warns** about `javascript:` URLs, and newer versions block them, but don't rely on that alone.
 - `target="_blank"` → add `rel="noopener noreferrer"` (prevents **reverse tabnabbing**; modern browsers set `noopener` by default).
 - Never spread untrusted objects into props: `<div {...userControlledProps} />` could inject `dangerouslySetInnerHTML`.
@@ -4887,6 +4967,7 @@ function safeUrl(url) {
 ### 17.3 Auth Token Storage: Cookies vs localStorage
 
 **Explanation**
+
 | | `localStorage` / `sessionStorage` | **httpOnly cookie** |
 |---|---|---|
 | JS can read it | ✅, so **any XSS can steal it** | ❌, not readable by JS |
@@ -4908,6 +4989,7 @@ Set-Cookie: session=abc; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=3600
 **Explanation**
 **CSRF (Cross-Site Request Forgery):** a malicious site makes the user's browser send a request to your site **with the user's cookies attached**.
 Defences:
+
 - `SameSite=Lax/Strict` cookies (the main defence today).
 - **CSRF tokens** (synchroniser token or double-submit cookie) for state-changing requests.
 - Check `Origin`/`Referer` headers.
@@ -4924,6 +5006,7 @@ Content-Security-Policy:
   connect-src 'self' https://api.example.com;
   frame-ancestors 'none';
 ```
+
 - Use **nonces/hashes** instead of `'unsafe-inline'` for scripts.
 - `frame-ancestors 'none'` prevents **clickjacking**.
 - Roll it out with `Content-Security-Policy-Report-Only` first.
@@ -4937,6 +5020,7 @@ Content-Security-Policy:
 ### 17.5 Other Frontend Security Topics
 
 **Explanation**
+
 - **Secrets in the bundle:** everything in client JS is public. `VITE_*` / `NEXT_PUBLIC_*` env vars get **embedded in the bundle**. Never put API secrets there.
 - **Dependency security:** `npm audit`, Dependabot/Renovate, lockfiles, review new dependencies (supply-chain attacks), **Subresource Integrity** (SRI) for CDN scripts.
 - **Client-side authorisation is only for UX:** hiding a button isn't security. The server must check every request.
@@ -4979,6 +5063,7 @@ export async function deleteOrder(orderId: string) {
 ```
 
 **Scenario:** *"A critical CVE drops for a framework you run in production. What do you do?"*
+
 1. **Check exposure**: which apps and workspaces use the affected packages, including through lockfiles and vendored products?
 2. **Patch and redeploy**: updating `package.json` isn't enough; you have to rebuild and ship.
 3. **Add temporary protection**: WAF rules help, but they don't replace patching.
@@ -5083,6 +5168,7 @@ Follow the **WAI-ARIA Authoring Practices** patterns, or use **Radix / React Ari
 ### 18.3 Keyboard Navigation & Focus Management
 
 **Explanation**
+
 - Everything interactive must be **reachable with Tab** and usable with Enter/Space/arrow keys.
 - **Visible focus**: never `outline: none` without a replacement; use `:focus-visible`.
 - `tabIndex={0}` makes an element focusable in normal order; `tabIndex={-1}` makes it focusable only from code; **avoid positive values**.
@@ -5120,6 +5206,7 @@ function onKeyDown(e, index) {
 
 **Explanation**
 **Modal checklist:**
+
 1. `role="dialog"` + `aria-modal="true"` + `aria-labelledby` (its title).
 2. **Move focus into** the modal when it opens (first field or close button).
 3. **Trap focus** inside (Tab loops).
@@ -5161,6 +5248,7 @@ function Dialog({ open, onClose, title, children }) {
 ### 18.5 Testing Accessibility
 
 **Explanation**
+
 - **Linting**: `eslint-plugin-jsx-a11y`.
 - **Automated**: axe-core (`jest-axe`, `@axe-core/playwright`), Lighthouse, Storybook a11y addon. These catch roughly **30–40%** of issues.
 - **Manual**: keyboard-only walkthrough, screen readers (NVDA, VoiceOver, JAWS), 200% zoom, contrast checks (WCAG AA: 4.5:1 for normal text), reduced motion (`prefers-reduced-motion`).
@@ -5229,6 +5317,7 @@ src/
 ```
 
 Rules that keep it scalable:
+
 - **Features import from `shared`, never from other features' internals** (only through `index.ts`). Enforce this with ESLint `import/no-restricted-paths` / `eslint-plugin-boundaries`.
 - **Colocate** tests, styles and stories next to the component.
 - Pages/routes are thin and compose features.
@@ -5250,6 +5339,7 @@ Use the same structure for any frontend system design question (e.g. "Design a n
 5. **O**ptimisations: performance, a11y, security, offline, error handling, observability, testing.
 
 **Example: Design a News Feed (summary)**
+
 - **Requirements**: infinite scroll, posts with images/video, like/comment, new posts arriving, works on 3G mobile.
 - **Architecture**: SSR the first page for fast LCP → hydrate → CSR for later pages. Components: `Feed`, `Post`, `Composer`, `CommentList`.
 - **Data**: normalised cache `{ posts: {byId}, users: {byId}, feed: [postIds] }` (React Query or a normalised store).
@@ -5265,6 +5355,7 @@ For full worked examples, see [Section 29](#29-frontend-system-design-case-studi
 ### 19.3 Real-time Communication: WebSocket vs SSE vs Polling
 
 **Explanation**
+
 | | Short polling | Long polling | **SSE** | **WebSocket** |
 |---|---|---|---|---|
 | Direction | client → server | client → server | **server → client** | **two-way** |
@@ -5311,6 +5402,7 @@ useEffect(() => {
 Split a large frontend into **independently built and deployed apps** owned by different teams (e.g. Search, Cart and Account teams).
 
 **Integration approaches:**
+
 - **Build-time** (npm packages): simple, but every change needs a re-release, so teams aren't really independent.
 - **Run-time via Module Federation** (Webpack 5 / Rspack / Vite plugin): the host loads remote modules at run time and **shares dependencies** (one copy of React).
 - **iframes**: strongest isolation, poor user experience (sizing, routing, a11y).
@@ -5331,6 +5423,7 @@ const CartWidget = lazy(() => import('cart/CartWidget'));
 ```
 
 **Trade-offs:**
+
 - ✅ Teams own and deploy their parts independently; incremental migration (e.g. Angular → React); fault isolation.
 - ❌ Operational complexity, duplicated dependencies, inconsistent UX, shared-state and routing difficulty, performance cost, version mismatches.
 
@@ -5346,6 +5439,7 @@ One repo, many packages/apps: `apps/web`, `apps/admin`, `packages/ui`, `packages
 Benefits: **shared code without publishing**, atomic changes across packages, one set of tooling, easier refactoring.
 
 Tools:
+
 - **Package managers with workspaces**: pnpm (recommended), npm, yarn.
 - **Turborepo**: task pipelines + **caching** (local and remote). Simple.
 - **Nx**: caching + **affected-only** builds/tests (based on the dependency graph), generators, boundary rules. More features.
@@ -5368,6 +5462,7 @@ Tools:
 ### 19.6 Build Tooling: Vite, Webpack, Babel/SWC
 
 **Explanation**
+
 | Tool | What it does |
 |---|---|
 | **Vite** | Dev: serves **native ES modules** + esbuild pre-bundling, so the dev server starts almost instantly and HMR is fast. Prod: Rollup (moving to **Rolldown**). Current default for SPAs. |
@@ -5451,6 +5546,7 @@ Step 7 is the one teams usually skip, and two systems permanently in use is wors
 ### 19.8 Internationalisation (i18n)
 
 **Explanation**
+
 - Libraries: **react-i18next**, **FormatJS / react-intl**, next-intl.
 - Never join strings together; use **message keys with interpolation** and **ICU plural/select** rules.
 - Format **dates, numbers and currency** with `Intl` APIs.
@@ -5476,6 +5572,7 @@ new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(-1, 'day');       
 
 **Explanation**
 **Feature flags** (LaunchDarkly, Unleash, GrowthBook, Statsig):
+
 - Separate **deploy** from **release**; gradual rollouts (1% → 10% → 100%); instant kill switch; A/B tests.
 - Evaluate flags on the server where you can, to avoid flicker; clean up old flags (they become tech debt).
 
@@ -5487,6 +5584,7 @@ function Checkout() {
 ```
 
 **Observability:**
+
 - **Errors**: Sentry (with source maps, release tags).
 - **Performance / RUM**: Web Vitals by route, device and country (Datadog RUM, New Relic, SpeedCurve).
 - **Product analytics**: funnels, events.
@@ -5535,6 +5633,7 @@ Move strings into translation files and use a library such as react-i18next or F
 ### 20.1 Closures, Scope & Hoisting
 
 **Explanation**
+
 - **Scope**: where variables can be accessed: global, function, block (`let`/`const`).
 - **Closure**: a function **remembers the variables from the scope where it was defined**, even after that scope has finished running.
 - **Hoisting**: declarations are moved to the top of their scope during compilation.
@@ -5617,6 +5716,7 @@ Function.prototype.myBind = function (ctx, ...preset) {
 
 **Explanation**
 JS runs on **one thread**. The event loop:
+
 1. Runs all **synchronous code** (the call stack).
 2. Then empties the **microtask queue** completely: Promise `.then/catch/finally`, `queueMicrotask`, `await` continuations, `MutationObserver`.
 3. Then the browser may **render** (rAF callbacks run before paint).
@@ -5750,6 +5850,7 @@ Object.getPrototypeOf(d) === Dog2.prototype;  // true
 ### 20.6 `var` / `let` / `const`
 
 **Explanation**
+
 | | `var` | `let` | `const` |
 |---|---|---|---|
 | Scope | function | block | block |
@@ -5791,6 +5892,7 @@ user = {};               // TypeError
 ### 20.7 Shallow vs Deep Copy & Immutability
 
 **Explanation**
+
 - **Shallow copy** copies the top level; nested objects are **still shared**: `{...obj}`, `[...arr]`, `Object.assign`, `arr.slice()`.
 - **Deep copy** copies everything: `structuredClone(obj)` (modern; handles Date, Map, Set and cycles, but not functions or DOM nodes). `JSON.parse(JSON.stringify(obj))` loses Dates, `undefined`, functions, Map/Set and breaks on cycles.
 
@@ -6050,6 +6152,7 @@ Interviewers grade **process** as much as the result. Follow this order:
 | 50–60 min | Test by hand, clean up, and explain what you'd do next |
 
 **Mistakes that cost the most**
+
 - Starting to code before understanding the problem.
 - Spending 15 minutes on CSS before anything works.
 - Storing derived values in state, or copying props into state.
@@ -6804,6 +6907,7 @@ Get the core working and say what's left. Explain how you'd add it, for example:
 
 **Explanation**
 Answer experience questions with **STAR**:
+
 - **S**ituation: context (1–2 sentences).
 - **T**ask: your responsibility / the goal.
 - **A**ction: **what *you* did** (say "I", not "we"), including the technical detail and the trade-offs. This should be about 60% of the answer.
@@ -6837,6 +6941,7 @@ Numbers in your own stories must be true, and you should be able to explain how 
 ### 22.2 "Walk Me Through Your Project's Frontend Architecture"
 
 **Template answer structure (fill in your own details):**
+
 1. **Product & scale**: what it does, users, team size, your role.
 2. **Stack**: React version, framework (Next/Vite), TypeScript, styling, state, data fetching.
 3. **Rendering**: CSR/SSR/SSG, and why.
@@ -6882,6 +6987,7 @@ Numbers in your own stories must be true, and you should be able to explain how 
 **Common questions:** *"Describe a technical decision you made and its trade-offs." / "Tell me about a time you chose not to use a popular technology."*
 
 **What a strong answer includes:**
+
 - The **options** you considered (at least two).
 - **Criteria**: team skills, performance, maintainability, cost, time to market.
 - **Why** you chose this option, **what you gave up**, and **how you reduced the risk** (spike, proof of concept, feature flag, rollback plan).
@@ -7057,6 +7163,7 @@ The original selector has higher specificity. Check it in DevTools, then reduce 
 | `sticky` | Acts `relative` until a scroll threshold, then sticks | Yes |
 
 **Three `position` traps**
+
 - `sticky` needs an offset such as `top: 0`, and stops working if an ancestor has `overflow: hidden` or `auto`.
 - `fixed` is positioned relative to an ancestor with a `transform` or `filter`, not the viewport.
 - `absolute` without a positioned ancestor goes up to the initial containing block.
@@ -7243,10 +7350,12 @@ CSS  ──► CSSOM ───┘
 6. **Composite**: combine the layers on the GPU.
 
 **What blocks rendering**
+
 - **CSS is render-blocking.** The browser won't paint until the CSSOM is ready.
 - **Plain `<script>` tags are parser-blocking.** They pause HTML parsing, and they also wait for pending CSS because scripts can read styles.
 
 **How to speed it up**
+
 - Inline critical CSS and defer the rest.
 - Use `defer` or `async` on scripts.
 - Keep the initial HTML useful (SSR) so content doesn't wait for JS.
@@ -7288,6 +7397,7 @@ requestAnimationFrame(() => {
 Reading `offsetWidth`, `getBoundingClientRect()`, `scrollTop` or `getComputedStyle()` can all force layout.
 
 **Useful tools**
+
 - **`will-change: transform`** promotes an element to its own layer. Use it sparingly, since every layer costs memory.
 - **`content-visibility: auto`** skips rendering off-screen sections.
 - **`contain: layout paint`** limits how far a change can spread.
@@ -7442,6 +7552,7 @@ An **origin** is scheme + host + port. `https://app.com` and `https://api.app.co
 The **same-origin policy** stops a page's JS from reading responses from another origin. **CORS** is how a server opts in to allowing that.
 
 **Simple vs preflighted requests**
+
 - **Simple requests** (GET, HEAD or POST with basic headers) are sent directly. The browser then checks the response headers.
 - **Everything else** (such as PUT, DELETE, `Content-Type: application/json`, or `Authorization` headers) triggers a **preflight**: an `OPTIONS` request asking for permission first.
 
@@ -7467,6 +7578,7 @@ fetch('https://api.app.com/me', { credentials: 'include' });
 The server must respond with `Access-Control-Allow-Credentials: true` and an **exact origin**. `Access-Control-Allow-Origin: *` isn't allowed with credentials.
 
 **Three things people get wrong**
+
 - CORS is enforced **by the browser**. `curl` and server-to-server calls ignore it.
 - **CORS doesn't protect your API.** It only controls which web pages can read responses, so you still need authentication.
 - The fix is on the **server**. The frontend can't fix a CORS error by itself.
@@ -7588,6 +7700,7 @@ async function authFetch(url, options) {
 ```
 
 **Also consider**
+
 - **Retries** with exponential backoff, only on network errors, 429 and 5xx. Don't retry a POST unless it's idempotent.
 - **Request de-duplication**, which React Query does for you.
 - **Cancellation** with `AbortController` ([3.2](#32-useeffect)).
@@ -7678,6 +7791,7 @@ The cause is usually a live data feed pushing into an array that's never trimmed
 Don't guess. Measure with a repeatable action.
 
 **The three-snapshot method**
+
 1. Open **DevTools → Memory** and take a **heap snapshot** (this triggers garbage collection first).
 2. Do the suspected action several times, such as opening and closing a modal 10 times.
 3. Take a second snapshot and repeat the action.
@@ -7692,6 +7806,7 @@ Don't guess. Measure with a repeatable action.
 | **Performance tab (with Memory enabled)** | Memory over time |
 
 **Reading the results**
+
 - A **sawtooth** pattern (memory rises, then drops at each GC) is healthy.
 - A **rising baseline** after each GC suggests a leak.
 - In a snapshot, filter by **"Detached"** to find DOM nodes removed from the page but still in memory.
@@ -7870,6 +7985,7 @@ UI ──► IndexedDB (source of truth for the UI)
 ```
 
 Decisions to cover in an interview:
+
 - **Conflict resolution** when two devices edit the same item: last-write-wins, field-level merge, or asking the user.
 - **Idempotency keys**, so a retried sync can't create duplicates.
 - **Showing sync state** in the UI ("Saved offline", "Syncing…").
@@ -8058,6 +8174,7 @@ function DropZone({ onFiles }) {
 ```
 
 **Design points**
+
 - **State shape:** keep IDs in order per column and items in a lookup: `{ columns: { todo: ['a', 'b'] }, tasks: { a: {...} } }`.
 - **Optimistic updates:** move the card immediately, then roll back if the save fails.
 - **Saving order:** a position like `1.5` between `1` and `2` (**fractional indexing**) updates a single row instead of renumbering the list.
@@ -8100,6 +8217,7 @@ Each case study uses the **RADIO** framework from [19.2](#192-frontend-system-de
 ### 29.1 Design an Autocomplete / Typeahead
 
 **Requirements**
+
 - *Functional:* suggestions as the user types, keyboard navigation, select an item, recent searches.
 - *Non-functional:* feels instant (under ~100 ms for cached results), low network use, accessible, reusable across products.
 
@@ -8128,6 +8246,7 @@ const cache = new Map<string, { results: Suggestion[]; at: number }>();   // LRU
 **Interface:** `GET /suggest?q=iph&limit=8`. Props: `fetchSuggestions`, `renderItem`, `onSelect`, `minChars`, `debounceMs`.
 
 **Optimisations**
+
 - **Debounce** at about 200 ms, with a minimum of 2 characters.
 - **Cancel stale requests** with `AbortController`, so late responses can't overwrite newer ones.
 - **Cache** results by query, including empty results.
@@ -8159,6 +8278,7 @@ Separate logic from UI: a headless `useCombobox` hook handles state, keyboard an
 ### 29.2 Design a Chat Application
 
 **Requirements**
+
 - *Functional:* conversations list, send and receive in real time, history, typing indicators, read receipts, attachments.
 - *Non-functional:* instant-feeling sends, smooth scrolling through long histories, resilience to flaky networks, works across tabs and devices.
 
@@ -8192,10 +8312,12 @@ type Message = {
 ```
 
 **Interface**
+
 - WebSocket events: `message.send`, `message.new`, `message.ack`, `typing`, `read`.
 - REST: `GET /conversations/:id/messages?before=<cursor>&limit=50`.
 
 **Optimisations**
+
 - **Optimistic send:** show the message immediately as `sending`, then replace it when the ack with the matching `clientId` arrives.
 - **Reliability:** reconnect with exponential backoff and jitter. On reconnect, fetch messages after the last known `seq`, and retry unsent messages from an outbox.
 - **Scrolling:** a virtualised list, keeping scroll position when older messages load above, and only auto-scrolling when the user is already at the bottom. Show a "New messages" button otherwise.
@@ -8224,6 +8346,7 @@ Load pages on demand and virtualise so only visible rows exist in the DOM. Varia
 ### 29.3 Design a Collaborative Editor (Google Docs)
 
 **Requirements**
+
 - *Functional:* rich text, several people editing at once, live cursors, comments, version history, offline edits.
 - *Non-functional:* typing never waits for the network, all users converge to the same document, large documents stay fast.
 
@@ -8242,6 +8365,7 @@ Document model + sync engine (CRDT like Yjs, or OT)
 Don't build on plain `contentEditable` and React state. Use an editor framework with its own document model, because a re-render per keystroke won't scale, and browsers behave inconsistently.
 
 **Data model**
+
 - **Document:** a structured tree (paragraphs, headings, marks), not an HTML string.
 - **Operations:** small changes such as insert, delete and format.
 - **Presence:** kept separately from the document, because it's temporary and doesn't need saving.
@@ -8259,6 +8383,7 @@ Don't build on plain `contentEditable` and React state. Use an editor framework 
 **Interface:** WebSocket messages for `update` (binary), `awareness` (cursors) and `sync` (exchange missing changes on reconnect). REST for metadata, comments and version snapshots.
 
 **Optimisations**
+
 - **Batch updates** every 50–100 ms instead of per keystroke.
 - **Throttle cursor updates**, and keep presence out of the undo history.
 - **Snapshots:** periodically compact history so loading doesn't replay every edit.
@@ -8287,6 +8412,7 @@ Each user has their own undo stack, recording only their operations. Undo create
 ### 29.4 Design an Analytics Dashboard
 
 **Requirements**
+
 - *Functional:* configurable widgets, filters and date ranges, drill-down, export, near-real-time updates.
 - *Non-functional:* fast first view, one slow widget can't block the others, handles large datasets, shareable views.
 
@@ -8314,6 +8440,7 @@ type WidgetConfig = { id: string; type: 'line' | 'bar' | 'table' | 'kpi'; query:
 **Interface:** `POST /query` per widget, or a batch endpoint. The server returns **pre-aggregated** data. Never send a million raw rows for the browser to aggregate. Exports run as a background job that returns a download link.
 
 **Optimisations**
+
 - **Independent loading:** per-widget Suspense and error boundaries, with a retry button on each.
 - **Lazy loading:** load heavy chart libraries only when needed, and render widgets when they near the viewport.
 - **Rendering:** SVG for small charts, Canvas or WebGL for many data points, and downsample to roughly the number of pixels available.
@@ -8344,6 +8471,7 @@ Store layout and widget settings as JSON, and render through a registry mapping 
 ### 29.5 Design a Video Player (YouTube / Netflix)
 
 **Requirements**
+
 - *Functional:* play, pause, seek, volume, quality, captions, fullscreen, resume where you left off.
 - *Non-functional:* fast start, minimal buffering on poor networks, accessible controls, works across devices.
 
@@ -8374,6 +8502,7 @@ type PlayerState = {
 **Interface:** `GET /videos/:id` returns metadata, manifest URL and caption tracks. `POST /videos/:id/progress` saves position every ~10 seconds and on page hide, using `navigator.sendBeacon` so it isn't lost when the tab closes.
 
 **Optimisations**
+
 - **Avoid per-frame React state:** `timeupdate` fires often. Update the progress bar through a ref, or keep the state inside `<Controls>` so the page doesn't re-render.
 - **Fast start:** preconnect to the CDN, load the manifest early, begin at a low quality, and use `poster` for the first frame.
 - **Lazy loading:** load the player library only when it's needed.
@@ -8403,6 +8532,7 @@ Startup time, rebuffer ratio, average bitrate, error rate and abandonment before
 ### 29.6 Design an E-commerce Site (Listing, Product Page, Checkout)
 
 **Requirements**
+
 - *Functional:* search and filter, product page, cart, checkout.
 - *Non-functional:* excellent SEO, great Core Web Vitals on mobile, cart works across sessions, safe payments, handles sale traffic.
 
@@ -8429,6 +8559,7 @@ type Cart = { id: string; items: { sku: string; qty: number }[]; version: number
 **Interface:** `GET /products?category=shoes&cursor=…`, `GET /products/:id`, `POST /cart/items`, `POST /checkout` with an idempotency key.
 
 **Optimisations**
+
 - **LCP:** the main product image gets `fetchpriority="high"`, is served as AVIF or WebP with `srcset`, and is never lazy-loaded.
 - **CLS:** reserve space with fixed image aspect ratios and skeletons.
 - **INP:** keep client JS small with Server Components, and delay third-party scripts.
@@ -8461,6 +8592,7 @@ Find the LCP element first, usually the main image. Serve it from a CDN in a mod
 This expands the summary in [19.2](#192-frontend-system-design-the-framework).
 
 **Requirements**
+
 - *Functional:* infinite feed of text, images and video, like, comment, compose, new post notifications.
 - *Non-functional:* fast first load on 3G, smooth scrolling for thousands of posts, accessible, no layout jumps.
 
@@ -8488,10 +8620,12 @@ type Store = {
 Normalising means a like on one post updates every place that post appears, and a change to one post only re-renders that card.
 
 **Interface**
+
 - `GET /feed?cursor=abc&limit=20` uses **cursor pagination**, because offset pagination duplicates or skips posts when new ones arrive.
 - `POST /posts/:id/like`, with a real-time channel (SSE or WebSocket) for "new posts available".
 
 **Optimisations**
+
 - **Load more early:** an `IntersectionObserver` sentinel a few screens ahead, with prefetching.
 - **Virtualise:** measure variable-height rows, and keep the DOM small.
 - **Images:** responsive `srcset`, lazy loading after the first post, fixed aspect ratio, and a blurred placeholder.
@@ -8522,6 +8656,7 @@ Keep the feed in a cache (React Query or a store) so it isn't refetched, and sav
 ## Revision Cheat Sheet
 
 **Doubts to revise**
+
 -  Diffrence between Library and framework and package
 -  JSX?
 -  why component name should start with capital letter?
