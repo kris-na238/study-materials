@@ -58,13 +58,17 @@
     - Code everyday/ Build Projects / Line up 3 projects and give time everyday to build them.
         - OmniYoga
         - 
-    - System Design - Done
     - Node.js -       Done 
     - React.js -      Done
     - DB Systems -    Done
+
+    - System Design - Done
     - AWS & DevOps -  Done
-    - Python -        Done
     - DSA :           Done
+    - Python -        Done
+    
     - Gen AI & Agentic AI
     - Software Fundamentals
+
+
     

@@ -1,0 +1,28 @@
+
+// React Query
+const { data, isLoading } = useQuery({ queryKey: ['user', id], queryFn: () => fetchUser(id) });
+
+// SWR
+const { data, isLoading } = useSWR('/api/user/' + id, fetcher);
+
+// RTK Query: define the API once, then use the hook it generates
+const { data, isLoading } = useGetUserQuery(id);
+
+
+
+
+function reducer(state, action){
+    switch(action.type){
+        case "start": return {};
+        case "success": reuturn {};
+        case "failed": return {};
+        default: throw new Error(`unknown action ${action.type}`);
+    }
+
+}
+let initialState = {status:'idle', data:null, error: null};
+let [state, dispatch] = useReducer(reducer, initialState);
+useEffect(()=>{
+    getusers().then(d=> dispatch({type: 'success', payload:d})).catch(e=> dispatch({type:'error', error:e}))
+},[])
+

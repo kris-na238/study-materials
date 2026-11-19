@@ -10,6 +10,7 @@
 - **Scenario**: a "what would you do if…" question and the answer
 - **Tip / Follow-up**: what interviewers dig into next
 - **Interview Questions**: every section ends with the most frequently asked questions and answers (⭐ = asked very often)
+- **Interview priority**: every section and subsection is rated by how often it comes up in interviews: ⭐⭐⭐ very often, ⭐⭐ often, ⭐ sometimes, *Rarely asked* = low priority
 
 ---
 
@@ -17,35 +18,35 @@
 
 **[The Big Picture](#the-big-picture)**: how all the topics connect
 
-1. [React Fundamentals](#1-react-fundamentals)
-2. [Rendering & Reconciliation](#2-rendering--reconciliation)
-3. [Hooks](#3-hooks)
-4. [Class Components (Legacy)](#4-class-components-legacy)
-5. [Component Patterns](#5-component-patterns)
-6. [State Management](#6-state-management)
-7. [Performance Optimization](#7-performance-optimization)
-8. [Concurrent React (React 18+)](#8-concurrent-react-react-18)
-9. [React 19](#9-react-19)
-10. [Rendering Strategies & SSR](#10-rendering-strategies--ssr)
-11. [Routing](#11-routing)
-12. [Forms](#12-forms)
-13. [Error Handling & Resilience](#13-error-handling--resilience)
-14. [Testing](#14-testing)
-15. [Styling](#15-styling)
-16. [TypeScript with React](#16-typescript-with-react)
-17. [Security](#17-security)
-18. [Accessibility (a11y)](#18-accessibility-a11y)
-19. [Architecture (Senior / Staff)](#19-architecture-senior--staff)
-20. [JavaScript Fundamentals](#20-javascript-fundamentals)
-21. [Machine Coding / Live Coding](#21-machine-coding--live-coding)
-22. [Behavioural & Experience](#22-behavioural--experience)
-23. [HTML & CSS Fundamentals](#23-html--css-fundamentals)
-24. [Browser Internals](#24-browser-internals)
-25. [Network & Data Fetching Fundamentals](#25-network--data-fetching-fundamentals)
-26. [Memory Leaks](#26-memory-leaks)
-27. [Web Workers, Service Workers & PWA](#27-web-workers-service-workers--pwa)
-28. [Practical Features](#28-practical-features)
-29. [Frontend System Design Case Studies](#29-frontend-system-design-case-studies)
+1. [React Fundamentals](#1-react-fundamentals) ⭐⭐⭐
+2. [Rendering & Reconciliation](#2-rendering--reconciliation) ⭐⭐⭐
+3. [Hooks](#3-hooks) ⭐⭐⭐
+4. [Class Components (Legacy)](#4-class-components-legacy) ⭐
+5. [Component Patterns](#5-component-patterns) ⭐⭐
+6. [State Management](#6-state-management) ⭐⭐⭐
+7. [Performance Optimization](#7-performance-optimization) ⭐⭐⭐
+8. [Concurrent React (React 18+)](#8-concurrent-react-react-18) ⭐⭐
+9. [React 19](#9-react-19) ⭐⭐
+10. [Rendering Strategies & SSR](#10-rendering-strategies--ssr) ⭐⭐
+11. [Routing](#11-routing) ⭐
+12. [Forms](#12-forms) ⭐
+13. [Error Handling & Resilience](#13-error-handling--resilience) ⭐⭐
+14. [Testing](#14-testing) ⭐⭐
+15. [Styling](#15-styling) ⭐
+16. [TypeScript with React](#16-typescript-with-react) ⭐⭐
+17. [Security](#17-security) ⭐
+18. [Accessibility (a11y)](#18-accessibility-a11y) ⭐
+19. [Architecture (Senior / Staff)](#19-architecture-senior--staff) ⭐⭐
+20. [JavaScript Fundamentals](#20-javascript-fundamentals) ⭐⭐⭐
+21. [Machine Coding / Live Coding](#21-machine-coding--live-coding) ⭐⭐⭐
+22. [Behavioural & Experience](#22-behavioural--experience) ⭐⭐⭐
+23. [HTML & CSS Fundamentals](#23-html--css-fundamentals) ⭐⭐
+24. [Browser Internals](#24-browser-internals) ⭐⭐
+25. [Network & Data Fetching Fundamentals](#25-network--data-fetching-fundamentals) ⭐⭐
+26. [Memory Leaks](#26-memory-leaks) ⭐⭐⭐
+27. [Web Workers, Service Workers & PWA](#27-web-workers-service-workers--pwa) ⭐
+28. [Practical Features](#28-practical-features) ⭐
+29. [Frontend System Design Case Studies](#29-frontend-system-design-case-studies) ⭐⭐
 
 **[Revision Cheat Sheet](#revision-cheat-sheet)**: one line per topic
 
@@ -98,7 +99,11 @@ event ──► setState ──► render (pure) ──► reconcile ──► c
 
 ## 1. React Fundamentals
 
+**Interview priority:** ⭐⭐⭐
+
 ### 1.1 What is React? Declarative vs Imperative, Library vs Framework
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 React is a **JavaScript library for building user interfaces** out of components. Its core idea: **UI = f(state)**. You describe *what* the UI should look like for a given state, and React works out *how* to update the DOM.
@@ -138,6 +143,8 @@ In jQuery, as the UI grows, many places change the DOM directly and the state is
 
 ### 1.2 JSX and What It Compiles To
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 JSX is **syntax sugar** for function calls that create plain JS objects called **React elements**. Browsers don't understand JSX; Babel/SWC/esbuild compile it.
 
@@ -172,6 +179,8 @@ Because the compiler uses case to decide: `<button>` becomes the string `'button
 
 ### 1.3 Components: Function vs Class
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 A component is a function (or class) that takes **props** and returns **React elements**.
 
@@ -204,6 +213,8 @@ No. Class components still work and get support. Migrate step by step: write new
 
 ### 1.4 Props vs State & One-Way Data Flow
 
+**Interview priority:** ⭐⭐⭐
+
 **Explanation**
 
 - **Props**: inputs passed from parent → child. **Read-only** in the child.
@@ -232,6 +243,8 @@ Lift the state up to the closest common parent, pass the value down to the sibli
 
 ### 1.5 Rendering Lists & Keys
 
+**Interview priority:** ⭐⭐⭐
+
 **Explanation**
 `key` tells React **which item is which** between renders, so it can reuse, reorder or remove the right DOM nodes and component state.
 
@@ -258,6 +271,8 @@ That's the classic index-as-key bug. `TodoRow` has local state (or an uncontroll
 ---
 
 ### 1.6 Conditional Rendering
+
+**Interview priority:** ⭐
 
 **Explanation**
 Use normal JS expressions: ternary, `&&`, early return, or an object map.
@@ -292,6 +307,8 @@ return icons[type] ?? null;
 
 ### 1.7 Fragments
 
+**Interview priority:** ⭐
+
 **Explanation**
 Fragments let you return several elements without adding an extra DOM node. That matters for CSS layouts (flex/grid) and valid HTML (`<tr>` inside `<tbody>`).
 
@@ -319,6 +336,8 @@ function Columns() {
 ---
 
 ### 1.8 Controlled vs Uncontrolled Components
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 
@@ -420,6 +439,8 @@ const refs = useRef([]);
 
 ### 1.9 Lifting State Up, Prop Drilling & Composition
 
+**Interview priority:** ⭐⭐⭐
+
 **Explanation**
 
 - **Lifting state up**: move state to the closest common parent of the components that need it.
@@ -507,6 +528,8 @@ Drilling through **1–2 levels is fine and normal**. It's only a problem when i
 ---
 
 ### 1.10 Synthetic Events & Event Handling
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 React wraps native events in a **SyntheticEvent**, which works the same in every browser (`e.preventDefault()`, `e.stopPropagation()`, `e.target`).
@@ -605,6 +628,8 @@ Benefits: one listener instead of thousands, and elements added later work autom
 
 ### 1.11 Pure Components & Keeping Render Pure
 
+**Interview priority:** ⭐
+
 **Explanation**
 A render must be a **pure function** of props + state + context:
 
@@ -651,7 +676,80 @@ function Grid({ rows }) {
 
 ---
 
-### 1.12 Interview Questions
+### 1.12 Component Lifecycle: Mount, Update, Unmount
+
+**Interview priority:** ⭐⭐⭐
+
+**Explanation**
+Every component is **born** (mount), **changes** (update) and is **removed** (unmount).
+
+| Phase | When it happens | Typical work |
+|---|---|---|
+| **1. Mount** | The component appears on screen for the first time | Fetch data, start timers, add event listeners |
+| **2. Update** | Its props, its state, or a context it uses changes, or its parent re-renders | Re-fetch when an ID changes, sync with outside systems |
+| **3. Unmount** | It is removed from the screen | **Clean up**: clear timers, remove listeners, cancel requests |
+
+**Function components: all three phases with `useEffect`**
+```jsx
+function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // MOUNT + UPDATE: runs after the first render, and again when userId changes
+    const ctrl = new AbortController();
+    fetch('/api/users/' + userId, { signal: ctrl.signal })
+      .then(r => r.json())
+      .then(setUser)
+      .catch(() => {});
+
+    // CLEANUP: runs before the next effect and on UNMOUNT
+    return () => ctrl.abort();
+  }, [userId]);
+
+  return <div>{user?.name}</div>;
+}
+```
+
+The dependency array decides when the effect runs:
+
+| You write | Runs |
+|---|---|
+| `useEffect(fn)` | After **every** render |
+| `useEffect(fn, [])` | Once, after **mount** (the cleanup runs on unmount) |
+| `useEffect(fn, [userId])` | After mount, and whenever `userId` changes |
+
+**Class components (legacy): a separate method per phase**
+
+| Phase | Class method | Hook equivalent |
+|---|---|---|
+| Mount | `constructor` | `useState(initial)` |
+| Mount | `componentDidMount` | `useEffect(fn, [])` |
+| Update | `shouldComponentUpdate` | `React.memo` |
+| Update | `componentDidUpdate` | `useEffect(fn, [deps])` |
+| Unmount | `componentWillUnmount` | Cleanup returned from `useEffect` |
+| Error | `componentDidCatch` | **None.** Error boundaries still need a class |
+
+See 4.1 for the full class version of `UserProfile` and the rarer lifecycle methods.
+
+**Order things run in**
+```
+Mount:   render → React updates the DOM → useLayoutEffect → browser paints → useEffect
+Update:  render → DOM update → old cleanup runs → new effect runs
+Unmount: cleanup runs → component removed
+```
+
+- **Children's effects run before their parent's.** The parent counts as "mounted" only after all its children have mounted.
+- **In StrictMode (development only)**, React mounts, unmounts and mounts again. That's why effects seem to run twice. It's deliberate, to catch missing cleanup (see 2.7).
+
+**Why hooks replaced lifecycle methods**
+In a class, **one feature is split across three methods**: start in `componentDidMount`, update in `componentDidUpdate`, stop in `componentWillUnmount`. With hooks, **one `useEffect` holds the whole feature**: start, re-sync and cleanup in one place. Custom hooks then let you reuse that feature in other components.
+
+**Say it in an interview:**
+> "A component mounts, updates and unmounts. In classes, those are separate methods like `componentDidMount`, `componentDidUpdate` and `componentWillUnmount`. With hooks, one `useEffect` covers all three: the effect runs after mount and when its dependencies change, and its cleanup runs before the next run and on unmount."
+
+---
+
+### 1.13 Interview Questions
 
 **Q1. What is React, and why would you use it?** ⭐
 React is a JavaScript library for building UIs from components. You describe what the UI should look like for a given state, and React updates the DOM to match. Its main benefits are reusable components, predictable one-way data flow and a very large ecosystem. It's a library rather than a framework, so routing and data fetching come from other tools or a framework like Next.js.
@@ -678,7 +776,11 @@ React can call render more than once, pause it or discard the result, especially
 
 ## 2. Rendering & Reconciliation
 
+**Interview priority:** ⭐⭐⭐
+
 ### 2.1 Virtual DOM & the Diffing Algorithm
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 The Virtual DOM is a lightweight **JS object tree** describing the UI. On every update:
@@ -742,6 +844,8 @@ So the VDOM is an **implementation choice**, not the source of speed.
 
 ### 2.2 Reconciliation Heuristics: Position, Type, Key
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 React identifies a component by **its type + its position in the tree (+ key)**. State is tied to that position, not to the component's variable name.
 
@@ -801,6 +905,8 @@ A common misconception: a change of identity doesn't cause a *re-render*, it cau
 
 ### 2.3 What Triggers a Re-render
 
+**Interview priority:** ⭐⭐⭐
+
 **Explanation**
 A component re-renders when:
 
@@ -847,6 +953,8 @@ If `Object.is(old, new)` is true, React **bails out** (skips the render). It may
 
 ### 2.4 Render Phase vs Commit Phase
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 
 | Render phase | Commit phase |
@@ -871,6 +979,8 @@ function Demo() {
 ---
 
 ### 2.5 React Fiber
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 Fiber (React 16) is the **rewrite of the reconciler**. Each component instance is a **fiber node**: a JS object with `type`, `props`, `stateNode`, `child`/`sibling`/`return` pointers, `memoizedState` (the hooks list), `lanes` (priority) and effect flags.
@@ -921,6 +1031,8 @@ const deferredQuery = useDeferredValue(query);   // lags behind `query` while Re
 ---
 
 ### 2.6 Batching (Automatic Batching in React 18)
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 **Batching** means React **collects several state updates** and does **one re-render** for all of them, instead of one render per `setState`.
@@ -1018,6 +1130,8 @@ Fix: compute the value first and use the variable: `const next = count + 1; setC
 
 ### 2.7 StrictMode
 
+**Interview priority:** ⭐
+
 **Explanation**
 `<React.StrictMode>` is a **development-only** tool that surfaces bugs early:
 
@@ -1071,7 +1185,11 @@ StrictMode mounts, unmounts and remounts components in development to reveal mis
 
 ## 3. Hooks
 
+**Interview priority:** ⭐⭐⭐
+
 ### 3.1 `useState`
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 `const [state, setState] = useState(initial)` adds local state. Key points:
@@ -1109,6 +1227,8 @@ React sees the same array reference and skips the render. Fix: `setTodos([...tod
 ---
 
 ### 3.2 `useEffect`
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 `useEffect` **syncs your component with an external system** (network, subscriptions, timers, DOM APIs, analytics) **after** React paints.
@@ -1220,6 +1340,8 @@ useEffect(() => { (async () => { ... })(); }, []);
 
 ### 3.3 "You Might Not Need an Effect"
 
+**Interview priority:** ⭐
+
 **Explanation**
 Effects are for syncing with **external** systems. Many effects in real code shouldn't be effects at all:
 
@@ -1252,6 +1374,8 @@ Point out that each one adds an extra render and can get out of sync. Replace th
 
 ### 3.4 `useLayoutEffect` vs `useEffect`
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 
 - `useEffect`: runs **after paint**, without blocking it. Use it for most side effects.
@@ -1280,6 +1404,8 @@ function Tooltip({ targetRect, children }) {
 ---
 
 ### 3.5 `useRef`
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 `useRef(initial)` returns a **mutable object `{ current }`** that persists for the component's lifetime. **Changing `.current` does not re-render.**
@@ -1329,6 +1455,8 @@ function usePrevious(value) {
 
 ### 3.6 `useReducer`
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 `const [state, dispatch] = useReducer(reducer, initialState)`. It puts state transitions in one **pure function**.
 
@@ -1369,6 +1497,8 @@ Separate booleans (`isLoading`, `isError`) allow combinations that should be imp
 ---
 
 ### 3.7 `useContext`
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 Context passes data deep down the tree **without prop drilling**. Good for app-wide values that change rarely: theme, locale, auth user, feature flags.
@@ -1472,6 +1602,8 @@ function IncrementButton() {
 ---
 
 ### 3.8 `useMemo` & `useCallback`
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 
@@ -1599,6 +1731,8 @@ No. If the child isn't memoised, a stable function reference doesn't help, and y
 
 ### 3.9 Other Built-in Hooks
 
+**Interview priority:** ⭐
+
 **`useId`**: generates unique IDs that match between server and client (for accessibility attributes). Don't use it for list keys.
 ```jsx
 function Field({ label }) {
@@ -1642,6 +1776,8 @@ function useOnlineStatus() {
 
 ### 3.10 Rules of Hooks (and Why)
 
+**Interview priority:** ⭐⭐⭐
+
 **Explanation**
 
 1. Call hooks **only at the top level**: never inside conditions, loops, nested functions or after an early return.
@@ -1681,6 +1817,8 @@ function Profile({ userId }) {
 
 ### 3.11 Stale Closures
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 Each render creates new functions that **capture the props/state of that render**. If a function is created once (an effect with `[]`, a `setInterval` callback, an event listener) and runs later, it sees **old values**.
 
@@ -1716,6 +1854,8 @@ function useLatest(value) {
 ---
 
 ### 3.12 Custom Hooks
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 A custom hook is a **function starting with `use`** that calls other hooks. It shares **stateful logic**, not state: every component that calls it gets its own copy of the state.
@@ -1811,10 +1951,14 @@ When several state values change together, the next state depends on complex log
 
 ## 4. Class Components (Legacy)
 
+**Interview priority:** ⭐
+
 ### 4.1 Lifecycle Methods & Hook Equivalents
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
-Class components go through three phases: **Mounting → Updating → Unmounting**, plus error handling.
+Class components go through three phases: **Mounting → Updating → Unmounting**, plus error handling. For the phases explained with hooks, and the order effects run in, see 1.12.
 
 | Phase | Method | Hook equivalent |
 |---|---|---|
@@ -1871,6 +2015,8 @@ function UserProfile({ userId }) {
 
 ### 4.2 `setState` Behaviour
 
+**Interview priority:** ⭐
+
 **Explanation**
 
 - `this.setState(partial)` **merges** shallowly with the current state (unlike `useState`, which **replaces** it).
@@ -1908,6 +2054,8 @@ class Btn extends React.Component {
 
 ### 4.3 `PureComponent` & `shouldComponentUpdate`
 
+**Interview priority:** ⭐
+
 **Explanation**
 
 - `shouldComponentUpdate(nextProps, nextState)` returns `false` to skip a render.
@@ -1939,6 +2087,8 @@ Note that the two custom-comparison functions return opposite things, which inte
 ---
 
 ### 4.4 Error Boundaries (still class-only)
+
+**Interview priority:** ⭐⭐
 
 See [Section 13.1](#131-error-boundaries) for full details. In short: a class with `static getDerivedStateFromError` (to render a fallback) and/or `componentDidCatch` (to log). There's no hook equivalent; use the `react-error-boundary` package to wrap one.
 
@@ -1990,7 +2140,11 @@ They rely on `getDerivedStateFromError` and `componentDidCatch`, and React has n
 
 ## 5. Component Patterns
 
+**Interview priority:** ⭐⭐
+
 ### 5.1 Higher-Order Components (HOC)
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 A HOC is a **function that takes a component and returns a new component** with extra behaviour. It was popular before hooks (Redux `connect`, `withRouter`).
@@ -2023,6 +2177,8 @@ const Dashboard = withAuth(DashboardPage);
 
 ### 5.2 Render Props
 
+**Interview priority:** ⭐
+
 **Explanation**
 A component takes a **function as a prop** (often `children`) and calls it with its internal state, so the **caller decides what to render**.
 
@@ -2048,6 +2204,8 @@ Today most render-prop components are replaced by a hook (`useMousePosition()`),
 ---
 
 ### 5.3 Compound Components
+
+**Interview priority:** ⭐
 
 **Explanation**
 A group of components that **work together and share state through Context**, giving a flexible, declarative API. Examples: `<select>`/`<option>`, Radix UI, Headless UI, Reach.
@@ -2096,6 +2254,8 @@ That's "prop explosion". Refactor to compound components so consumers put the pi
 
 ### 5.4 Container vs Presentational
 
+**Interview priority:** ⭐
+
 **Explanation**
 
 - **Presentational**: how things *look*. Get data via props, no data fetching, easy to test and use in Storybook.
@@ -2123,6 +2283,8 @@ function UserCardContainer({ id }) {
 ---
 
 ### 5.5 Controlled Component Pattern & Prop Getters
+
+**Interview priority:** Rarely asked
 
 **Explanation**
 Reusable components often support **both controlled and uncontrolled** use, like native inputs do: if the parent passes `value`, it's controlled; otherwise the component manages its own state.
@@ -2168,6 +2330,8 @@ function useToggle() {
 
 ### 5.6 Portals
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 `createPortal(children, domNode)` renders children **into a different DOM node** (usually `document.body`) while keeping them **in the same place in the React tree**.
 
@@ -2207,6 +2371,8 @@ function Modal({ open, onClose, children }) {
 
 ### 5.7 Refs to Components: `forwardRef` (and React 19)
 
+**Interview priority:** ⭐
+
 **Explanation**
 By default you can't attach a `ref` to a function component. To expose an inner DOM node:
 
@@ -2236,6 +2402,8 @@ Combine with `useImperativeHandle` to expose a limited API ([3.9](#39-other-buil
 ---
 
 ### 5.8 Composition vs Inheritance
+
+**Interview priority:** ⭐
 
 **Explanation**
 React recommends **composition** (props, `children`, slots) over class inheritance. The React team says they haven't found any use case where an inheritance hierarchy would be better.
@@ -2289,7 +2457,11 @@ The idea of separating logic from UI still is, but custom Hooks usually replace 
 
 ## 6. State Management
 
+**Interview priority:** ⭐⭐⭐
+
 ### 6.1 Types of State: Local, Global, Server, URL, Form
+
+**Interview priority:** ⭐
 
 **Explanation**
 Most "state management" problems come from treating every kind of state the same way. Sort it first:
@@ -2303,14 +2475,114 @@ Most "state management" problems come from treating every kind of state the same
 | **Form** | field values, validation, dirty | React Hook Form |
 | **Derived** | totals, filtered list | compute during render / `useMemo` |
 
+**Each type in more detail**
+
+1. **Local UI state**
+    - Belongs to one component (or a parent and a few children).
+    - Disappears when the component unmounts.
+    - Examples: dropdown open, active accordion item, input text before submit.
+    - Tool: `useState`; `useReducer` when several values change together.
+
+2. **Shared client (global) state**
+    - Created in the browser and needed by components far apart in the tree.
+    - Examples: logged-in user, theme, cart badge in the header + cart page.
+    - Tool: Context for rarely changing values; Zustand / Redux for frequently changing values (selectors avoid extra re-renders).
+    - Can be persisted to `localStorage` (cart, theme) so it survives a refresh.
+
+3. **Server state**
+    - **Owned by the backend**. The client only holds a **cached copy** that can go stale.
+    - Needs things client state doesn't: loading/error, caching, de-duplication, background refetch, retries, invalidation after mutations, pagination.
+    - Tool: React Query / SWR / RTK Query. Writing this by hand with `useEffect` + `useState` is the most common source of bugs.
+
+4. **URL state**
+    - Lives in the address bar: path params (`/products/42`) and search params (`?category=shoes&page=2`).
+    - **Survives refresh**, can be **shared as a link**, and works with the **back button**.
+    - Tool: `useSearchParams` / router params. Use it for filters, sort, pagination, selected tab.
+
+5. **Form state**
+    - Field values plus metadata: touched, dirty, errors, submitting.
+    - Small forms: `useState`. Large or dynamic forms: React Hook Form (uncontrolled inputs, fewer re-renders) + Zod for validation.
+
+6. **Derived state**
+    - Anything you can **calculate** from other state or props: totals, counts, filtered/sorted lists, `isValid`.
+    - **Don't store it.** Compute it during render (`useMemo` only if expensive). Storing it means keeping two copies in sync, which eventually breaks.
+
+**Comparison**
+
+| Type | Owned by | Lifetime | Shared? | Survives refresh? |
+|---|---|---|---|---|
+| Local UI | One component | Until unmount | No | No |
+| Shared client | The app (store / context) | Until page reload | Yes | Only if persisted |
+| Server | The backend | Cached; refetched when stale | Yes (via cache) | Refetched |
+| URL | The address bar | As long as the URL | Yes, even across users (links) | Yes |
+| Form | The form | Until submit / reset | Usually no | No (unless saved as a draft) |
+| Derived | Nobody (calculated) | Every render | Follows its source | Follows its source |
+
+**One page, every type of state**
+```jsx
+function ProductsPage() {
+  // URL state: ?category=shoes survives refresh and can be shared
+  const [searchParams, setSearchParams] = useSearchParams();
+  const category = searchParams.get('category') ?? 'all';
+
+  // Server state: React Query caches, de-dupes and refetches it
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ['products', category],
+    queryFn: () => fetchProducts(category),
+  });
+
+  // Shared client state: the header cart badge reads the same store
+  const addToCart = useCartStore(s => s.addItem);
+
+  // Local UI state: only this page cares if the filter panel is open
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  // Derived state: calculated, never stored
+  const inStock = products.filter(p => p.stock > 0);
+
+  if (isLoading) return <Spinner />;
+  return (
+    <>
+      <button onClick={() => setIsFilterOpen(o => !o)}>Filters</button>
+      {isFilterOpen && <CategoryFilter value={category} onChange={c => setSearchParams({ category: c })} />}
+      <p>{inStock.length} products in stock</p>
+      {inStock.map(p => <ProductCard key={p.id} product={p} onAdd={() => addToCart(p)} />)}
+    </>
+  );
+}
+```
+
+**How to decide where a piece of state goes**
+
+1. Does it come from the server? → **Server state** tool.
+2. Should it survive a refresh or be shareable as a link? → **URL**.
+3. Can it be calculated from something else? → **Derive it**, don't store it.
+4. Is it form input? → **Form state** (local state or a form library).
+5. Do distant components need it? → **Shared client state**.
+6. Otherwise → **Local state** in the lowest component that needs it.
+
+**Common mistakes**
+
+- Storing API data in Redux with manual `loading` / `error` flags (see the scenario below).
+- Keeping filters or pagination in `useState`: lost on refresh, can't share the link, back button doesn't work.
+- Copying props into state (`useState(props.user)`): the copy goes stale when the prop changes.
+- Storing derived values (`total`, `filteredList`) next to their source, then forgetting to update them.
+- Making everything global: more re-renders and harder to track who changed what.
+- Keeping the same data in two places (e.g. the selected item object instead of its `id`).
+
 **Scenario:** *"Our Redux store is 80% API responses with manual `loading` / `error` flags."*
 That's server state handled as client state. Move it to React Query or RTK Query, which give you caching, de-duplication, background refetching and invalidation. Redux then shrinks to the real client state.
 
 **Tip:** "Keep state as local as possible, and lift it only when needed." Also: **don't store derived data** in state.
 
+**Say it in an interview:**
+> "I first classify state: local UI, shared client, server, URL, form, or derived. Server state goes in React Query because it's a cache of backend data. Filters and pagination go in the URL so they survive refresh and can be shared. Derived values are computed, not stored. Only truly shared client state goes in Context or a store, and everything else stays local."
+
 ---
 
 ### 6.2 Context API & Its Limits
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 Context is a **way to pass values down (dependency injection), not a state manager**. It has no selectors, so **every consumer re-renders when the value changes**.
@@ -2341,71 +2613,374 @@ Context is enough for values that **change rarely** and are read widely (theme, 
 
 ### 6.3 Redux & Redux Toolkit
 
+**Interview priority:** ⭐⭐⭐
+
 **Explanation**
-Redux = **single store**, state changed only by **dispatching actions** to **pure reducers**. Predictable, can be debugged with time travel, has middleware.
 
-**Redux Toolkit (RTK)** is the official, recommended way to write Redux:
+**What Redux is**
+Redux keeps your app's **global client state** (cart, logged-in user, UI settings) in **one store**, outside the component tree. Components **read** from the store with selectors and **change** it only by **dispatching actions**. Because every change goes through the same path, state is predictable and easy to debug (Redux DevTools can even replay changes: "time travel").
 
-- `configureStore`: sets up devtools and thunk middleware.
-- `createSlice`: generates action creators and reducers, and uses **Immer** so you can write "mutating" code safely.
-- `createAsyncThunk`: async flows.
-- **RTK Query**: built-in data fetching and caching.
+**The 5 building blocks**
 
-```jsx
-// cartSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+| Piece | What it is | In the cart example below |
+|---|---|---|
+| **Store** | The one object that holds all global state | `store.js` |
+| **Action** | A plain object describing **what happened** | `{ type: 'cart/addItem', payload: product }` |
+| **Reducer** | A **pure** function: `(state, action) => newState` | `addItem` inside `cartSlice` |
+| **Dispatch** | The **only** way to send an action to the store | `dispatch(addItem(product))` |
+| **Selector** | A function that reads one piece of state | `selectCartCount` |
 
-export const fetchCart = createAsyncThunk('cart/fetch', async () => (await fetch('/api/cart')).json());
+**Reducers must be pure**
+
+- **Same input, same output**: no `Math.random()` or `Date.now()` inside.
+- **No side effects**: no API calls, `localStorage` or timers. Those go in **thunks** (see `fetchCart` below).
+- **Never mutate**: return new state instead of changing the old object.
+
+Why: `useSelector` detects changes by comparing references (`===`). If a reducer mutates, the reference stays the same, Redux thinks nothing changed, and the UI doesn't update.
+
+**How data flows in Redux**
+```
+Component ──dispatch(action)──▶ Store ──(current state, action)──▶ Reducer
+    ▲                                                                │
+    └──── useSelector reads the new value ◀──── new state ◀──────────┘
+```
+
+1. A component **dispatches an action**: a plain object like `{ type: 'cart/addItem', payload: product }`.
+2. The store passes the **current state + action** to the **reducer**.
+3. The reducer returns the **new state** (it never changes the old one).
+4. Every `useSelector` checks its value again; components whose value changed **re-render**.
+
+**Redux Toolkit (RTK): the modern way to write Redux**
+Classic Redux needed a lot of hand-written code (action types, action creators, switch-case reducers, copying state by hand). RTK is the official, recommended way and removes that:
+
+- `configureStore`: creates the store with DevTools and the thunk middleware already set up.
+- `createSlice`: you write the reducers; it **generates the action creators** from their names (`addItem` → `{ type: 'cart/addItem' }`). It uses **Immer**, so "mutating" code like `state.items.push(x)` safely produces a new state.
+- `createAsyncThunk`: async work (API calls) that dispatches `pending` / `fulfilled` / `rejected` actions for you.
+- **RTK Query**: built-in data fetching and caching for server state (like React Query, see 6.5).
+
+**Two packages, two jobs**
+
+| Package | Job | What you use from it |
+|---|---|---|
+| `@reduxjs/toolkit` | Redux itself: the store and the state logic (works without React) | `configureStore`, `createSlice`, `createAsyncThunk`, `createSelector` |
+| `react-redux` | Connects the store to React components | `Provider`, `useSelector`, `useDispatch` |
+
+`<Provider store={store}>` puts the store into React Context. `useSelector` reads the store from that context, runs your selector on the current state, and subscribes to the store so the component re-renders **only when its selected value changes**. Both packages come from the Redux team, not the React team.
+
+Install: `npm install @reduxjs/toolkit react-redux`
+
+**Complete example: a shopping cart**
+
+Folder structure:
+```
+src/
+├── main.jsx               ← wraps the app in <Provider>
+├── App.jsx                ← loads the cart on mount
+├── store/
+│   ├── store.js           ← creates the store
+│   └── cartSlice.js       ← state, reducers, actions, thunk, selectors
+└── components/
+    ├── CartBadge.jsx      ← reads the item count
+    ├── ProductCard.jsx    ← dispatches addItem
+    └── CartPage.jsx       ← reads items, dispatches removeItem / clearCart
+```
+
+**1. `store/cartSlice.js`: everything about the cart lives here**
+```js
+import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
+
+// Async action (thunk): load the saved cart from the server
+export const fetchCart = createAsyncThunk('cart/fetchCart', async () => {
+  const res = await fetch('/api/cart');
+  if (!res.ok) throw new Error('Could not load cart');   // → fetchCart.rejected
+  return res.json();                                      // → fetchCart.fulfilled (becomes action.payload)
+});
 
 const cartSlice = createSlice({
   name: 'cart',
-  initialState: { items: [], status: 'idle' },
+  initialState: {
+    items: [],          // [{ id, name, price, qty }]
+    status: 'idle',     // 'idle' | 'loading' | 'failed'
+    error: null,
+  },
   reducers: {
-    addItem(state, action) {                  // Immer: looks mutating, is immutable
+    // dispatch(addItem(product)) → { type: 'cart/addItem', payload: product }
+    addItem(state, action) {
       const existing = state.items.find(i => i.id === action.payload.id);
-      if (existing) existing.qty += 1;
+      if (existing) existing.qty += 1;                    // Immer: looks mutating, is immutable
       else state.items.push({ ...action.payload, qty: 1 });
     },
+    // dispatch(removeItem(id)) → { type: 'cart/removeItem', payload: id }
     removeItem(state, action) {
       state.items = state.items.filter(i => i.id !== action.payload);
     },
+    // dispatch(clearCart()) → { type: 'cart/clearCart' }
+    clearCart(state) {
+      state.items = [];
+    },
   },
+  // Handle the 3 actions that createAsyncThunk generates
   extraReducers: builder => {
     builder
-      .addCase(fetchCart.pending, s => { s.status = 'loading'; })
-      .addCase(fetchCart.fulfilled, (s, a) => { s.status = 'idle'; s.items = a.payload; });
+      .addCase(fetchCart.pending, state => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(fetchCart.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.items = action.payload;
+      })
+      .addCase(fetchCart.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      });
   },
 });
-export const { addItem, removeItem } = cartSlice.actions;
+
+// Action creators, generated from the reducer names
+export const { addItem, removeItem, clearCart } = cartSlice.actions;
+
+// The reducer, given to the store
 export default cartSlice.reducer;
 
-// store.js
-export const store = configureStore({ reducer: { cart: cartReducer } });
+// Selectors: how components read cart state
+export const selectCartItems = state => state.cart.items;
+export const selectCartStatus = state => state.cart.status;
+export const selectCartError = state => state.cart.error;
+export const selectCartCount = state => state.cart.items.reduce((n, i) => n + i.qty, 0);
+export const selectCartTotal = state => state.cart.items.reduce((sum, i) => sum + i.price * i.qty, 0);
+// The selectors above return existing state or a number, so plain functions are enough.
 
-// Component
-function CartCount() {
-  const count = useSelector(s => s.cart.items.reduce((n, i) => n + i.qty, 0));  // re-renders only when count changes
-  return <span>{count}</span>;
-}
-function AddButton({ product }) {
+// filter() returns a NEW array every time, so this one needs createSelector:
+// it re-runs the filter only when state.cart.items changes, otherwise returns the same array
+export const selectExpensiveItems = createSelector(
+  [selectCartItems],                         // input: the items array
+  items => items.filter(i => i.price > 100)  // output: recalculated only when items change
+);
+```
+
+**2. `store/store.js`: create the store**
+```js
+import { configureStore } from '@reduxjs/toolkit';
+import cartReducer from './cartSlice';
+
+// configureStore also adds Redux DevTools and the thunk middleware
+export const store = configureStore({
+  reducer: {
+    cart: cartReducer,   // state.cart is managed by cartReducer
+  },
+});
+```
+
+**3. `main.jsx`: connect Redux to React**
+```jsx
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+import App from './App';
+
+// Provider makes the store available to every component below it
+createRoot(document.getElementById('root')).render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+```
+
+**4. `App.jsx`: load the cart when the app starts**
+```jsx
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchCart } from './store/cartSlice';
+import CartBadge from './components/CartBadge';
+import ProductCard from './components/ProductCard';
+import CartPage from './components/CartPage';
+
+const products = [
+  { id: 1, name: 'Keyboard', price: 50 },
+  { id: 2, name: 'Mouse', price: 20 },
+];
+
+export default function App() {
   const dispatch = useDispatch();
-  return <button onClick={() => dispatch(addItem(product))}>Add</button>;
+
+  useEffect(() => {
+    dispatch(fetchCart());   // runs the thunk once, on mount
+  }, [dispatch]);
+
+  return (
+    <>
+      <header><CartBadge /></header>
+      {products.map(p => <ProductCard key={p.id} product={p} />)}
+      <CartPage />
+    </>
+  );
 }
 ```
 
-**Selectors & memoisation:** `useSelector` re-renders when the returned value changes (`===`). Returning a new array or object every time (`s.items.filter(...)`) causes re-renders on *every* store update. Use `createSelector` (Reselect) to memoise.
+**5. `components/CartBadge.jsx`: read from the store**
+```jsx
+import { useSelector } from 'react-redux';
+import { selectCartCount } from '../store/cartSlice';
+
+export default function CartBadge() {
+  const count = useSelector(selectCartCount);   // re-renders only when the count changes
+  return <span>Cart ({count})</span>;
+}
+```
+
+**6. `components/ProductCard.jsx`: write to the store**
+```jsx
+import { useDispatch } from 'react-redux';
+import { addItem } from '../store/cartSlice';
+
+export default function ProductCard({ product }) {
+  const dispatch = useDispatch();
+  return (
+    <div>
+      <h3>{product.name}</h3>
+      <p>Price: {product.price}</p>
+      <button onClick={() => dispatch(addItem(product))}>Add to cart</button>
+    </div>
+  );
+}
+```
+
+**7. `components/CartPage.jsx`: read and write, with loading and error states**
+```jsx
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  removeItem, clearCart,
+  selectCartItems, selectCartStatus, selectCartError, selectCartTotal,
+} from '../store/cartSlice';
+
+export default function CartPage() {
+  const items = useSelector(selectCartItems);
+  const status = useSelector(selectCartStatus);
+  const error = useSelector(selectCartError);
+  const total = useSelector(selectCartTotal);
+  const dispatch = useDispatch();
+
+  if (status === 'loading') return <p>Loading cart...</p>;
+  if (status === 'failed') return <p>Error: {error}</p>;
+  if (items.length === 0) return <p>Your cart is empty</p>;
+
+  return (
+    <section>
+      <ul>
+        {items.map(item => (
+          <li key={item.id}>
+            {item.name} × {item.qty}
+            <button onClick={() => dispatch(removeItem(item.id))}>Remove</button>
+          </li>
+        ))}
+      </ul>
+      <p>Total: {total}</p>
+      <button onClick={() => dispatch(clearCart())}>Clear cart</button>
+    </section>
+  );
+}
+```
+
+**What happens when you click "Add to cart"**
+
+1. `ProductCard` calls `dispatch(addItem(product))`.
+2. `addItem(product)` creates the action `{ type: 'cart/addItem', payload: product }`.
+3. The store runs the cart reducer with the current state and that action. The `addItem` reducer adds the product or increases its `qty`.
+4. Immer turns the "mutation" into a **new state object**.
+5. Every `useSelector` runs again:
+    - `CartBadge`: the count changed → re-renders.
+    - `CartPage`: `items` and `total` changed → re-renders.
+    - `ProductCard` doesn't use `useSelector` → doesn't re-render because of the store.
+
+**What happens when the app loads (the thunk)**
+
+1. `App`'s effect runs `dispatch(fetchCart())`.
+2. RTK dispatches `fetchCart.pending` → `status = 'loading'` → `CartPage` shows "Loading cart...".
+3. The request succeeds → `fetchCart.fulfilled` with the data as `payload` → `items` saved, `status = 'idle'`.
+4. Or the request fails → `fetchCart.rejected` → `status = 'failed'`, `error` saved → `CartPage` shows the error.
+
+**Selectors & memoisation**
+`useSelector` runs the selector after **every** store update and re-renders only if the result changed (`===`). So a selector is fine as a plain function when it returns **existing state** or a **primitive**, and needs `createSelector` when it **creates a new array or object**:
+
+| Selector in `cartSlice.js` | Returns | Same result if nothing changed? | Needs `createSelector`? |
+|---|---|---|---|
+| `selectCartItems` | The array already in the store | ✅ Same reference | No |
+| `selectCartStatus`, `selectCartError` | A string | ✅ `'idle' === 'idle'` | No |
+| `selectCartCount`, `selectCartTotal` | A number | ✅ `5 === 5` | No |
+| `selectExpensiveItems` | A **new** array from `filter()` | ❌ `[] !== []` | **Yes** |
 
 ```js
-const selectVisible = createSelector([s => s.todos, s => s.filter], (todos, f) => todos.filter(t => f === 'all' || t.status === f));
+// ❌ Plain function: a new array on every store update, so the component re-renders
+//    even when only cart.status changed
+const selectExpensiveItems = state => state.cart.items.filter(i => i.price > 100);
+
+// ✅ createSelector remembers the last input and output:
+//    same items array in → same filtered array out (no re-render)
+const selectExpensiveItems = createSelector(
+  [selectCartItems],
+  items => items.filter(i => i.price > 100)
+);
 ```
 
-**Middleware:** functions that sit between dispatch and the reducer (logging, analytics, async). Thunks let you dispatch functions; **sagas** (generators) and **observables** (RxJS) handle complex async flows.
+Also use `createSelector` for `.map(...)`, for returning objects like `{ count, total }`, and for slow calculations over large lists.
+
+**Middleware and async**
+Middleware sits **between `dispatch` and the reducer** (logging, analytics, async). **Sagas** (generators) and **observables** (RxJS) handle very complex async flows but are rare in new code. The common one is the **thunk** middleware.
+
+**Thunks: how async works in Redux**
+A **thunk** is a **function you dispatch instead of an action object**. Reducers must be pure, so API calls can't go there; a thunk does the async work, then dispatches normal actions with the result.
+
+```js
+const fetchUser = id =>                 // thunk action creator: takes your arguments
+  async dispatch => {                   // the thunk: Redux calls this and passes dispatch in
+    const user = await fetch('/api/users/' + id).then(r => r.json());
+    dispatch({ type: 'user/loaded', payload: user });   // a normal action object
+  };
+
+dispatch(fetchUser(42));
+```
+
+- `fetchUser` is a **thunk action creator**; the function it **returns** is the **thunk**. (Same idea as `addItem(product)` returning an action object.)
+- `dispatch(fetchUser(42))` is really two steps: `fetchUser(42)` runs first and **returns the thunk** (nothing is fetched yet), then the thunk is passed to `dispatch`.
+
+`dispatch` appears twice, with two different jobs. The thunk middleware checks what it was given:
+
+```js
+// inside redux-thunk (simplified)
+if (typeof action === 'function') return action(dispatch, getState);   // a function → call it, passing dispatch in
+return next(action);                                                    // an object → send it to the reducer
+```
+
+| | What's passed to `dispatch` | What happens |
+|---|---|---|
+| **1st:** `dispatch(thunk)` in the component | A **function** | The middleware **calls** it and passes `dispatch` in |
+| **2nd:** `dispatch({...})` inside the thunk | An **object** | It goes to the **reducer**; state updates |
+
+```
+dispatch(fetchUser(42))
+   ├─ fetchUser(42) → returns the thunk
+   └─ dispatch(thunk) → middleware: "a function" → calls thunk(dispatch)
+                                                       │
+                          thunk: await fetch(...)  ◀───┘
+                                 │
+                          dispatch({ type: 'user/loaded', payload: user })
+                                 │
+                          middleware: "an object" → reducer → new state → UI updates
+```
+
+In Redux Toolkit you rarely write this by hand: `createAsyncThunk` (like `fetchCart` above) builds the thunk for you and dispatches `pending` → `fulfilled` / `rejected` automatically, and `configureStore` already includes the thunk middleware.
 
 **Scenario:** *"When would you pick Redux in 2026?"* Large apps with complex client state shared across many features, many developers who benefit from a strict structure, the need for time-travel debugging or undo/redo, or an existing Redux codebase. For simpler needs, Zustand is lighter.
+
+**Say it in an interview:**
+> "Redux keeps global client state in one store. Components dispatch actions, pure reducers return the new state, and `useSelector` re-renders only the components whose selected value changed. I write it with Redux Toolkit: `createSlice` generates actions and uses Immer, `createAsyncThunk` handles API calls, and `react-redux` connects it to React through `Provider`, `useSelector` and `useDispatch`."
 
 ---
 
 ### 6.4 Zustand, Jotai, Recoil, MobX
+
+**Interview priority:** ⭐
 
 **Explanation**
 
@@ -2448,6 +3023,8 @@ React Query for server state plus Zustand for the small amount of global client 
 
 ### 6.5 React Query / SWR (Server State)
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 Server state is different from client state: **someone else owns it**, it can get **out of date**, it's shared across components, and it needs caching, retries and de-duplication.
 
@@ -2463,45 +3040,273 @@ React Query (TanStack Query) gives you:
 
 Key concepts: `staleTime` (how long data counts as fresh, default 0) vs `gcTime` (how long unused data stays in the cache, default 5 min).
 
+**How data flows in React Query**
+```
+READ:   Component ── useQuery(['todos']) ──▶ Cache ── empty or stale? ──▶ queryFn ──▶ Server
+            ▲                                  │                                       │
+            └──────── cached data ◀────────────┴──────── save response ◀───────────────┘
+
+WRITE:  Component ── mutate(data) ──▶ mutationFn ──▶ Server
+                                         │
+                                         └─ done ──▶ invalidateQueries(['todos']) ──▶ READ runs again
+```
+
+- **Queries** (`useQuery`) **read** data and cache it under a **query key**.
+- **Mutations** (`useMutation`) **change** data on the server, then tell the cache which keys are now out of date.
+
+**Complete example: a todo list**
+
+Install: `npm install @tanstack/react-query`
+
+Folder structure:
+```
+src/
+├── main.jsx               ← creates the QueryClient (the cache) and wraps the app
+├── App.jsx
+├── api/
+│   └── todos.js           ← plain fetch functions, no React
+├── hooks/
+│   └── useTodos.js        ← useTodos (read), useAddTodo and useDeleteTodo (write)
+└── components/
+    ├── TodoCount.jsx      ← reads the same cache as TodoList
+    ├── AddTodoForm.jsx    ← adds a todo (optimistic update)
+    └── TodoList.jsx       ← shows todos, deletes a todo
+```
+
+**1. `api/todos.js`: talk to the server**
+```js
+const BASE = '/api/todos';
+
+export async function fetchTodos() {
+  const res = await fetch(BASE);
+  if (!res.ok) throw new Error('Failed to load todos');   // throwing = React Query marks the query as an error
+  return res.json();                                       // [{ id, title, done }]
+}
+
+export async function createTodo(newTodo) {
+  const res = await fetch(BASE, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newTodo),
+  });
+  if (!res.ok) throw new Error('Failed to add todo');
+  return res.json();
+}
+
+export async function deleteTodo(id) {
+  const res = await fetch(BASE + '/' + id, { method: 'DELETE' });
+  if (!res.ok) throw new Error('Failed to delete todo');
+}
+```
+
+**2. `main.jsx`: create the cache and share it with the app**
 ```jsx
-function useTodos() {
+import { createRoot } from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import App from './App';
+
+// One QueryClient = one cache for the whole app
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { retry: 2 },   // retry failed requests twice before showing an error
+  },
+});
+
+// QueryClientProvider makes the cache available to every component (like Redux's Provider)
+createRoot(document.getElementById('root')).render(
+  <QueryClientProvider client={queryClient}>
+    <App />
+  </QueryClientProvider>
+);
+```
+
+**3. `hooks/useTodos.js`: all todo queries and mutations in one place**
+```js
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { fetchTodos, createTodo, deleteTodo } from '../api/todos';
+
+const TODOS_KEY = ['todos'];   // the cache key, shared by every hook below
+
+// READ: fetch and cache the list
+export function useTodos() {
   return useQuery({
-    queryKey: ['todos'],
-    queryFn: () => fetch('/api/todos').then(r => r.json()),
-    staleTime: 30_000,
+    queryKey: TODOS_KEY,
+    queryFn: fetchTodos,
+    staleTime: 30_000,   // data counts as fresh for 30s: no refetch on mount or tab focus during that time
   });
 }
 
-function useAddTodo() {
-  const qc = useQueryClient();
+// WRITE: add a todo, with an optimistic update
+export function useAddTodo() {
+  const queryClient = useQueryClient();   // the QueryClient from main.jsx
+
   return useMutation({
-    mutationFn: newTodo => fetch('/api/todos', { method: 'POST', body: JSON.stringify(newTodo) }).then(r => r.json()),
+    mutationFn: createTodo,
 
-    // Optimistic update
+    // 1. Before the request: update the cache immediately, so the UI updates instantly
     onMutate: async newTodo => {
-      await qc.cancelQueries({ queryKey: ['todos'] });
-      const previous = qc.getQueryData(['todos']);
-      qc.setQueryData(['todos'], old => [...old, { ...newTodo, id: 'temp' }]);
-      return { previous };
+      await queryClient.cancelQueries({ queryKey: TODOS_KEY });   // stop a running refetch from overwriting our change
+      const previous = queryClient.getQueryData(TODOS_KEY);       // snapshot, for rollback
+      queryClient.setQueryData(TODOS_KEY, old => [
+        ...(old ?? []),
+        { ...newTodo, id: 'temp-' + Date.now(), done: false },
+      ]);
+      return { previous };                                         // becomes `context` in onError
     },
-    onError: (_err, _vars, ctx) => qc.setQueryData(['todos'], ctx.previous),   // rollback
-    onSettled: () => qc.invalidateQueries({ queryKey: ['todos'] }),              // resync
+
+    // 2. Request failed: put the snapshot back
+    onError: (_error, _newTodo, context) => {
+      queryClient.setQueryData(TODOS_KEY, context.previous);
+    },
+
+    // 3. Success or failure: refetch, so the cache matches the server (real id instead of 'temp-...')
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: TODOS_KEY });
+    },
   });
 }
 
-function Todos() {
-  const { data, isPending, error } = useTodos();
-  const add = useAddTodo();
-  if (isPending) return <Spinner />;
-  if (error) return <p>Error: {error.message}</p>;
+// WRITE: delete a todo, the simple way (no optimistic update)
+export function useDeleteTodo() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteTodo,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: TODOS_KEY }),   // refetch the list
+  });
+}
+```
+
+**4. `App.jsx`**
+```jsx
+import TodoCount from './components/TodoCount';
+import AddTodoForm from './components/AddTodoForm';
+import TodoList from './components/TodoList';
+
+export default function App() {
   return (
     <>
-      <button onClick={() => add.mutate({ title: 'New' })} disabled={add.isPending}>Add</button>
-      <ul>{data.map(t => <li key={t.id}>{t.title}</li>)}</ul>
+      <header><TodoCount /></header>
+      <AddTodoForm />
+      <TodoList />
     </>
   );
 }
 ```
+
+**5. `components/TodoCount.jsx`: shares the cache with TodoList**
+```jsx
+import { useTodos } from '../hooks/useTodos';
+
+// Same query key as TodoList, so it reads the same cache: no second request
+export default function TodoCount() {
+  const { data: todos = [] } = useTodos();
+  return <span>{todos.length} todos</span>;
+}
+```
+
+**6. `components/AddTodoForm.jsx`: run a mutation**
+```jsx
+import { useState } from 'react';
+import { useAddTodo } from '../hooks/useTodos';
+
+export default function AddTodoForm() {
+  const [title, setTitle] = useState('');
+  const addTodo = useAddTodo();
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (!title.trim()) return;
+    addTodo.mutate({ title });   // runs onMutate → createTodo → onError / onSettled
+    setTitle('');
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input value={title} onChange={e => setTitle(e.target.value)} placeholder="New todo" />
+      <button disabled={addTodo.isPending}>Add</button>
+      {addTodo.isError && <p>Could not add: {addTodo.error.message}</p>}
+    </form>
+  );
+}
+```
+
+**7. `components/TodoList.jsx`: loading, error, background refresh and delete**
+```jsx
+import { useTodos, useDeleteTodo } from '../hooks/useTodos';
+
+export default function TodoList() {
+  const { data: todos, isPending, isError, error, isFetching } = useTodos();
+  const deleteTodo = useDeleteTodo();
+
+  // isPending: first load, nothing in the cache yet
+  if (isPending) return <p>Loading todos...</p>;
+  if (isError) return <p>Error: {error.message}</p>;
+
+  // isFetching: a background refetch is running, but cached data is still shown
+  return (
+    <>
+      {isFetching && <small>Refreshing...</small>}
+      <ul>
+        {todos.map(todo => (
+          <li key={todo.id}>
+            {todo.title}
+            <button onClick={() => deleteTodo.mutate(todo.id)} disabled={deleteTodo.isPending}>
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+```
+
+**What happens on first load**
+
+1. `TodoCount` and `TodoList` both call `useTodos()` with the key `['todos']`.
+2. The cache is empty, so React Query sends **one** request, even though two components asked (de-duplication).
+3. While it waits, `TodoList` shows "Loading todos..." and `TodoCount` shows "0 todos".
+4. The response is saved under `['todos']`, and **both** components re-render with the data.
+
+**What happens when you add a todo**
+
+1. `addTodo.mutate({ title })` runs `onMutate`: the new todo is put into the cache with a temporary id, so it **appears instantly**.
+2. The POST request is sent.
+3. **If it succeeds:** `onSettled` invalidates `['todos']`, the list is refetched, and the temporary todo is replaced by the real one from the server.
+4. **If it fails:** `onError` puts back the snapshot, so the todo disappears, and the form shows the error. `onSettled` still refetches to be safe.
+
+**What happens when you come back to the tab later**
+
+- If the data is older than `staleTime` (30s), React Query refetches **in the background**.
+- `isFetching` becomes `true`, so "Refreshing..." shows while the **old data stays on screen**. That's stale-while-revalidate.
+- If the data is still fresh, nothing is fetched.
+
+**The same list with SWR** (for comparison)
+```jsx
+import useSWR from 'swr';
+import { fetchTodos, createTodo } from '../api/todos';
+
+export default function TodoListSWR() {
+  // the key ('/api/todos') identifies the cache entry; fetchTodos loads it
+  const { data: todos, error, isLoading, mutate } = useSWR('/api/todos', fetchTodos);
+
+  const addTodo = async title => {
+    await createTodo({ title });
+    mutate();   // refetch the list (like invalidateQueries)
+  };
+
+  if (isLoading) return <p>Loading todos...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+  return (
+    <>
+      <button onClick={() => addTodo('New todo')}>Add</button>
+      <ul>{todos.map(t => <li key={t.id}>{t.title}</li>)}</ul>
+    </>
+  );
+}
+```
+SWR has no separate mutation hook in its basic API: you call your own function, then `mutate()` to refresh the cache.
 
 **Scenario:** *"A user likes a post. The heart should fill instantly, even on a slow network."*
 Use an optimistic update: in `onMutate`, update the cache straight away; roll back in `onError`; invalidate in `onSettled` to sync with the server. (React 19's `useOptimistic` does the same for Actions.)
@@ -2511,6 +3316,8 @@ Use an optimistic update: in `onMutate`, update the cache straight away; roll ba
 ---
 
 ### 6.6 Choosing the Right Tool: Decision Framework
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 Ask these questions in order:
@@ -2528,7 +3335,115 @@ In the **URL** (`?category=shoes&sort=price`): links can be shared and bookmarke
 
 ---
 
-### 6.7 Interview Questions
+### 6.7 Redux Toolkit vs React Query
+
+**Interview priority:** ⭐⭐
+
+**Explanation**
+They solve **different problems**, so they are usually **not** alternatives:
+
+- **Redux Toolkit (slices)** manages **client state**: data the browser creates and owns (cart, UI settings, a multi-step wizard).
+- **React Query** manages **server state**: a **cached copy** of data the backend owns (products, users, orders).
+
+The one overlap: Redux Toolkit also ships **RTK Query**, its own server-state tool. So the real comparisons are **RTK slices vs React Query** (different jobs) and **RTK Query vs React Query** (same job).
+
+**Key differences**
+
+| | Redux Toolkit (slices) | React Query (TanStack Query) |
+|---|---|---|
+| Kind of state | **Client** state | **Server** state |
+| Who owns the data | The browser | The backend; the client holds a cache |
+| Where data lives | One global **store** | A **query cache**, organised by query keys |
+| How data changes | `dispatch(action)` → pure reducer | Fetched by `queryFn`; changed on the server by mutations, then refetched |
+| Loading / error states | Write them yourself (`status`, `error` in the slice) | Built in: `isPending`, `isError`, `isFetching` |
+| Caching & de-duplication | No | Yes, by query key |
+| Stale data & refetching | Manual | Automatic: on mount, tab focus, reconnect, interval (controlled by `staleTime`) |
+| Retries | Manual | Automatic (3 by default) |
+| Optimistic updates | Manual reducers | Built-in pattern: `onMutate` / `onError` / `onSettled` |
+| Async work | `createAsyncThunk` | `queryFn` / `mutationFn` |
+| DevTools | Redux DevTools (time travel) | React Query DevTools (cache inspector) |
+| Provider | `<Provider store={store}>` | `<QueryClientProvider client={queryClient}>` |
+| Packages | `@reduxjs/toolkit` + `react-redux` | `@tanstack/react-query` |
+| Boilerplate | Medium (slice + store + selectors) | Low (one hook per query) |
+
+**Building blocks and hooks**
+
+| Purpose | Redux Toolkit | React Query |
+|---|---|---|
+| Create the central object | `configureStore()` | `new QueryClient()` |
+| Share it with the app | `<Provider store={store}>` | `<QueryClientProvider client={queryClient}>` |
+| Define state + logic | `createSlice({ name, initialState, reducers })` | `useQuery({ queryKey, queryFn })` |
+| Read data | `useSelector(selector)` | `useQuery(...)` → `{ data, isPending, error }` |
+| Change data | `useDispatch()` → `dispatch(action)` | `useMutation({ mutationFn })` → `mutate(data)` |
+| Async / API calls | `createAsyncThunk()` | `queryFn`, `mutationFn` |
+| Derived / memoised data | `createSelector()` | `select` option in `useQuery` |
+| Access the central object in code | `useStore()` (rare) | `useQueryClient()` |
+| Refresh after a change | Dispatch another thunk | `queryClient.invalidateQueries({ queryKey })` |
+| Update data by hand | Reducer cases | `queryClient.setQueryData(key, updater)` |
+| Lists that load more | Manual | `useInfiniteQuery()` |
+| Global loading indicator | Manual | `useIsFetching()`, `useIsMutating()` |
+
+**Same task, both ways: load a list of users**
+```jsx
+// Redux Toolkit: slice + thunk + three reducer cases + selector
+const fetchUsers = createAsyncThunk('users/fetch', () => fetch('/api/users').then(r => r.json()));
+
+const usersSlice = createSlice({
+  name: 'users',
+  initialState: { list: [], status: 'idle', error: null },
+  reducers: {},
+  extraReducers: builder => {
+    builder
+      .addCase(fetchUsers.pending, s => { s.status = 'loading'; })
+      .addCase(fetchUsers.fulfilled, (s, a) => { s.status = 'idle'; s.list = a.payload; })
+      .addCase(fetchUsers.rejected, (s, a) => { s.status = 'failed'; s.error = a.error.message; });
+  },
+});
+
+function UsersRTK() {
+  const dispatch = useDispatch();
+  const { list, status } = useSelector(s => s.users);
+  useEffect(() => { dispatch(fetchUsers()); }, [dispatch]);
+  if (status === 'loading') return <p>Loading...</p>;
+  return <ul>{list.map(u => <li key={u.id}>{u.name}</li>)}</ul>;
+}
+
+// React Query: one hook, with caching, de-duplication and refetching included
+function UsersRQ() {
+  const { data: users, isPending } = useQuery({
+    queryKey: ['users'],
+    queryFn: () => fetch('/api/users').then(r => r.json()),
+  });
+  if (isPending) return <p>Loading...</p>;
+  return <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>;
+}
+```
+The Redux version still has **no caching, no de-duplication and no refetching**. Adding those by hand is exactly what React Query (or RTK Query) does for you.
+
+**RTK Query vs React Query** (both handle server state)
+
+| | RTK Query | React Query |
+|---|---|---|
+| Comes with | Redux Toolkit | Standalone |
+| Setup | Define all endpoints in one `createApi()` | One `useQuery` per use, no central definition |
+| Hooks | **Generated** per endpoint: `useGetUsersQuery()`, `useAddUserMutation()` | Generic: `useQuery()`, `useMutation()` |
+| Refetch after a change | **Tags**: `providesTags` / `invalidatesTags` | `invalidateQueries({ queryKey })` |
+| Cache lives in | The Redux store | Its own `QueryClient` |
+| Best when | The app **already uses Redux** | Everything else (the usual default) |
+
+**Which one to use**
+
+- **Server data only** (most CRUD apps) → React Query alone; no Redux needed.
+- **Server data + a little global client state** → React Query + Zustand or Context.
+- **Large app already on Redux** → Redux Toolkit slices + RTK Query.
+- **Avoid:** putting API data in Redux slices with hand-written `loading` / `error` flags (see the 6.1 scenario).
+
+**Say it in an interview:**
+> "Redux Toolkit and React Query solve different problems. Redux Toolkit manages client state in a global store with actions and reducers. React Query manages server state as a cache, with loading states, de-duplication, background refetching, retries and invalidation built in. I'd use React Query for API data and keep Redux, or something lighter, only for true client state. If the app already uses Redux, RTK Query covers the server side."
+
+---
+
+### 6.8 Interview Questions
 
 **Q1. Context vs Redux: when do you use each?** ⭐
 Context passes values down the tree and isn't really a state manager. It suits low-frequency data like theme, locale and the current user. Redux Toolkit suits complex, frequently updated shared client state, with selectors, middleware and DevTools. Many apps need neither once server data moves to React Query.
@@ -2552,7 +3467,11 @@ Keep it as local as possible. URL for shareable state, React Query for server da
 
 ## 7. Performance Optimization
 
+**Interview priority:** ⭐⭐⭐
+
 ### 7.1 The Optimisation Mindset
+
+**Interview priority:** ⭐
 
 **Explanation**
 
@@ -2580,6 +3499,8 @@ First, which part is slow? **Initial load** points to bundle size, network, SSR 
 ---
 
 ### 7.2 `React.memo`
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 `React.memo(Component)` skips re-rendering when props are **shallowly equal** to the last render's props.
@@ -2622,6 +3543,8 @@ Check for: (1) inline objects, arrays or functions in props; (2) `children` pass
 
 ### 7.3 Avoiding Unnecessary Re-renders: Structural Techniques
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 These are often better than memoisation:
 
@@ -2659,6 +3582,8 @@ const name = useStore(s => s.user.name);    // not useStore(s => s)
 ---
 
 ### 7.4 Code Splitting: `React.lazy`, `Suspense`, dynamic `import()`
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 Ship less JavaScript up front. Split by **route** first, then by **heavy components** that aren't shown straight away (charts, editors, modals).
@@ -2705,6 +3630,8 @@ Old chunk files were deleted, and users who still have the old `index.js` reques
 
 ### 7.5 List Virtualization (Windowing)
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 Rendering 10,000 rows creates 10,000+ DOM nodes, which makes the first render slow, uses a lot of memory and makes scrolling janky. **Virtualization renders only the visible rows plus a small buffer**, and adds spacer padding so the scrollbar still looks right.
 
@@ -2745,6 +3672,8 @@ function BigList({ rows }) {
 
 ### 7.6 Debouncing & Throttling in React
 
+**Interview priority:** ⭐⭐⭐
+
 **Explanation**
 
 - **Debounce**: run *after* the user stops for N ms (search input, autosave).
@@ -2781,6 +3710,8 @@ useEffect(() => { if (debouncedQuery) search(debouncedQuery); }, [debouncedQuery
 
 ### 7.7 Image & Asset Optimisation
 
+**Interview priority:** ⭐
+
 **Explanation**
 Images are usually the biggest part of a page's weight, and often its **LCP** element.
 
@@ -2809,6 +3740,8 @@ Images are usually the biggest part of a page's weight, and often its **LCP** el
 
 ### 7.8 Profiling with React DevTools
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 **React DevTools → Profiler tab:**
 
@@ -2835,6 +3768,8 @@ Images are usually the biggest part of a page's weight, and often its **LCP** el
 
 ### 7.9 Web Vitals: LCP, INP, CLS
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 
 | Metric | Measures | Good | Common React fixes |
@@ -2858,6 +3793,8 @@ onLCP(sendToAnalytics); onINP(sendToAnalytics); onCLS(sendToAnalytics);
 
 ### 7.10 Bundle Size & Tree Shaking
 
+**Interview priority:** ⭐
+
 **Explanation**
 
 - **Analyse**: `rollup-plugin-visualizer` (Vite), `webpack-bundle-analyzer`, `source-map-explorer`.
@@ -2879,6 +3816,8 @@ import { Search, X } from 'lucide-react';
 ---
 
 ### 7.11 React Compiler
+
+**Interview priority:** ⭐
 
 **Explanation**
 The **React Compiler** (stable in the React 19 era) is a build-time Babel plugin that **memoises components and values automatically**. It looks at your code and adds the equivalent of `useMemo`, `useCallback` and `React.memo` where they're safe.
@@ -2923,7 +3862,11 @@ For most new code, yes. It adds memoisation automatically at build time, as long
 
 ## 8. Concurrent React (React 18+)
 
+**Interview priority:** ⭐⭐
+
 ### 8.1 Concurrent Rendering: The Concept
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 Before React 18, rendering was **synchronous and couldn't be interrupted**: once started, React blocked the main thread until it finished.
@@ -2942,6 +3885,8 @@ It's **opt-in per update**: you enable it with `createRoot` plus concurrent feat
 ---
 
 ### 8.2 `useTransition` / `startTransition`
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 Marks a state update as **non-urgent** (a transition). React keeps the UI responsive and can interrupt the transition render if something urgent comes in.
@@ -2984,6 +3929,8 @@ const selectTab = next => startTransition(() => setTab(next));
 
 ### 8.3 `useDeferredValue`
 
+**Interview priority:** ⭐
+
 **Explanation**
 Gives you a **deferred copy of a value**. React first re-renders with the old value, then re-renders in the background with the new one. Use it when you **don't control the state setter** (e.g. a value that arrives as a prop).
 
@@ -3014,6 +3961,8 @@ const SlowList = React.memo(function SlowList({ query }) { /* heavy */ });
 ---
 
 ### 8.4 Suspense
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 `<Suspense fallback={...}>` shows a fallback while something inside it is **not ready** ("suspends").
@@ -3057,6 +4006,8 @@ function ProductHeader({ id }) {
 ---
 
 ### 8.5 Streaming SSR
+
+**Interview priority:** ⭐
 
 **Explanation**
 Traditional SSR is **all-or-nothing**: fetch all data → render the whole HTML → send it → download all JS → hydrate everything. The slowest part blocks the whole page.
@@ -3111,7 +4062,11 @@ Different components showing different values from the same external store durin
 
 ## 9. React 19
 
+**Interview priority:** ⭐⭐
+
 ### 9.1 Actions, `useActionState`, `useFormStatus`
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 **Actions** are async functions used inside transitions. React automatically tracks **pending state, errors, optimistic updates and form resets**.
@@ -3156,6 +4111,8 @@ function SubmitButton() {
 
 ### 9.2 `useOptimistic`
 
+**Interview priority:** ⭐
+
 **Explanation**
 Shows an **optimistic version of state** while an async action is running. React **automatically goes back** to the real state when the action finishes (or fails).
 
@@ -3188,6 +4145,8 @@ function Thread({ messages, sendMessage }) {
 ---
 
 ### 9.3 The `use()` Hook
+
+**Interview priority:** ⭐
 
 **Explanation**
 `use(resource)` reads a **promise** or **context** during render.
@@ -3227,6 +4186,8 @@ function Heading({ show }) {
 
 ### 9.4 Other React 19 Changes
 
+**Interview priority:** ⭐
+
 **Explanation**
 
 - **`ref` as a prop**: no more `forwardRef` for function components.
@@ -3262,6 +4223,8 @@ function BlogPost({ post }) {
 ---
 
 ### 9.5 Server Actions
+
+**Interview priority:** ⭐
 
 **Explanation**
 A **Server Action** is an async function marked `'use server'` that **runs on the server** but can be called from the client, as a form `action` or directly. The framework (Next.js) turns it into a POST endpoint for you.
@@ -3299,6 +4262,8 @@ export default function Page() {
 ---
 
 ### 9.6 React 19.2: `<Activity>` & `useEffectEvent`
+
+**Interview priority:** Rarely asked
 
 **Explanation**
 React 19.2 (October 2025) added two APIs that are now common interview topics.
@@ -3355,6 +4320,8 @@ Conditional rendering unmounts the tab, so its state is destroyed. Wrap each tab
 ---
 
 ### 9.7 React 19.3: View Transitions, Fragment Refs & `browser()`
+
+**Interview priority:** Rarely asked
 
 **Explanation**
 React 19.3 (September 2026) made two long-awaited APIs stable and added a few smaller ones.
@@ -3455,7 +4422,11 @@ Move to 18.3 first and fix its deprecation warnings. Run the official codemods, 
 
 ## 10. Rendering Strategies & SSR
 
+**Interview priority:** ⭐⭐
+
 ### 10.1 CSR vs SSR vs SSG vs ISR
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 
@@ -3494,6 +4465,8 @@ Mix them per route; there's no single right answer for the whole app.
 ---
 
 ### 10.2 React Server Components (RSC) vs Client Components
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 **Server Components** run **only on the server** (at build time or per request). Their code is **never sent to the browser**; only their rendered output (the RSC payload) is.
@@ -3542,6 +4515,8 @@ export default function AddToCart({ productId }) {
 
 ### 10.3 Hydration & Hydration Mismatches
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 **Hydration** = React on the client attaches event listeners and state to HTML that the **server already rendered**, instead of rebuilding the DOM. The client's first render must produce **the same output** as the server's.
 
@@ -3582,6 +4557,8 @@ const Map = dynamic(() => import('./Map'), { ssr: false });
 ---
 
 ### 10.4 Next.js Essentials
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 **App Router (`app/`) vs Pages Router (`pages/`)**
@@ -3632,6 +4609,8 @@ export const config = { matcher: ['/dashboard/:path*'] };
 
 ### 10.5 SEO in React Apps
 
+**Interview priority:** ⭐
+
 **Explanation**
 
 - CSR-only apps rely on crawlers running JS: slower and less reliable (and many social/link-preview bots don't run JS at all).
@@ -3659,6 +4638,8 @@ export async function generateMetadata({ params }) {
 ---
 
 ### 10.6 Next.js 15 & 16: Cache Components, `proxy.ts` & Async APIs
+
+**Interview priority:** Rarely asked
 
 **Explanation**
 Caching is the most-asked Next.js topic, and the defaults have changed twice.
@@ -3735,7 +4716,11 @@ For apps behind a login where SEO doesn't matter, such as internal dashboards. S
 
 ## 11. Routing
 
+**Interview priority:** ⭐
+
 ### 11.1 React Router Basics: Nested & Dynamic Routes
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 Client-side routing changes the URL with the **History API** without a full page reload, then renders the matching components.
@@ -3784,6 +4769,8 @@ export default function App() { return <RouterProvider router={router} />; }
 
 ### 11.2 Loaders & Actions (Data Routers)
 
+**Interview priority:** ⭐
+
 **Explanation**
 React Router 6.4+ (and v7 / Remix) let routes **load data before rendering** (`loader`) and **handle mutations** (`action`). This avoids "render → effect → fetch" waterfalls, because the data fetch starts **in parallel with code loading**, at navigation time.
 
@@ -3823,6 +4810,8 @@ function User() {
 
 ### 11.3 Protected / Private Routes
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 Hide pages that need login, and redirect to login, keeping the intended destination so you can send the user back afterwards.
 
@@ -3854,6 +4843,8 @@ navigate(from, { replace: true });
 
 ### 11.4 Lazy-Loaded Routes
 
+**Interview priority:** ⭐
+
 **Explanation**
 Route-level code splitting is the most effective split: each page loads its own JS.
 
@@ -3874,6 +4865,8 @@ const Reports = lazy(() => import('./routes/Reports'));
 ---
 
 ### 11.5 URL as State (Search Params)
+
+**Interview priority:** ⭐
 
 **Explanation**
 Put **shareable, bookmarkable UI state** in the URL: filters, sort, page, selected tab, search query. Benefits: links can be shared, the back/forward buttons work, the state survives a refresh, and search engines can index it.
@@ -3910,6 +4903,8 @@ function ProductsPage() {
 ---
 
 ### 11.6 React Router v7 & TanStack Router
+
+**Interview priority:** Rarely asked
 
 **Explanation**
 **React Router v7** merged Remix into React Router, so there's now one `react-router` package with three additive modes. Import from `react-router`; `react-router-dom` was the older package name.
@@ -3983,7 +4978,11 @@ Next.js routing for a full-stack React app. React Router v7 for a flexible SPA o
 
 ## 12. Forms
 
+**Interview priority:** ⭐
+
 ### 12.1 Controlled Forms: The Basic Pattern
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 One state object, one generic change handler, validation, and a submit handler.
@@ -4048,6 +5047,8 @@ function SignupForm() {
 
 ### 12.2 React Hook Form & Formik
 
+**Interview priority:** ⭐
+
 **Explanation**
 
 - **React Hook Form (RHF)**: **uncontrolled** by default (uses refs), so typing **doesn't re-render** the whole form. Small, fast, great TS support. The current industry default.
@@ -4096,6 +5097,8 @@ For **controlled third-party inputs** (MUI, React Select, date pickers), use `<C
 
 ### 12.3 Validation with Zod / Yup
 
+**Interview priority:** ⭐
+
 **Explanation**
 Schema-based validation gives you **one source of truth** for the rules, and **TypeScript types inferred** from the schema (Zod). The same schema can run on the **client and the server**.
 
@@ -4123,6 +5126,8 @@ if (!result.success) return Response.json(result.error.flatten(), { status: 400 
 ---
 
 ### 12.4 Large & Dynamic Forms
+
+**Interview priority:** ⭐
 
 **Explanation**
 Problems: re-render cost, dynamic field arrays, multi-step wizards, auto-save, conditional fields.
@@ -4189,7 +5194,11 @@ Use `useFieldArray` with stable IDs as keys, isolate re-renders with `useWatch` 
 
 ## 13. Error Handling & Resilience
 
+**Interview priority:** ⭐⭐
+
 ### 13.1 Error Boundaries
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 An Error Boundary is a **class component** that catches **errors thrown during rendering, in lifecycle methods and in constructors of its children**, and renders a fallback UI instead of unmounting the whole app (React unmounts the whole tree on an uncaught render error).
@@ -4255,6 +5264,8 @@ function Profile() {
 
 ### 13.2 Handling Async & Event Handler Errors
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 ```jsx
 // Event handler: try/catch + user feedback
@@ -4297,6 +5308,8 @@ window.addEventListener('error', e => logError(e.error));
 ---
 
 ### 13.3 Fallback UI, Retries & Logging
+
+**Interview priority:** ⭐
 
 **Explanation**
 
@@ -4344,7 +5357,11 @@ A clear message, a way to recover such as a retry button, and as much of the wor
 
 ## 14. Testing
 
+**Interview priority:** ⭐⭐
+
 ### 14.1 Testing Philosophy: Pyramid vs Trophy
+
+**Interview priority:** ⭐
 
 **Explanation**
 
@@ -4373,6 +5390,8 @@ A clear message, a way to recover such as a retry button, and as much of the wor
 ---
 
 ### 14.2 Unit / Integration Testing with Jest/Vitest + RTL
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 ```jsx
@@ -4420,6 +5439,8 @@ test('shows validation error for invalid email', async () => {
 
 ### 14.3 Mocking APIs with MSW
 
+**Interview priority:** ⭐
+
 **Explanation**
 **Mock Service Worker** intercepts requests at the **network level**, so your components use their real `fetch`/axios/React Query code. The same mocks work in tests, Storybook and local dev.
 
@@ -4457,6 +5478,8 @@ test('shows error on failure', async () => {
 ---
 
 ### 14.4 Testing Hooks, Async & Context
+
+**Interview priority:** ⭐
 
 **Explanation**
 ```jsx
@@ -4506,6 +5529,8 @@ test('debounces search', async () => {
 
 ### 14.5 E2E Testing: Cypress / Playwright
 
+**Interview priority:** ⭐
+
 **Explanation**
 E2E tests run the **real app in a real browser**. Keep them for **critical user journeys**: login, checkout, signup, payments.
 
@@ -4536,6 +5561,8 @@ test('user can checkout', async ({ page }) => {
 ---
 
 ### 14.6 Snapshot Testing & Visual Regression
+
+**Interview priority:** Rarely asked
 
 **Explanation**
 
@@ -4578,7 +5605,11 @@ Only for small, stable output. Large snapshots get approved without being read, 
 
 ## 15. Styling
 
+**Interview priority:** ⭐
+
 ### 15.1 Styling Approaches Compared
+
+**Interview priority:** ⭐
 
 **Explanation**
 
@@ -4617,6 +5648,8 @@ const Button = styled.button`
 ---
 
 ### 15.2 CSS-in-JS Trade-offs
+
+**Interview priority:** ⭐
 
 **Explanation**
 
@@ -4657,6 +5690,8 @@ const Bar = styled.div`width: ${p => p.percent}%;`;
 ---
 
 ### 15.3 Design Systems & Component Libraries
+
+**Interview priority:** ⭐
 
 **Explanation**
 A design system = **design tokens** (colours, spacing, typography, radii) + **components** + **guidelines** + **documentation** (Storybook).
@@ -4715,7 +5750,11 @@ Start with design tokens, then accessible primitives, then composed components. 
 
 ## 16. TypeScript with React
 
+**Interview priority:** ⭐⭐
+
 ### 16.1 Typing Props, Children & Defaults
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 ```tsx
@@ -4744,6 +5783,8 @@ function Button({ label, variant = 'primary', onClick, children }: ButtonProps) 
 ---
 
 ### 16.2 Typing State, Events & Refs
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 ```tsx
@@ -4782,6 +5823,8 @@ function reducer(state: Item[], action: Action): Item[] {
 
 ### 16.3 Extending Native Elements: `ComponentProps`, `PropsWithChildren`
 
+**Interview priority:** ⭐
+
 **Explanation**
 For wrapper components, inherit **all native attributes** so consumers can pass `type`, `aria-*`, `disabled`, etc.
 
@@ -4816,6 +5859,8 @@ type UserUpdate = Partial<Omit<User, 'id'>>;
 
 ### 16.4 Generic Components
 
+**Interview priority:** ⭐
+
 **Explanation**
 Use generics when a component works with **any item type** but needs to keep it typed all the way through (lists, tables, selects).
 
@@ -4845,6 +5890,8 @@ function Select<T>({ options, value, onChange, getLabel }: SelectProps<T>) { /* 
 ---
 
 ### 16.5 Discriminated Unions for Component State & Props
+
+**Interview priority:** ⭐
 
 **Explanation**
 Make **impossible states impossible to write**.
@@ -4908,7 +5955,11 @@ Extend `React.ComponentProps<'button'>` (or `ComponentPropsWithoutRef`), then sp
 
 ## 17. Security
 
+**Interview priority:** ⭐
+
 ### 17.1 XSS & `dangerouslySetInnerHTML`
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 **XSS (Cross-Site Scripting)** = an attacker's script runs in your users' browsers and can steal tokens, act as the user, or change the page.
@@ -4941,6 +5992,8 @@ import DOMPurify from 'dompurify';
 
 ### 17.2 `javascript:` URLs & Unsafe Attributes
 
+**Interview priority:** ⭐
+
 **Explanation**
 ```jsx
 // ❌ user profile website = "javascript:alert(document.cookie)"
@@ -4966,6 +6019,8 @@ function safeUrl(url) {
 
 ### 17.3 Auth Token Storage: Cookies vs localStorage
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 
 | | `localStorage` / `sessionStorage` | **httpOnly cookie** |
@@ -4985,6 +6040,8 @@ Set-Cookie: session=abc; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=3600
 ---
 
 ### 17.4 CSRF & CSP
+
+**Interview priority:** ⭐
 
 **Explanation**
 **CSRF (Cross-Site Request Forgery):** a malicious site makes the user's browser send a request to your site **with the user's cookies attached**.
@@ -5019,6 +6076,8 @@ Content-Security-Policy:
 
 ### 17.5 Other Frontend Security Topics
 
+**Interview priority:** Rarely asked
+
 **Explanation**
 
 - **Secrets in the bundle:** everything in client JS is public. `VITE_*` / `NEXT_PUBLIC_*` env vars get **embedded in the bundle**. Never put API secrets there.
@@ -5040,6 +6099,8 @@ window.addEventListener('message', e => {
 ---
 
 ### 17.6 React Server Components Vulnerability (CVE-2025-55182)
+
+**Interview priority:** Rarely asked
 
 **Explanation**
 In December 2025, a critical flaw nicknamed **React2Shell** was disclosed in React Server Components. It allowed **unauthenticated remote code execution**: an attacker could send a crafted request to a server endpoint and run code on the server. It was rated the maximum severity (CVSS 10.0).
@@ -5096,7 +6157,11 @@ No. Client-side checks only improve the UX. The server must check permissions on
 
 ## 18. Accessibility (a11y)
 
+**Interview priority:** ⭐
+
 ### 18.1 Semantic HTML First
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 Native elements come with keyboard support, focus handling and screen-reader roles **for free**. The first rule of ARIA: **don't use ARIA if a native element does the job.**
@@ -5132,6 +6197,8 @@ Native elements come with keyboard support, focus handling and screen-reader rol
 
 ### 18.2 ARIA Roles, States & Properties
 
+**Interview priority:** ⭐
+
 **Explanation**
 Use ARIA when you build **custom widgets** that HTML doesn't provide (tabs, combobox, tree, menu).
 
@@ -5166,6 +6233,8 @@ Follow the **WAI-ARIA Authoring Practices** patterns, or use **Radix / React Ari
 ---
 
 ### 18.3 Keyboard Navigation & Focus Management
+
+**Interview priority:** ⭐
 
 **Explanation**
 
@@ -5203,6 +6272,8 @@ function onKeyDown(e, index) {
 ---
 
 ### 18.4 Accessible Modals, Forms & Live Regions
+
+**Interview priority:** ⭐
 
 **Explanation**
 **Modal checklist:**
@@ -5246,6 +6317,8 @@ function Dialog({ open, onClose, title, children }) {
 ---
 
 ### 18.5 Testing Accessibility
+
+**Interview priority:** Rarely asked
 
 **Explanation**
 
@@ -5292,7 +6365,11 @@ A description of what the image conveys. Use `alt=""` for decorative images, so 
 
 ## 19. Architecture (Senior / Staff)
 
+**Interview priority:** ⭐⭐
+
 ### 19.1 Folder Structure & Scaling a Codebase
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 Organising **by file type** (`components/`, `hooks/`, `utils/`) works for small apps but turns into a mess at scale. Organise **by feature/domain** instead, and keep shared code separate.
@@ -5329,6 +6406,8 @@ Rules that keep it scalable:
 
 ### 19.2 Frontend System Design: The Framework
 
+**Interview priority:** ⭐⭐⭐
+
 **Explanation**
 Use the same structure for any frontend system design question (e.g. "Design a news feed / chat app / autocomplete / Google Docs / dashboard"). A common acronym is **RADIO**:
 
@@ -5353,6 +6432,8 @@ For full worked examples, see [Section 29](#29-frontend-system-design-case-studi
 ---
 
 ### 19.3 Real-time Communication: WebSocket vs SSE vs Polling
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 
@@ -5398,6 +6479,8 @@ useEffect(() => {
 
 ### 19.4 Micro-Frontends
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 Split a large frontend into **independently built and deployed apps** owned by different teams (e.g. Search, Cart and Account teams).
 
@@ -5433,6 +6516,8 @@ const CartWidget = lazy(() => import('cart/CartWidget'));
 
 ### 19.5 Monorepos (Nx, Turborepo)
 
+**Interview priority:** ⭐
+
 **Explanation**
 One repo, many packages/apps: `apps/web`, `apps/admin`, `packages/ui`, `packages/utils`, `packages/config`.
 
@@ -5460,6 +6545,8 @@ Tools:
 ---
 
 ### 19.6 Build Tooling: Vite, Webpack, Babel/SWC
+
+**Interview priority:** ⭐
 
 **Explanation**
 
@@ -5514,6 +6601,8 @@ export default defineConfig({
 
 ### 19.7 Migration Strategies
 
+**Interview priority:** ⭐
+
 **Explanation**
 Principles: **incremental, not a big-bang rewrite**; **tests before changes**; feature flags; measure.
 
@@ -5545,6 +6634,8 @@ Step 7 is the one teams usually skip, and two systems permanently in use is wors
 
 ### 19.8 Internationalisation (i18n)
 
+**Interview priority:** Rarely asked
+
 **Explanation**
 
 - Libraries: **react-i18next**, **FormatJS / react-intl**, next-intl.
@@ -5569,6 +6660,8 @@ new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(-1, 'day');       
 ---
 
 ### 19.9 Feature Flags, Observability & Frontend CI/CD
+
+**Interview priority:** ⭐
 
 **Explanation**
 **Feature flags** (LaunchDarkly, Unleash, GrowthBook, Statsig):
@@ -5630,7 +6723,11 @@ Move strings into translation files and use a library such as react-i18next or F
 
 ## 20. JavaScript Fundamentals
 
+**Interview priority:** ⭐⭐⭐
+
 ### 20.1 Closures, Scope & Hoisting
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 
@@ -5676,6 +6773,8 @@ for (var i = 0; i < 3; i++) ((j) => setTimeout(() => console.log(j), 0))(i);
 
 ### 20.2 `this`, `call`, `apply`, `bind`
 
+**Interview priority:** ⭐⭐⭐
+
 **Explanation**
 `this` is decided by **how a function is called**, not where it's defined (except for arrow functions).
 
@@ -5713,6 +6812,8 @@ Function.prototype.myBind = function (ctx, ...preset) {
 ---
 
 ### 20.3 The Event Loop: Microtasks vs Macrotasks
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 JS runs on **one thread**. The event loop:
@@ -5754,6 +6855,8 @@ console.log('E');
 ---
 
 ### 20.4 Promises & async/await
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 A Promise represents a future value in one of three states: **pending → fulfilled | rejected** (settled once, never again).
@@ -5819,6 +6922,8 @@ async function mapLimit(items, limit, fn) {
 
 ### 20.5 Prototypes & Inheritance
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 Every object has an internal link `[[Prototype]]` (reachable via `Object.getPrototypeOf` / `__proto__`). Property lookups **walk up the prototype chain** until they reach `null`. `class` is **syntax sugar** over prototypes.
 
@@ -5848,6 +6953,8 @@ Object.getPrototypeOf(d) === Dog2.prototype;  // true
 ---
 
 ### 20.6 `var` / `let` / `const`
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 
@@ -5890,6 +6997,8 @@ user = {};               // TypeError
 ---
 
 ### 20.7 Shallow vs Deep Copy & Immutability
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 
@@ -5934,6 +7043,8 @@ function deepClone(value, seen = new WeakMap()) {
 ---
 
 ### 20.8 Debounce & Throttle Implementations
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 ```js
@@ -5984,6 +7095,8 @@ function throttle(fn, wait) {
 ---
 
 ### 20.9 Polyfills: `map`, `filter`, `reduce`, `Promise.all`, `flat`
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 ```js
@@ -6056,6 +7169,8 @@ class EventEmitter {
 
 ### 20.10 ES6+ Features & Equality
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 ```js
 // Destructuring with defaults & rename
@@ -6127,7 +7242,11 @@ Each object has a link to a prototype. When a property isn't found, JavaScript l
 
 ## 21. Machine Coding / Live Coding
 
+**Interview priority:** ⭐⭐⭐
+
 ### 21.0 How to Approach a Machine Coding Round
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 Interviewers grade **process** as much as the result. Follow this order:
@@ -6165,6 +7284,8 @@ Interviewers grade **process** as much as the result. Follow this order:
 ---
 
 ### 21.1 Debounced Autocomplete with Keyboard Navigation ⭐
+
+**Interview priority:** ⭐⭐⭐
 
 **Requirements:** debounce input, fetch suggestions, cancel stale requests, arrow keys and Enter to choose, Escape to close, highlight the match, loading/empty/error states, accessible combobox.
 
@@ -6260,6 +7381,8 @@ const fetchCities = (q, signal) => fetch(`/api/cities?q=${encodeURIComponent(q)}
 
 ### 21.2 Todo App (useReducer + filters + persistence)
 
+**Interview priority:** ⭐⭐⭐
+
 ```jsx
 const initialTodos = () => JSON.parse(localStorage.getItem('todos') ?? '[]');
 
@@ -6352,6 +7475,8 @@ const TodoItem = memo(function TodoItem({ todo, dispatch }) {
 
 ### 21.3 Infinite Scroll
 
+**Interview priority:** ⭐⭐⭐
+
 ```jsx
 function useInfiniteList(fetchPage) {
   const [items, setItems] = useState([]);
@@ -6413,6 +7538,8 @@ const fetchPosts = page => fetch(`/api/posts?page=${page}&limit=20`).then(r => r
 
 ### 21.4 Modal (Accessible, Portal, Focus Trap)
 
+**Interview priority:** ⭐⭐
+
 ```jsx
 const FOCUSABLE = 'a[href],button:not([disabled]),textarea,input,select,[tabindex]:not([tabindex="-1"])';
 
@@ -6466,6 +7593,8 @@ export function Modal({ open, onClose, title, children }) {
 
 ### 21.5 Accordion (single / multiple open)
 
+**Interview priority:** ⭐⭐
+
 ```jsx
 export function Accordion({ items, allowMultiple = false }) {
   const [openIds, setOpenIds] = useState(new Set());
@@ -6503,6 +7632,8 @@ export function Accordion({ items, allowMultiple = false }) {
 
 ### 21.6 Star Rating
 
+**Interview priority:** ⭐⭐
+
 ```jsx
 export function StarRating({ max = 5, value, onChange, readOnly = false }) {
   const [hover, setHover] = useState(0);
@@ -6538,6 +7669,8 @@ export function StarRating({ max = 5, value, onChange, readOnly = false }) {
 ---
 
 ### 21.7 Progress Bar & Countdown Timer
+
+**Interview priority:** ⭐⭐
 
 ```jsx
 export function ProgressBar({ value }) {
@@ -6591,6 +7724,8 @@ export function Countdown({ seconds: initial, onComplete }) {
 ---
 
 ### 21.8 Nested Comments / File Explorer (Recursion)
+
+**Interview priority:** ⭐⭐
 
 ```jsx
 const tree = {
@@ -6654,6 +7789,8 @@ function Node({ node, onAdd, onDelete, depth }) {
 ---
 
 ### 21.9 Data Table: Sort, Filter, Paginate
+
+**Interview priority:** ⭐⭐
 
 ```jsx
 export default function DataTable({ rows, columns, pageSize = 10 }) {
@@ -6734,6 +7871,8 @@ function Pagination({ page, totalPages, onChange }) {
 
 ### 21.10 Tic-Tac-Toe
 
+**Interview priority:** ⭐
+
 ```jsx
 const LINES = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 function getWinner(b) {
@@ -6782,6 +7921,8 @@ export default function TicTacToe() {
 
 ### 21.11 Traffic Light (state machine with timers)
 
+**Interview priority:** ⭐
+
 ```jsx
 const CONFIG = {
   red:    { duration: 4000, next: 'green' },
@@ -6814,6 +7955,8 @@ export default function TrafficLight() {
 ---
 
 ### 21.12 Carousel / Image Slider
+
+**Interview priority:** ⭐⭐
 
 ```jsx
 export function Carousel({ slides, autoPlayMs = 4000 }) {
@@ -6861,6 +8004,8 @@ export function Carousel({ slides, autoPlayMs = 4000 }) {
 
 ### 21.13 More Problems to Practise (with hints)
 
+**Interview priority:** ⭐
+
 | Problem | Key hints |
 |---|---|
 | **Stopwatch** | timestamp-based like the countdown; `useRef` for the interval; lap list |
@@ -6903,7 +8048,11 @@ Get the core working and say what's left. Explain how you'd add it, for example:
 
 ## 22. Behavioural & Experience
 
+**Interview priority:** ⭐⭐⭐
+
 ### 22.1 The STAR Method
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 Answer experience questions with **STAR**:
@@ -6940,6 +8089,8 @@ Numbers in your own stories must be true, and you should be able to explain how 
 
 ### 22.2 "Walk Me Through Your Project's Frontend Architecture"
 
+**Interview priority:** ⭐⭐⭐
+
 **Template answer structure (fill in your own details):**
 
 1. **Product & scale**: what it does, users, team size, your role.
@@ -6960,6 +8111,8 @@ Numbers in your own stories must be true, and you should be able to explain how 
 
 ### 22.3 "Tell Me About a Performance Problem You Solved"
 
+**Interview priority:** ⭐⭐⭐
+
 **Example (adapt to your experience):**
 > **S:** Our order management table (2,000 rows, inline editing) took ~800ms to respond to each keystroke; INP was in the "poor" range.
 > **T:** I owned getting it under 200ms without removing features.
@@ -6972,6 +8125,8 @@ Numbers in your own stories must be true, and you should be able to explain how 
 
 ### 22.4 "Tell Me About a Hard Bug You Debugged"
 
+**Interview priority:** ⭐⭐
+
 **Example:**
 > **S:** Users occasionally saw another customer's details for a moment when switching quickly between customers in the CRM.
 > **T:** It was a P1 (privacy risk); I took ownership.
@@ -6983,6 +8138,8 @@ Numbers in your own stories must be true, and you should be able to explain how 
 ---
 
 ### 22.5 Technical Decisions & Trade-offs
+
+**Interview priority:** ⭐⭐
 
 **Common questions:** *"Describe a technical decision you made and its trade-offs." / "Tell me about a time you chose not to use a popular technology."*
 
@@ -7002,6 +8159,8 @@ Numbers in your own stories must be true, and you should be able to explain how 
 
 ### 22.6 Code Review, Mentoring & Disagreements
 
+**Interview priority:** ⭐
+
 **Code review: what do you look for?**
 Correctness and edge cases (loading, error, empty) → accessibility → performance problems (unneeded effects, missing keys, re-render causes) → security (`dangerouslySetInnerHTML`, secrets) → test coverage of behaviour → readability and naming → consistency with team patterns. Be kind and specific, separate "blocking" from "nit", explain the *why*, and suggest code.
 
@@ -7016,6 +8175,8 @@ Correctness and edge cases (loading, error, empty) → accessibility → perform
 ---
 
 ### 22.7 Questions to Ask the Interviewer
+
+**Interview priority:** ⭐
 
 - What does the frontend architecture look like? React version, SSR or not?
 - How is frontend quality measured: Web Vitals, error budgets, test coverage?
@@ -7056,7 +8217,11 @@ Stay positive and focus on what you're moving towards, such as scale or ownershi
 
 ## 23. HTML & CSS Fundamentals
 
+**Interview priority:** ⭐⭐
+
 ### 23.1 HTML Essentials: Document Structure, Scripts & Metadata
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 For semantic elements, see [18.1](#181-semantic-html-first). These are the other HTML points interviewers ask about.
@@ -7097,6 +8262,8 @@ The browser only discovers it after downloading and parsing the CSS. Use an `<im
 
 ### 23.2 The Box Model
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 Every element is a box made of **content → padding → border → margin**.
 
@@ -7118,6 +8285,8 @@ Parent and child margins are collapsing. Add `display: flow-root` to the parent,
 ---
 
 ### 23.3 The Cascade & Specificity
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 When several rules target the same element, the browser decides in this order: **origin and `!important` → `@layer` → specificity → source order** (the last one wins).
@@ -7151,6 +8320,8 @@ The original selector has higher specificity. Check it in DevTools, then reduce 
 ---
 
 ### 23.4 Display, Positioning & Stacking Contexts
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 
@@ -7190,6 +8361,8 @@ The modal sits inside a stacking context whose parent ranks below the header. Ra
 
 ### 23.5 Flexbox
 
+**Interview priority:** ⭐⭐⭐
+
 **Explanation**
 Flexbox is a **one-dimensional** layout: a row or a column.
 
@@ -7224,6 +8397,8 @@ Add `min-width: 0` to the flex item, and put `overflow: hidden; text-overflow: e
 ---
 
 ### 23.6 CSS Grid
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 Grid is a **two-dimensional** layout: rows and columns at the same time.
@@ -7261,6 +8436,8 @@ Grid is a **two-dimensional** layout: rows and columns at the same time.
 ---
 
 ### 23.7 Responsive Design & Modern CSS
+
+**Interview priority:** ⭐
 
 **Explanation**
 **Mobile-first:** write base styles for small screens, then add `min-width` media queries.
@@ -7331,7 +8508,11 @@ When a component's layout should depend on the space it's given, not the screen.
 
 ## 24. Browser Internals
 
+**Interview priority:** ⭐⭐
+
 ### 24.1 The Critical Rendering Path
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 These are the steps the browser takes to turn HTML, CSS and JS into pixels.
@@ -7367,6 +8548,8 @@ With CSR, the HTML is an empty `<div>`, so nothing meaningful appears until JS d
 ---
 
 ### 24.2 Reflow, Repaint & Compositing
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 Different CSS changes cost different amounts of work:
@@ -7409,6 +8592,8 @@ It's animating `left` or `width`, which triggers layout on every frame. Switch t
 
 ### 24.3 Event Propagation & Delegation
 
+**Interview priority:** ⭐⭐⭐
+
 **Explanation**
 A DOM event travels in **three phases**:
 
@@ -7449,6 +8634,8 @@ The click that opened it bubbles up to the `document` listener you just added, o
 
 ### 24.4 Browser Storage
 
+**Interview priority:** ⭐⭐⭐
+
 **Explanation**
 
 | | Cookies | `localStorage` | `sessionStorage` | IndexedDB | Cache API |
@@ -7483,6 +8670,8 @@ Use `BroadcastChannel` or the `storage` event to notify other tabs, then clear t
 ---
 
 ### 24.5 Browser APIs Worth Knowing
+
+**Interview priority:** ⭐
 
 **Explanation**
 
@@ -7544,7 +8733,11 @@ JS, layout, paint and input handling all share the main thread. A long task bloc
 
 ## 25. Network & Data Fetching Fundamentals
 
+**Interview priority:** ⭐⭐
+
 ### 25.1 Same-Origin Policy & CORS
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 An **origin** is scheme + host + port. `https://app.com` and `https://api.app.com` are different origins.
@@ -7597,6 +8790,8 @@ Postman doesn't enforce CORS. Check the Network tab for a failed `OPTIONS` reque
 
 ### 25.2 HTTP Caching
 
+**Interview priority:** ⭐
+
 **Explanation**
 Browsers and CDNs can reuse responses, so the fastest request is the one that's never sent.
 
@@ -7627,6 +8822,8 @@ Their open tab references old chunks that were deleted. Keep old assets availabl
 ---
 
 ### 25.3 REST vs GraphQL on the Client
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 
@@ -7665,6 +8862,8 @@ Options are a BFF endpoint that aggregates them, or GraphQL, where one query fet
 ---
 
 ### 25.4 Making Data Fetching Robust
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 **`fetch` doesn't reject on 4xx or 5xx.** It only rejects on network failure, so always check `response.ok`.
@@ -7741,7 +8940,11 @@ Each object is stored once, keyed by type and ID, and queries hold references to
 
 ## 26. Memory Leaks
 
+**Interview priority:** ⭐⭐⭐
+
 ### 26.1 What Causes Memory Leaks in React Apps
+
+**Interview priority:** ⭐⭐⭐
 
 **Explanation**
 JavaScript is garbage collected: memory is freed when an object can no longer be **reached**. A leak happens when something long-lived keeps a reference to something you've finished with. Single-page apps are especially exposed, because the page never reloads to clear memory.
@@ -7787,6 +8990,8 @@ The cause is usually a live data feed pushing into an array that's never trimmed
 
 ### 26.2 Finding Leaks with Chrome DevTools
 
+**Interview priority:** ⭐⭐
+
 **Explanation**
 Don't guess. Measure with a repeatable action.
 
@@ -7819,6 +9024,8 @@ Run the same repeated action before and after the fix, and compare. The object c
 ---
 
 ### 26.3 `WeakMap`, `WeakSet` & `WeakRef`
+
+**Interview priority:** ⭐⭐
 
 **Explanation**
 Weak references don't stop an object being garbage collected.
@@ -7870,7 +9077,11 @@ To associate data with an object without keeping that object alive, such as cach
 
 ## 27. Web Workers, Service Workers & PWA
 
+**Interview priority:** ⭐
+
 ### 27.1 Web Workers
+
+**Interview priority:** ⭐
 
 **Explanation**
 JavaScript runs on one main thread, which also handles rendering and input. A **Web Worker** runs JS on a **background thread**, so heavy work doesn't freeze the UI.
@@ -7913,6 +9124,8 @@ Parsing blocks the main thread, so nothing can repaint or respond. Move it to a 
 ---
 
 ### 27.2 Service Workers
+
+**Interview priority:** ⭐
 
 **Explanation**
 A **Service Worker** is a background script that acts as a **programmable network proxy** between your app and the network. It lets you control caching and provide offline support. It requires HTTPS (except on localhost) and has no DOM access.
@@ -7958,6 +9171,8 @@ A cache-first Service Worker keeps serving the old `index.html`. Use network-fir
 ---
 
 ### 27.3 Progressive Web Apps & Offline-First
+
+**Interview priority:** ⭐
 
 **Explanation**
 A **PWA** is a website that behaves like an installed app. It needs **HTTPS**, a **web app manifest**, and usually a Service Worker.
@@ -8022,7 +9237,11 @@ Objects like `ArrayBuffer` whose ownership moves to the worker instead of being 
 
 ## 28. Practical Features
 
+**Interview priority:** ⭐
+
 ### 28.1 File Uploads
+
+**Interview priority:** ⭐
 
 **Explanation**
 **Basic upload** with a file input and `FormData`. Let the browser set the `Content-Type` header, because it has to add the multipart boundary.
@@ -8086,6 +9305,8 @@ Use resumable chunked uploads: split into 10 MB parts, send several in parallel,
 
 ### 28.2 Animation
 
+**Interview priority:** Rarely asked
+
 **Explanation**
 
 | Approach | Best for |
@@ -8132,6 +9353,8 @@ import { AnimatePresence, motion } from 'motion/react';
 ---
 
 ### 28.3 Drag & Drop
+
+**Interview priority:** ⭐
 
 **Explanation**
 
@@ -8212,9 +9435,13 @@ Each object URL keeps the file in memory until the page unloads. Without revokin
 
 ## 29. Frontend System Design Case Studies
 
+**Interview priority:** ⭐⭐
+
 Each case study uses the **RADIO** framework from [19.2](#192-frontend-system-design-the-framework): **R**equirements, **A**rchitecture, **D**ata model, **I**nterface (API), **O**ptimisations. In a 45-minute round, spend about 5 minutes on requirements and most of your time on the hard parts.
 
 ### 29.1 Design an Autocomplete / Typeahead
+
+**Interview priority:** ⭐⭐⭐
 
 **Requirements**
 
@@ -8276,6 +9503,8 @@ Separate logic from UI: a headless `useCombobox` hook handles state, keyboard an
 ---
 
 ### 29.2 Design a Chat Application
+
+**Interview priority:** ⭐⭐
 
 **Requirements**
 
@@ -8345,6 +9574,8 @@ Load pages on demand and virtualise so only visible rows exist in the DOM. Varia
 
 ### 29.3 Design a Collaborative Editor (Google Docs)
 
+**Interview priority:** ⭐
+
 **Requirements**
 
 - *Functional:* rich text, several people editing at once, live cursors, comments, version history, offline edits.
@@ -8411,6 +9642,8 @@ Each user has their own undo stack, recording only their operations. Undo create
 
 ### 29.4 Design an Analytics Dashboard
 
+**Interview priority:** ⭐
+
 **Requirements**
 
 - *Functional:* configurable widgets, filters and date ranges, drill-down, export, near-real-time updates.
@@ -8469,6 +9702,8 @@ Store layout and widget settings as JSON, and render through a registry mapping 
 ---
 
 ### 29.5 Design a Video Player (YouTube / Netflix)
+
+**Interview priority:** ⭐
 
 **Requirements**
 
@@ -8531,6 +9766,8 @@ Startup time, rebuffer ratio, average bitrate, error rate and abandonment before
 
 ### 29.6 Design an E-commerce Site (Listing, Product Page, Checkout)
 
+**Interview priority:** ⭐⭐
+
 **Requirements**
 
 - *Functional:* search and filter, product page, cart, checkout.
@@ -8588,6 +9825,8 @@ Find the LCP element first, usually the main image. Serve it from a CDN in a mod
 ---
 
 ### 29.7 Design a News Feed (Full Version)
+
+**Interview priority:** ⭐⭐⭐
 
 This expands the summary in [19.2](#192-frontend-system-design-the-framework).
 
