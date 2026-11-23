@@ -3496,6 +3496,28 @@ First, which part is slow? **Initial load** points to bundle size, network, SSR 
 
 **Don't optimise blindly.** Each `useMemo` or `React.memo` adds code and comparison work, so add them only where a profile shows a real benefit. Test with CPU throttling too, because your laptop is much faster than a typical user's phone.
 
+**Key terms**
+
+| Term | Meaning |
+|---|---|
+| Bottleneck | The slowest part that limits overall speed. Fix this first; speeding up anything else won't help much. |
+| React DevTools Profiler | Browser extension tab that records renders and shows which components rendered, why, and how long they took (see 7.8). |
+| Chrome Performance tab | DevTools tab that records everything the browser does: running JS, layout, painting, network. |
+| Lighthouse | Chrome's built-in audit tool. Loads your page in a simulated device and scores performance, accessibility and SEO. |
+| Web Vitals | Google's metrics for real user experience: LCP, INP and CLS (see 7.9). |
+| Bundle | The JavaScript file(s) your build tool produces and the browser downloads. Bigger bundle = slower first load. |
+| CSR (Client-Side Rendering) | The server sends an almost empty HTML page; the browser downloads JS and builds the page. Blank until the JS runs. |
+| SSR (Server-Side Rendering) | The server sends ready-made HTML, so content appears before the JS has loaded (see 10.1). |
+| LCP (Largest Contentful Paint) | How long until the biggest visible element (hero image, main heading) appears. Good: 2.5 s or less. |
+| INP (Interaction to Next Paint) | How long the page takes to visibly respond after a click, tap or key press. Good: 200 ms or less. |
+| CLS (Cumulative Layout Shift) | How much the page jumps around while loading. Good: 0.1 or less. |
+| Long task | Any work on the main thread longer than 50 ms. While it runs, the page can't respond to the user. |
+| Layout thrashing | Alternating layout reads (`offsetHeight`) and style writes in a loop, forcing the browser to recalculate layout again and again. |
+| Virtualise | Render only the list rows that are visible on screen (see 7.5). |
+| Skeleton | Grey placeholder shapes, the same size as the real content, shown while it loads. |
+| Memory leak | Memory that stays referenced, so the garbage collector can never free it; the app gets slower over time. |
+| CPU throttling | A DevTools setting that slows down your CPU to simulate a cheaper phone. |
+
 ---
 
 ### 7.2 `React.memo`
@@ -3539,6 +3561,20 @@ Check for: (1) inline objects, arrays or functions in props; (2) `children` pass
 
 **With the React Compiler:** the compiler adds the equivalent of `memo`, `useMemo` and `useCallback` automatically at build time, so new code rarely needs a manual `React.memo`. It's still useful in codebases without the compiler, or as an explicit escape hatch (see [7.11](#711-react-compiler)).
 
+**Key terms**
+
+| Term | Meaning |
+|---|---|
+| Memoisation | Caching a result and reusing it while the inputs stay the same. |
+| Shallow equality | Compares each prop one level deep with `Object.is`. It doesn't look inside objects: two different objects with the same contents are "not equal". |
+| `Object.is` | The equality check React uses; works like `===` (except for the `NaN` and `+0`/`-0` edge cases). |
+| Primitive | A string, number, boolean, `null` or `undefined`. Compared by value, so `5 === 5`. |
+| Referentially stable | The same object or function reference across renders (made with `useMemo`, `useCallback`, or defined outside the component). |
+| Bail out | React skips a render because it detects nothing changed. |
+| `PureComponent` | The class-component version of `React.memo`; compares props **and** state shallowly (see 4.3). |
+| React Compiler | A build-time tool that adds memoisation automatically (see 7.11). |
+| Escape hatch | A manual option you use in the rare cases an automatic tool doesn't handle. |
+
 ---
 
 ### 7.3 Avoiding Unnecessary Re-renders: Structural Techniques
@@ -3579,6 +3615,18 @@ const name = useStore(s => s.user.name);    // not useStore(s => s)
 
 **Scenario:** *"Typing in a search box re-renders a large chart on the same page."* The input's state lives in a shared parent. Move it into a small `<SearchBox>` component, so the chart isn't part of the re-render. No memoisation is needed.
 
+**Key terms**
+
+| Term | Meaning |
+|---|---|
+| Move state down | Put state in the smallest component that needs it, so only that component re-renders when it changes. |
+| Lift content up (children pattern) | Pass expensive JSX as `children`. It's created by the parent, so it isn't re-created when the wrapper's own state changes. |
+| Subtree | A component plus everything rendered inside it. |
+| Narrow selector | Reading only the value you need from a store (`s => s.user.name`), so the component re-renders only when that value changes. |
+| Split contexts | Using separate contexts for values that change at different rates, so a change in one doesn't re-render readers of the other. |
+| Stable key | A list `key` that stays the same for the same item across renders (an id, not the array index). |
+| Debounce / throttle | Limit how often frequent events (typing, scroll) trigger work (see 7.6). |
+
 ---
 
 ### 7.4 Code Splitting: `React.lazy`, `Suspense`, dynamic `import()`
@@ -3589,16 +3637,26 @@ const name = useStore(s => s.user.name);    // not useStore(s => s)
 Ship less JavaScript up front. Split by **route** first, then by **heavy components** that aren't shown straight away (charts, editors, modals).
 
 ```jsx
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState } from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
 
+// 1. ROUTE-LEVEL SPLITTING
+// A normal `import Dashboard from ...` puts Dashboard's code in the main bundle,
+// so every user downloads it on first load, even if they never open that page.
+// `import()` (dynamic import) tells the bundler (Vite/Webpack) to put that file
+// in a SEPARATE chunk (e.g. Settings-3f2a.js) that is downloaded only when needed.
+// `lazy()` wraps it so React can render it like a normal component.
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Settings  = lazy(() => import('./pages/Settings'));
-const RichEditor = lazy(() => import('./components/RichEditor'));
 
 function App() {
   return (
+    // While a lazy component's chunk is still downloading, React "suspends" it
+    // and shows the nearest Suspense fallback instead (here: a page skeleton).
     <Suspense fallback={<PageSkeleton />}>
+      <Nav />
       <Routes>
+        {/* Visiting "/" downloads the Dashboard chunk; "/settings" downloads the Settings chunk */}
         <Route path="/" element={<Dashboard />} />
         <Route path="/settings" element={<Settings />} />
       </Routes>
@@ -3606,13 +3664,49 @@ function App() {
   );
 }
 
-// Prefetch on hover → instant navigation
+// 2. PREFETCH ON HOVER
+// Calling import() starts downloading the chunk. The browser caches it, so when
+// the user actually clicks, lazy() finds it already loaded → no skeleton, instant page.
 const loadSettings = () => import('./pages/Settings');
-<Link to="/settings" onMouseEnter={loadSettings}>Settings</Link>
 
-// Lazy-load a heavy library only when needed
+function Nav() {
+  return (
+    <nav>
+      <Link to="/">Dashboard</Link>
+      {/* The gap between hover and click (often a few hundred ms) is used to fetch the chunk */}
+      <Link to="/settings" onMouseEnter={loadSettings}>Settings</Link>
+    </nav>
+  );
+}
+
+// 3. COMPONENT-LEVEL SPLITTING
+// A heavy component that isn't visible straight away (editor, chart, modal)
+// gets its own chunk too. It is only downloaded when it is first rendered.
+const RichEditor = lazy(() => import('./components/RichEditor'));
+
+function PostPage() {
+  const [editing, setEditing] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setEditing(true)}>Edit post</button>
+      {/* Until "Edit post" is clicked, RichEditor's code is never downloaded.
+          This inner Suspense only replaces the editor area, not the whole page. */}
+      {editing && (
+        <Suspense fallback={<p>Loading editor...</p>}>
+          <RichEditor />
+        </Suspense>
+      )}
+    </>
+  );
+}
+
+// 4. LAZY-LOAD A HEAVY LIBRARY (not a component)
+// jsPDF is large. A static `import { jsPDF } from 'jspdf'` at the top of the file
+// would add it to the main bundle. Here it is downloaded only when the user
+// actually clicks "Export PDF". No lazy/Suspense needed: it's a plain async function.
 async function exportPdf() {
-  const { jsPDF } = await import('jspdf');
+  const { jsPDF } = await import('jspdf');   // the module object; take the named export
   new jsPDF().text('Hello', 10, 10).save('a.pdf');
 }
 ```
@@ -3625,6 +3719,24 @@ Notes:
 
 **Scenario:** *"After a deploy, some users get a blank screen when navigating."*
 Old chunk files were deleted, and users who still have the old `index.js` request chunks that no longer exist. Fixes: keep old assets for a while after deploy, catch `ChunkLoadError` in an error boundary and reload the page once, or retry the dynamic import.
+
+**Key terms**
+
+| Term | Meaning |
+|---|---|
+| Code splitting | Breaking one big JS bundle into smaller files that are downloaded only when needed. |
+| Bundler | The build tool (Vite, Webpack) that combines your source files into bundles and chunks. |
+| Chunk | One of the smaller files created by code splitting, e.g. `Settings-3f2a.js`. |
+| Static `import` | `import X from './X'` at the top of a file. The code goes into the same bundle and is downloaded upfront. |
+| Dynamic `import()` | `import('./X')` called at runtime. Returns a Promise and tells the bundler to put `X` in a separate chunk. |
+| `React.lazy` | Wraps a dynamic import so the result can be rendered like a normal component. |
+| `Suspense` / fallback | Shows the `fallback` UI (spinner, skeleton) while a lazy component's chunk is still downloading. |
+| Route-level splitting | One chunk per page/route. The first and most effective split. |
+| Component-level splitting | A separate chunk for a heavy component that isn't shown immediately (editor, chart, modal). |
+| Prefetch | Start downloading something the user will probably need soon (e.g. on hover) so it's ready when they click. |
+| Default export | `export default X`. `React.lazy` expects the module to have one. |
+| Error boundary | A component that catches render errors in its children and shows a fallback instead of a blank screen (see 13.1). |
+| `ChunkLoadError` | A chunk failed to download, usually because a new deploy deleted the old chunk files. |
 
 ---
 
@@ -3668,6 +3780,21 @@ function BigList({ rows }) {
 
 **Scenario:** *"Chat app with 50,000 messages, scrolling is laggy."* Virtualize with dynamic height measurement and reverse (bottom-anchored) scrolling, and load older messages in pages as the user scrolls up. Alternative for simpler cases: the CSS `content-visibility: auto`.
 
+**Key terms**
+
+| Term | Meaning |
+|---|---|
+| Virtualization (windowing) | Rendering only the rows visible in the scroll area (the "window") instead of the whole list. |
+| DOM node | One element in the page (`div`, `li`, text). Thousands of them make rendering, layout and scrolling slow. |
+| Jank | Visible stutter when the browser can't draw a frame in time (more than ~16 ms per frame at 60 fps). |
+| Overscan (buffer) | A few extra rows rendered just above and below the visible area, so fast scrolling doesn't show blank space. |
+| Spacer / total size | An inner element with the full list's height, so the scrollbar looks and behaves like all rows exist. |
+| Dynamic row heights | Rows of different heights. The library must measure each row after rendering instead of assuming a fixed size. |
+| Bottom-anchored scrolling | Scrolling that starts at the bottom and keeps position when older items load above (chat apps). |
+| `content-visibility: auto` | A CSS property that lets the browser skip rendering off-screen content. A simpler, no-library alternative. |
+| Screen reader | Assistive software that reads the page aloud; it can't reach rows that aren't in the DOM. |
+| SEO | Search Engine Optimisation. Search engines can't index rows that aren't rendered. |
+
 ---
 
 ### 7.6 Debouncing & Throttling in React
@@ -3706,6 +3833,20 @@ useEffect(() => { if (debouncedQuery) search(debouncedQuery); }, [debouncedQuery
 
 **Scenario:** *"Search fires an API call on every keystroke and results flicker."* Debounce the query (300 ms), cancel or ignore stale requests (`AbortController`), and keep showing the previous results while loading (`placeholderData: keepPreviousData` in React Query).
 
+**Key terms**
+
+| Term | Meaning |
+|---|---|
+| Debounce | Wait until events **stop** for N ms, then run once (search box, autosave). |
+| Throttle | Run **at most once every** N ms while events keep coming (scroll, resize, mouse move). |
+| Debounced function | A wrapped function with its own timer. If it's re-created every render, each one has a new timer and nothing gets debounced. |
+| Latest-ref pattern | Keep the newest callback in a ref (`onSearchRef.current = onSearch`) so a stable function can always call the current version. |
+| `cancel()` | Method on lodash's debounced functions that clears the pending timer; call it on unmount. |
+| `useDebounce` | A custom hook that returns a value only after it has stopped changing for N ms. |
+| Stale request | An older request whose response arrives after a newer one and would overwrite fresher results. |
+| `AbortController` | Browser API to cancel a `fetch` that is no longer needed. |
+| `keepPreviousData` | React Query option that keeps showing the old results while new ones load, so the list doesn't flicker. |
+
 ---
 
 ### 7.7 Image & Asset Optimisation
@@ -3736,6 +3877,25 @@ Images are usually the biggest part of a page's weight, and often its **LCP** el
 
 **Scenario:** *"Lighthouse says LCP is 4.5s on mobile."* Find the LCP element (usually the hero image). Then: preload it, serve it in the right size and format, make sure it isn't lazy-loaded, use SSR so it isn't waiting on JS, and use a CDN.
 
+**Key terms**
+
+| Term | Meaning |
+|---|---|
+| Above / below the fold | Above = visible without scrolling when the page loads. Below = only visible after scrolling. |
+| Hero image | The large main image at the top of a page; often the LCP element. |
+| LCP element | The biggest visible element on first load; the LCP metric times when it appears. |
+| Lazy loading (`loading="lazy"`) | The browser downloads an image only when the user scrolls near it. Use it below the fold, never for the hero. |
+| `fetchpriority="high"` | Tells the browser this resource matters more than others; use it on the hero image. |
+| Preload (`<link rel="preload">`) | Start downloading a critical file (hero image, font) immediately, before the browser would normally discover it. |
+| CLS | How much the layout jumps while loading. Images without `width`/`height` are a common cause. |
+| `aspect-ratio` | CSS property that reserves an element's shape (e.g. 16/9) before its content loads. |
+| AVIF / WebP | Modern image formats, much smaller than JPEG/PNG at the same quality. |
+| `srcset` + `sizes` | Offer several sizes of the same image and let the browser pick the right one for the screen. |
+| `decoding="async"` | Lets the browser decode the image without blocking other work. |
+| CDN (Content Delivery Network) | Servers around the world that serve your files from a location near the user; many also resize and convert images. |
+| `font-display: swap` | Show text in a fallback font immediately, then swap in the web font when it loads (no invisible text). |
+| Font subsetting | Removing characters you don't use from a font file to make it smaller. |
+
 ---
 
 ### 7.8 Profiling with React DevTools
@@ -3764,6 +3924,23 @@ Images are usually the biggest part of a page's weight, and often its **LCP** el
 
 **Scenario:** *"Describe how you fixed a performance problem."* (Prepare your own version.) "The Profiler showed every row of a 500-row table re-rendering when one cell was edited, because the parent passed `onChange={() => ...}` inline. We memoised the rows, made the callbacks stable with `useCallback`, and normalised the state so each row selected only its own data. Edit time went from 180 ms to 12 ms."
 
+**Key terms**
+
+| Term | Meaning |
+|---|---|
+| Commit | The moment React applies a render's changes to the DOM. The Profiler groups its results per commit. |
+| Flamegraph | A chart of the component tree for one commit; each bar is a component and its width shows how long it took to render. |
+| Ranked view | The same data sorted from slowest component to fastest. |
+| "Why did this render?" | Profiler option that records the reason for each render: props changed, hooks changed, or parent rendered. |
+| Highlight updates | Components tab option that flashes a border around each component as it re-renders. |
+| Long task | Main-thread work longer than 50 ms; it delays responses to clicks and typing. |
+| Scripting / rendering / painting | Performance tab categories: running JS / calculating styles and layout / drawing pixels. |
+| Forced reflow | The browser recalculating layout immediately because code read a layout value right after changing styles. |
+| `<Profiler>` API | A React component that reports render timings from code, via its `onRender` callback. |
+| `actualDuration` | How long the profiled subtree took to render in that commit, in ms. |
+| 16 ms budget | At 60 frames per second, each frame has about 16 ms; slower work causes visible jank. |
+| Normalised state | Storing items in a flat object by id instead of nested arrays, so updating one item doesn't change the others. |
+
 ---
 
 ### 7.9 Web Vitals: LCP, INP, CLS
@@ -3789,6 +3966,24 @@ onLCP(sendToAnalytics); onINP(sendToAnalytics); onCLS(sendToAnalytics);
 
 **Tip:** Lab data (Lighthouse) is not the same as field data (CrUX/RUM). Google ranks on **field data at the 75th percentile**.
 
+**Key terms**
+
+| Term | Meaning |
+|---|---|
+| Core Web Vitals | Google's three main user-experience metrics: LCP, INP and CLS. They affect search ranking. |
+| LCP | Largest Contentful Paint: when the main content appears (loading speed). |
+| INP | Interaction to Next Paint: how fast the page visibly responds to clicks, taps and typing. |
+| FID | First Input Delay: the older responsiveness metric, replaced by INP in 2024. |
+| CLS | Cumulative Layout Shift: how much the layout jumps while loading. |
+| TTFB | Time to First Byte: how long until the server's response starts arriving. |
+| FCP | First Contentful Paint: when the first text or image appears. |
+| Lab data | Measured in a controlled test (Lighthouse) on one simulated device. Good for debugging. |
+| Field data | Measured from real users on real devices and networks. What Google actually uses. |
+| CrUX | Chrome User Experience Report: Google's public dataset of field data from real Chrome users. |
+| RUM | Real User Monitoring: collecting metrics from your own users (e.g. with the `web-vitals` library). |
+| 75th percentile (p75) | The value that 75% of visits meet or beat; Google judges each metric at this point. |
+| Web Worker | Runs JS on a background thread so heavy work doesn't block the page (see 27.1). |
+
 ---
 
 ### 7.10 Bundle Size & Tree Shaking
@@ -3802,16 +3997,80 @@ onLCP(sendToAnalytics); onINP(sendToAnalytics); onCLS(sendToAnalytics);
 - Common problems: `import _ from 'lodash'` (whole library) → `import debounce from 'lodash/debounce'` or `lodash-es`; `moment` → `date-fns` / `dayjs`; icon libraries imported all at once.
 - Compression: Brotli/gzip; minify; modern browser targets (less polyfill code).
 
-```js
-// ❌ pulls everything
-import { format } from 'date-fns/esm';  // fine, tree-shakeable
-import * as Icons from 'lucide-react';  // ❌ may bundle all icons
+**What tree shaking is**
+Picture your app and all its libraries as a tree. Every exported function is a leaf. **Tree shaking** "shakes" the tree so the dead leaves (code you never use) fall off, and only the code you actually use ends up in the bundle the user downloads. It's a form of **dead-code elimination**, done automatically by the bundler (Vite/Rollup, Webpack, esbuild) when you make a **production build**.
 
-// ✅
+```js
+// math.js exports three functions
+export function add(a, b) { return a + b; }
+export function subtract(a, b) { return a - b; }
+export function multiply(a, b) { return a * b; }
+
+// app.js uses only one of them
+import { add } from './math';
+console.log(add(2, 3));
+
+// Production bundle: contains add() only. subtract() and multiply() are removed.
+```
+
+**How the bundler does it**
+
+1. It starts at your entry file (`main.jsx`) and follows every `import`, building a map of which file uses which export.
+2. It marks every export that is actually used.
+3. While minifying, it drops everything that wasn't marked.
+
+**Why it needs ES modules (`import` / `export`)**
+ES module imports are **static**: they sit at the top of the file with fixed names, so the bundler can see exactly what's used **without running the code**. CommonJS `require()` is **dynamic**: it can be called inside an `if`, or with a name built at runtime (`require('./lang/' + lang)`). The bundler can't know what will be needed, so it keeps everything.
+
+**Why side effects matter**
+Some files do something just by being imported: add global CSS, install a polyfill, set `window.something`. Nothing "uses" an export from them, but removing them would break the app. So the bundler keeps any file that **might** have side effects. A library tells the bundler it's safe to drop unused files with `"sideEffects": false` in its `package.json` (or lists only the files that do have them, e.g. `"sideEffects": ["*.css"]`).
+
+**What stops tree shaking**
+
+- Libraries published only as CommonJS (classic `lodash`, `moment`).
+- Accessing a namespace import dynamically (`Icons[name]`): the bundler can't tell which exports you need.
+- Files marked as (or assumed to have) side effects.
+- Development builds: tree shaking runs only in production builds, so check the production bundle.
+
+```js
+// ❌ lodash is CommonJS: the whole library is bundled, even to use one function
+import _ from 'lodash';
+_.debounce(save, 300);
+
+// ✅ lodash-es is published as ES modules: only debounce is bundled
+import { debounce } from 'lodash-es';
+
+// ❌ dynamic access to a namespace import: the bundler can't tell which icons are used, so it may keep them all
+import * as Icons from 'lucide-react';
+const Icon = Icons[iconName];
+
+// ✅ named imports: only these two icons are bundled
 import { Search, X } from 'lucide-react';
 ```
 
+**How to check it's working:** run the bundle analyser on a production build. If a library you use one function from shows up as a huge box, tree shaking isn't working for it: switch to its ES-module version, import the specific file (`lodash/debounce`), or replace the library.
+
 **Scenario:** *"Main bundle is 2MB."* Run the analyser → split by route → lazy-load heavy components → swap heavy libraries → check tree shaking works → set a **bundle size budget in CI** (size-limit) so it doesn't grow again.
+
+**Key terms**
+
+| Term | Meaning |
+|---|---|
+| Bundle analyser | A tool that draws your bundle as boxes sized by how much each library contributes. |
+| Tree shaking | Removing exports your code never imports from the final bundle, so users download only the code you actually use. |
+| Dead-code elimination | The general name for removing code that never runs or is never used; tree shaking is one kind. |
+| Production build | The optimised build you deploy (`npm run build`). Tree shaking and minifying happen here, not in the dev server. |
+| Static vs dynamic import | Static: `import { x } from 'y'` at the top, known before the code runs. Dynamic: decided at runtime (`require(name)`, `import()`). |
+| Namespace import | `import * as Icons from '...'`: imports every export as one object. Fine if you use `Icons.Search`; blocks tree shaking if you use `Icons[name]`. |
+| ES modules (ESM) | The `import` / `export` syntax. Bundlers can analyse it before running it, which makes tree shaking possible. |
+| CommonJS | The older `require()` / `module.exports` syntax. Hard to tree shake. |
+| Side effects | Code that does something just by being imported (e.g. adds global CSS). `"sideEffects": false` tells the bundler it's safe to drop unused files. |
+| Minify | Remove whitespace and shorten names to make files smaller. |
+| gzip / Brotli | Compression applied when files are sent over the network. Brotli usually compresses better. |
+| Polyfill | Code that adds a newer JS feature to older browsers that lack it. |
+| Browser targets | The oldest browsers you support. Modern targets need fewer polyfills, so less code. |
+| Bundle size budget | A maximum size for your bundle, checked automatically (e.g. by `size-limit`). |
+| CI | Continuous Integration: checks that run automatically on every commit or pull request. |
 
 ---
 
@@ -3832,6 +4091,17 @@ module.exports = { plugins: ['babel-plugin-react-compiler'] };
 ```
 
 **Scenario:** *"Should we remove all our useMemo/useCallback after adopting the compiler?"* Not in one big sweep. Leave them; they're harmless. New code can skip them. Use `eslint-plugin-react-compiler` / react-hooks lint to find code that breaks the rules and prevents optimisation.
+
+**Key terms**
+
+| Term | Meaning |
+|---|---|
+| Compiler (build time) | A tool that transforms your code while building the app, not while it runs in the browser. |
+| Babel plugin | An add-on for Babel, the tool that transforms JS/JSX during the build. |
+| Automatic memoisation | The compiler adds the equivalent of `useMemo`, `useCallback` and `React.memo` where it's safe. |
+| Rules of React | Render must be pure, props and state must not be mutated, and hooks must follow the Rules of Hooks. |
+| Escape hatch | Manual `useMemo` / `useCallback` you can still use for cases the compiler doesn't optimise. |
+| ESLint plugin | A linter rule set that flags code breaking the Rules of React, which would stop the compiler from optimising it. |
 
 ---
 
