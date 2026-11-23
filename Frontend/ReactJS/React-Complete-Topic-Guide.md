@@ -9249,6 +9249,180 @@ useEffect(() => {
 }, []);
 ```
 
+**Code examples for each type of leak**
+
+**1. Event listeners**
+```jsx
+// ❌ Leak: the two arrow functions are different objects, so nothing is removed
+useEffect(() => {
+  window.addEventListener('scroll', () => setY(window.scrollY));
+  return () => window.removeEventListener('scroll', () => setY(window.scrollY));
+}, []);
+
+// ✅ Same function reference for add and remove
+useEffect(() => {
+  const onScroll = () => setY(window.scrollY);
+  window.addEventListener('scroll', onScroll);
+  return () => window.removeEventListener('scroll', onScroll);
+}, []);
+
+// ✅ With several listeners: one AbortController removes them all
+useEffect(() => {
+  const ctrl = new AbortController();
+  window.addEventListener('scroll', onScroll, { signal: ctrl.signal });
+  window.addEventListener('resize', onResize, { signal: ctrl.signal });
+  return () => ctrl.abort();
+}, [onScroll, onResize]);
+```
+**What is held:** `window` lives as long as the page. It holds the listener, and the listener's closure holds the component's data.
+
+**2. Open subscriptions**
+```jsx
+// ❌ Leak: every roomId change opens another socket; the old ones stay open
+useEffect(() => {
+  const ws = new WebSocket('wss://chat.example.com/' + roomId);
+  ws.onmessage = e => setMessages(prev => [...prev, e.data]);   // this array also grows forever
+}, [roomId]);
+
+// ✅ Close the old socket, and cap what you store
+useEffect(() => {
+  const ws = new WebSocket('wss://chat.example.com/' + roomId);
+  ws.onmessage = e => setMessages(prev => [...prev, e.data].slice(-1000));   // keep the last 1,000
+  return () => ws.close();
+}, [roomId]);
+
+// ✅ Same rule for observers: disconnect in the cleanup
+useEffect(() => {
+  const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
+  observer.observe(ref.current);
+  return () => observer.disconnect();
+}, []);
+```
+**What is held:** an open socket keeps its `onmessage` callback alive, and keeps receiving data for a screen nobody is looking at.
+
+**3. Unbounded caches**
+```js
+// ❌ Leak: a module-level Map lives until the page closes, and nothing is ever removed
+const cache = new Map();
+
+async function getUser(id) {
+  if (!cache.has(id)) cache.set(id, await fetchUser(id));
+  return cache.get(id);
+}
+
+// ✅ LRU (Least Recently Used) cache: has a limit and drops the oldest entry
+class LRUCache {
+  constructor(limit) {
+    this.limit = limit;
+    this.map = new Map();              // a Map remembers insertion order
+  }
+  get(key) {
+    if (!this.map.has(key)) return undefined;
+    const value = this.map.get(key);
+    this.map.delete(key);              // delete and re-add: moves it to the "newest" end
+    this.map.set(key, value);
+    return value;
+  }
+  set(key, value) {
+    this.map.delete(key);
+    this.map.set(key, value);
+    if (this.map.size > this.limit) {
+      this.map.delete(this.map.keys().next().value);   // the first key is the oldest
+    }
+  }
+}
+
+const userCache = new LRUCache(100);   // never more than 100 users
+```
+**What is held:** the module-level `Map` holds every user ever loaded, including ones from screens closed long ago.
+
+**4. Detached DOM nodes**
+```jsx
+// ❌ Leak: React removes the row from the page, but the module-level Map still holds it
+const rowElements = new Map();
+
+function Row({ id }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    rowElements.set(id, ref.current);
+  }, [id]);
+  return <div ref={ref}>Row {id}</div>;
+}
+
+// ✅ Remove the entry when the row unmounts
+function Row({ id }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    rowElements.set(id, ref.current);
+    return () => rowElements.delete(id);
+  }, [id]);
+  return <div ref={ref}>Row {id}</div>;
+}
+```
+**What is held:** a "detached" node is no longer on the page but is still referenced from JS. Holding one node can keep its whole removed subtree in memory. A normal `ref` is safe on its own, because React sets `ref.current` to `null` on unmount. If you're storing data **about** an element, use a `WeakMap` with the element as the key (see 26.3).
+
+**5. Third-party instances**
+```jsx
+import { useEffect, useRef } from 'react';
+import Chart from 'chart.js/auto';
+
+// ❌ Leak: a new chart for every data change; old ones keep their listeners and data
+// (Chart.js also throws "Canvas is already in use" on the second run; many libraries leak silently)
+function SalesChart({ data }) {
+  const canvasRef = useRef(null);
+  useEffect(() => {
+    new Chart(canvasRef.current, { type: 'line', data });
+  }, [data]);
+  return <canvas ref={canvasRef} />;
+}
+
+// ✅ Create once, update the same instance, destroy on unmount
+function SalesChart({ data }) {
+  const canvasRef = useRef(null);
+  const chartRef = useRef(null);
+
+  useEffect(() => {
+    const chart = new Chart(canvasRef.current, { type: 'line', data: { datasets: [] } });
+    chartRef.current = chart;
+    return () => chart.destroy();      // removes the library's listeners and internal references
+  }, []);
+
+  useEffect(() => {
+    chartRef.current.data = data;      // reuse the instance
+    chartRef.current.update();
+  }, [data]);
+
+  return <canvas ref={canvasRef} />;
+}
+```
+**What is held:** React only cleans up what React created. The library's own listeners, timers, observers and registries stay until you call its cleanup method (`destroy()`, `remove()`, `dispose()`).
+
+**6. Object URLs**
+```jsx
+// ❌ Leak: each selected file adds a URL that is never released
+function Preview({ file }) {
+  const [url, setUrl] = useState(null);
+  useEffect(() => {
+    setUrl(URL.createObjectURL(file));
+  }, [file]);
+  return url && <img src={url} alt="Preview" />;
+}
+
+// ✅ Release the old URL when the file changes or the component unmounts
+function Preview({ file }) {
+  const [url, setUrl] = useState(null);
+  useEffect(() => {
+    const objectUrl = URL.createObjectURL(file);
+    setUrl(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
+  return url && <img src={url} alt="Preview" />;
+}
+```
+**What is held:** the browser keeps the file's data available for that URL until you revoke it or the page closes. Setting `url` to `null` doesn't release it.
+
+**The pattern in all six:** something that outlives the component (`window`, a socket, a module variable, a library, the browser) still holds a reference. The fix is to release it in the cleanup, or limit how much can be held.
+
 **A common misconception:** older React versions warned "Can't perform a state update on an unmounted component". React 18 removed that warning, because most such cases weren't real leaks. A pending fetch finishing after unmount is harmless. A subscription that's never cleaned up **is** a leak.
 
 `removeEventListener` needs the **same function reference**, so a new inline arrow function won't remove anything.
@@ -9317,6 +9491,43 @@ function track(element) {
 ```
 
 `WeakMap` keys must be objects (or non-registered symbols), and it can't be iterated. Garbage collection timing isn't predictable, so never put program logic on it.
+
+**What "unreachable" means**
+An object is **unreachable** when running code has no way to get to it: no variable, property, array or closure still in use leads to it. The garbage collector (GC) can then free it.
+
+```js
+let user = { name: 'Asha' };   // reachable through `user`
+user = null;                   // nothing points to the object → unreachable → GC can free it
+```
+
+A `Map` keeps its keys reachable. Being a key in a `WeakMap` doesn't count:
+
+```js
+// Map: the object stays in memory
+const map = new Map();
+let userA = { name: 'Asha' };
+map.set(userA, 'some data');
+userA = null;                  // the Map still holds the object → still reachable → possible leak
+
+// WeakMap: the object can be freed
+const weakMap = new WeakMap();
+let userB = { name: 'Ravi' };
+weakMap.set(userB, 'some data');
+userB = null;                  // only the WeakMap has it → unreachable → key and entry can be freed
+
+// A second reference keeps the object, and its entry, alive
+let a = { name: 'Meera' };
+const b = a;
+weakMap.set(a, 'some data');
+a = null;                      // still reachable through b
+weakMap.get(b);                // 'some data'
+```
+
+- **Only the keys are held weakly.** The value is kept for as long as its key is reachable.
+- **You can't tell when an entry is freed**, because the GC decides. That's why a `WeakMap` has no `size` and can't be looped over.
+
+**Say it in an interview:**
+> "An object is unreachable when no live reference leads to it, so the garbage collector can free it. A `Map` keeps its keys reachable, but a `WeakMap` holds them weakly, so once nothing else references the key, the key and its entry can be collected."
 
 **Scenario:** *"We cache computed data per object, and the cache keeps growing."*
 If the cache is keyed by object, a `WeakMap` drops each entry when the object goes away. If it's keyed by strings, weak references don't apply, so use an LRU cache with a size limit.
