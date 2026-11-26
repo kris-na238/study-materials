@@ -1,12 +1,23 @@
 # Node.js Complete Interview Guide
 
-One revision document for senior Node.js interviews: 75 topics in 14 parts. ⭐ marks the topics asked most often in senior interviews.
+One revision document for senior Node.js interviews: 75 topics in 14 parts.
+
+**Interview frequency rating** (on every topic and subtopic, relative to each other)
+
+| Rating | Meaning |
+|---|---|
+| ⭐⭐⭐ | Asked very often. Know it cold. |
+| ⭐⭐ | Asked often, especially in senior rounds. |
+| ⭐ | Asked sometimes, usually as a follow-up. |
+| (no star) | Rarely asked. Read once for depth. |
+
+The Cheat Sheet (75) is reference material and is not rated.
 
 **How to use this guide**
 
 - First read: go top to bottom. Each part builds on the one before it.
 - Quick revision: read the **Quick revision** block at the end of each topic, then the [Cheat Sheet](#75-cheat-sheet).
-- Night before an interview: read [Must-Know Top 30 Questions](#70-must-know-top-30-questions).
+- Night before an interview: read [Must-Know Top 30 Questions](#70-must-know-top-30-questions-).
 
 **Every topic follows the same structure**
 
@@ -58,133 +69,133 @@ flowchart TD
 
 **[Part 1: Foundations](#part-1-foundations)**
 
-- [1. What Node.js Is](#1-what-nodejs-is)
-- [2. Node.js vs Browser JavaScript](#2-nodejs-vs-browser-javascript)
-- [3. ⭐ Module Systems](#3--module-systems)
-- [4. npm and Package Management](#4-npm-and-package-management)
+- [1. What Node.js Is ⭐⭐⭐](#1-what-nodejs-is-)
+- [2. Node.js vs Browser JavaScript ⭐⭐](#2-nodejs-vs-browser-javascript-)
+- [3. Module Systems ⭐⭐⭐](#3-module-systems-)
+- [4. npm and Package Management ⭐⭐](#4-npm-and-package-management-)
 
 **[Part 2: Runtime Internals](#part-2-runtime-internals)**
 
-- [5. ⭐ Node.js Architecture](#5--nodejs-architecture)
-- [6. ⭐ Event Loop](#6--event-loop)
-- [7. V8 Engine](#7-v8-engine)
-- [8. ⭐ Memory and Garbage Collection](#8--memory-and-garbage-collection)
+- [5. Node.js Architecture ⭐⭐⭐](#5-nodejs-architecture-)
+- [6. Event Loop ⭐⭐⭐](#6-event-loop-)
+- [7. V8 Engine ⭐](#7-v8-engine-)
+- [8. Memory and Garbage Collection ⭐⭐⭐](#8-memory-and-garbage-collection-)
 
 **[Part 3: Async Programming](#part-3-async-programming)**
 
-- [9. Callbacks](#9-callbacks)
-- [10. ⭐ Promises](#10--promises)
-- [11. ⭐ Async/Await](#11--asyncawait)
-- [12. ⭐ EventEmitter](#12--eventemitter)
-- [13. Cancellation and Timeouts](#13-cancellation-and-timeouts)
-- [14. Async Context](#14-async-context)
+- [9. Callbacks ⭐⭐](#9-callbacks-)
+- [10. Promises ⭐⭐⭐](#10-promises-)
+- [11. Async/Await ⭐⭐⭐](#11-asyncawait-)
+- [12. EventEmitter ⭐⭐⭐](#12-eventemitter-)
+- [13. Cancellation and Timeouts ⭐](#13-cancellation-and-timeouts-)
+- [14. Async Context ⭐](#14-async-context-)
 
 **[Part 4: Core Modules and Data Handling](#part-4-core-modules-and-data-handling)**
 
-- [15. ⭐ Buffers and Binary Data](#15--buffers-and-binary-data)
-- [16. ⭐ Streams](#16--streams)
-- [17. ⭐ Backpressure](#17--backpressure)
-- [18. File System and Path](#18-file-system-and-path)
-- [19. HTTP and Networking](#19-http-and-networking)
-- [20. Crypto](#20-crypto)
-- [21. Process and Environment](#21-process-and-environment)
+- [15. Buffers and Binary Data ⭐⭐](#15-buffers-and-binary-data-)
+- [16. Streams ⭐⭐⭐](#16-streams-)
+- [17. Backpressure ⭐⭐](#17-backpressure-)
+- [18. File System and Path ⭐⭐](#18-file-system-and-path-)
+- [19. HTTP and Networking ⭐⭐](#19-http-and-networking-)
+- [20. Crypto ⭐](#20-crypto-)
+- [21. Process and Environment ⭐⭐](#21-process-and-environment-)
 
 **[Part 5: Concurrency and Parallelism](#part-5-concurrency-and-parallelism)**
 
-- [22. ⭐ Worker Threads](#22--worker-threads)
-- [23. ⭐ Child Processes](#23--child-processes)
-- [24. ⭐ Cluster Module](#24--cluster-module)
-- [25. Concurrency Comparison](#25-concurrency-comparison)
+- [22. Worker Threads ⭐⭐⭐](#22-worker-threads-)
+- [23. Child Processes ⭐⭐⭐](#23-child-processes-)
+- [24. Cluster Module ⭐⭐⭐](#24-cluster-module-)
+- [25. Concurrency Comparison ⭐⭐](#25-concurrency-comparison-)
 
 **[Part 6: Building APIs and Web Apps](#part-6-building-apis-and-web-apps)**
 
-- [26. ⭐ Express](#26--express)
-- [27. Framework Comparison](#27-framework-comparison)
-- [28. ⭐ REST API Design](#28--rest-api-design)
-- [29. GraphQL](#29-graphql)
-- [30. gRPC](#30-grpc)
-- [31. ⭐ Real-Time Communication](#31--real-time-communication)
-- [32. File Uploads and Large Payloads](#32-file-uploads-and-large-payloads)
-- [33. Validation and Config](#33-validation-and-config)
-- [34. TypeScript with Node.js](#34-typescript-with-nodejs)
+- [26. Express ⭐⭐⭐](#26-express-)
+- [27. Framework Comparison ⭐](#27-framework-comparison-)
+- [28. REST API Design ⭐⭐⭐](#28-rest-api-design-)
+- [29. GraphQL ⭐⭐](#29-graphql-)
+- [30. gRPC ⭐](#30-grpc-)
+- [31. Real-Time Communication ⭐⭐⭐](#31-real-time-communication-)
+- [32. File Uploads and Large Payloads ⭐⭐](#32-file-uploads-and-large-payloads-)
+- [33. Validation and Config ⭐](#33-validation-and-config-)
+- [34. TypeScript with Node.js ⭐⭐](#34-typescript-with-nodejs-)
 
 **[Part 7: Data Layer](#part-7-data-layer)**
 
-- [35. ⭐ Database Access](#35--database-access)
-- [36. ⭐ Connection Pooling](#36--connection-pooling)
-- [37. Transactions and Migrations](#37-transactions-and-migrations)
-- [38. ⭐ Caching](#38--caching)
-- [39. Background Jobs](#39-background-jobs)
-- [40. ⭐ Message Queues](#40--message-queues)
+- [35. Database Access ⭐⭐⭐](#35-database-access-)
+- [36. Connection Pooling ⭐⭐](#36-connection-pooling-)
+- [37. Transactions and Migrations ⭐⭐](#37-transactions-and-migrations-)
+- [38. Caching ⭐⭐⭐](#38-caching-)
+- [39. Background Jobs ⭐⭐](#39-background-jobs-)
+- [40. Message Queues ⭐⭐](#40-message-queues-)
 
 **[Part 8: Security](#part-8-security)**
 
-- [41. ⭐ Authentication](#41--authentication)
-- [42. Authorization](#42-authorization)
-- [43. ⭐ OWASP for Node.js](#43--owasp-for-nodejs)
-- [44. API Hardening](#44-api-hardening)
-- [45. Supply Chain Security](#45-supply-chain-security)
-- [46. ⭐ Rate Limiting](#46--rate-limiting)
+- [41. Authentication ⭐⭐⭐](#41-authentication-)
+- [42. Authorization ⭐⭐](#42-authorization-)
+- [43. OWASP for Node.js ⭐⭐⭐](#43-owasp-for-nodejs-)
+- [44. API Hardening ⭐⭐](#44-api-hardening-)
+- [45. Supply Chain Security ⭐](#45-supply-chain-security-)
+- [46. Rate Limiting ⭐⭐⭐](#46-rate-limiting-)
 
 **[Part 9: Reliability and Testing](#part-9-reliability-and-testing)**
 
-- [47. ⭐ Error Handling](#47--error-handling)
-- [48. ⭐ Graceful Shutdown](#48--graceful-shutdown)
-- [49. Resilience Patterns](#49-resilience-patterns)
-- [50. ⭐ Testing Strategy](#50--testing-strategy)
-- [51. Testing Tools](#51-testing-tools)
+- [47. Error Handling ⭐⭐⭐](#47-error-handling-)
+- [48. Graceful Shutdown ⭐⭐](#48-graceful-shutdown-)
+- [49. Resilience Patterns ⭐⭐](#49-resilience-patterns-)
+- [50. Testing Strategy ⭐⭐](#50-testing-strategy-)
+- [51. Testing Tools ⭐](#51-testing-tools-)
 
 **[Part 10: Performance and Debugging](#part-10-performance-and-debugging)**
 
-- [52. ⭐ Profiling](#52--profiling)
-- [53. ⭐ Debugging Memory Leaks](#53--debugging-memory-leaks)
-- [54. Debugging Production Issues](#54-debugging-production-issues)
-- [55. Performance Optimization](#55-performance-optimization)
+- [52. Profiling ⭐⭐](#52-profiling-)
+- [53. Debugging Memory Leaks ⭐⭐⭐](#53-debugging-memory-leaks-)
+- [54. Debugging Production Issues ⭐⭐](#54-debugging-production-issues-)
+- [55. Performance Optimization ⭐⭐](#55-performance-optimization-)
 
 **[Part 11: Architecture and Scaling](#part-11-architecture-and-scaling)**
 
-- [56. ⭐ Scaling Node.js](#56--scaling-nodejs)
-- [57. ⭐ Monolith vs Microservices](#57--monolith-vs-microservices)
-- [58. Distributed Patterns](#58-distributed-patterns)
-- [59. ⭐ Design Patterns in Node](#59--design-patterns-in-node)
-- [60. Project Structure](#60-project-structure)
-- [61. Serverless Node.js](#61-serverless-nodejs)
+- [56. Scaling Node.js ⭐⭐⭐](#56-scaling-nodejs-)
+- [57. Monolith vs Microservices ⭐⭐⭐](#57-monolith-vs-microservices-)
+- [58. Distributed Patterns ⭐⭐](#58-distributed-patterns-)
+- [59. Design Patterns in Node ⭐⭐](#59-design-patterns-in-node-)
+- [60. Project Structure ⭐⭐](#60-project-structure-)
+- [61. Serverless Node.js ⭐](#61-serverless-nodejs-)
 
 **[Part 12: Deployment and Observability](#part-12-deployment-and-observability)**
 
-- [62. Docker for Node.js](#62-docker-for-nodejs)
-- [63. Kubernetes Basics](#63-kubernetes-basics)
-- [64. CI/CD](#64-cicd)
-- [65. ⭐ Observability](#65--observability)
+- [62. Docker for Node.js ⭐](#62-docker-for-nodejs-)
+- [63. Kubernetes Basics ⭐](#63-kubernetes-basics-)
+- [64. CI/CD ⭐](#64-cicd-)
+- [65. Observability ⭐⭐](#65-observability-)
 
 **[Part 13: Modern Node.js](#part-13-modern-nodejs)**
 
-- [66. Recent Built-In Features](#66-recent-built-in-features)
-- [67. Runtime Comparison](#67-runtime-comparison)
+- [66. Recent Built-In Features ⭐](#66-recent-built-in-features-)
+- [67. Runtime Comparison ⭐](#67-runtime-comparison-)
 - [68. Native Extensions](#68-native-extensions)
-- [69. AI in Node.js Backends](#69-ai-in-nodejs-backends)
+- [69. AI in Node.js Backends ⭐](#69-ai-in-nodejs-backends-)
 
 **[Part 14: Interview Revision Kit](#part-14-interview-revision-kit)**
 
-- [70. Must-Know Top 30 Questions](#70-must-know-top-30-questions)
-- [71. Output-Based Questions](#71-output-based-questions)
-- [72. Coding Tasks](#72-coding-tasks)
-- [73. Production Scenarios](#73-production-scenarios)
-- [74. Node.js System Design](#74-nodejs-system-design)
+- [70. Must-Know Top 30 Questions ⭐⭐⭐](#70-must-know-top-30-questions-)
+- [71. Output-Based Questions ⭐⭐⭐](#71-output-based-questions-)
+- [72. Coding Tasks ⭐⭐⭐](#72-coding-tasks-)
+- [73. Production Scenarios ⭐⭐](#73-production-scenarios-)
+- [74. Node.js System Design ⭐⭐](#74-nodejs-system-design-)
 - [75. Cheat Sheet](#75-cheat-sheet)
 
 ---
 
 # Part 1: Foundations
 
-## 1. What Node.js Is
+## 1. What Node.js Is ⭐⭐⭐
 
 ### Why it matters
 Interviewers open with this to see whether you understand Node as a system or only as "JavaScript on the server". A strong answer names the parts and says when Node is the wrong choice.
 
 ### Explanation
 
-#### V8 + libuv
+#### V8 + libuv ⭐⭐⭐
 Node.js is a runtime built from two main parts:
 
 - **V8** is Google's JavaScript engine. It compiles and runs your JS.
@@ -207,7 +218,7 @@ fs.readFile(__filename, 'utf8', (err, data) => {
 console.log('this prints before the file length');
 ```
 
-#### Runtime vs language
+#### Runtime vs language ⭐⭐
 JavaScript is the language, defined by the ECMAScript spec. A **runtime** is the environment that runs it and gives it extra abilities. `Array.map` is the language. `fs.readFile` is the Node runtime. `document.querySelector` is the browser runtime.
 
 ```javascript
@@ -221,7 +232,7 @@ require('node:os').cpus().length;
 // document.querySelector('h1');
 ```
 
-#### Where Node fits
+#### Where Node fits ⭐⭐⭐
 Node is strong when work is mostly **waiting on I/O**: APIs, gateways, real-time apps, streaming and BFF layers.
 
 ```javascript
@@ -236,7 +247,7 @@ app.get('/dashboard', async (req, res) => {
 });
 ```
 
-#### Where Node doesn't fit
+#### Where Node doesn't fit ⭐⭐⭐
 Node is weak for **sustained CPU work** on the main thread: video encoding, large matrix maths, image processing and ML training.
 
 ```javascript
@@ -289,14 +300,14 @@ Node = V8 (runs JS) + libuv (event loop, async I/O) + standard library. It's exc
 
 ---
 
-## 2. Node.js vs Browser JavaScript
+## 2. Node.js vs Browser JavaScript ⭐⭐
 
 ### Why it matters
 The same language behaves differently in the two runtimes. Knowing the differences helps with SSR, shared libraries and full-stack debugging.
 
 ### Explanation
 
-#### Globals
+#### Globals ⭐⭐
 The browser's main global is `window`. Node has `global`. Node's CommonJS modules also get file-level values that look global but aren't.
 
 ```javascript
@@ -310,7 +321,7 @@ var count = 1;
 console.log(global.count);      // undefined in Node
 ```
 
-#### APIs
+#### APIs ⭐⭐
 Each runtime offers what its environment needs. Many Web APIs now exist in both.
 
 | Area | Browser | Node.js |
@@ -327,7 +338,7 @@ const url = new URL('https://example.com/search?q=node');
 console.log(url.searchParams.get('q')); // 'node'
 ```
 
-#### `process`
+#### `process` ⭐
 `process` is Node's view of the running program. Browsers have nothing similar.
 
 ```javascript
@@ -388,14 +399,14 @@ Browser has DOM and `window`. Node has `process`, `fs` and `global`. `globalThis
 
 ---
 
-## 3. ⭐ Module Systems
+## 3. Module Systems ⭐⭐⭐
 
 ### Why it matters
 Modules decide how code loads, how state is shared and why some packages fail to import. Questions on CommonJS vs ESM are very common.
 
 ### Explanation
 
-#### CommonJS (CJS)
+#### CommonJS (CJS) ⭐⭐⭐
 Node's original module system. It uses `require` and `module.exports`, loads **synchronously**, and resolves at runtime, so `require` can sit inside an `if`.
 
 ```javascript
@@ -414,7 +425,7 @@ if (process.env.DEBUG) {
 }
 ```
 
-#### ES Modules (ESM)
+#### ES Modules (ESM) ⭐⭐⭐
 The official JavaScript standard. It uses `import` and `export`. Imports are parsed before the code runs, which enables tree-shaking and top-level `await`. Use it with a `.mjs` extension or `"type": "module"` in `package.json`.
 
 ```javascript
@@ -453,7 +464,7 @@ export function inc() { count++; }
 // import { count, inc } from './counter.mjs'; inc(); count is now 1
 ```
 
-#### Interop
+#### Interop ⭐⭐
 - ESM can import CommonJS. `module.exports` becomes the default export.
 - CommonJS can load ESM with dynamic `import()`.
 - Recent Node versions also support `require()` of ESM, as long as the module graph has no top-level `await`.
@@ -478,7 +489,7 @@ async function main() {
 // }
 ```
 
-#### Module wrapper
+#### Module wrapper ⭐⭐
 Before running a CommonJS file, Node wraps it in a function. This is why each file has private scope and why `require` and `__dirname` are available.
 
 ```javascript
@@ -493,7 +504,7 @@ exports.add = add;             // Right: adds to the shared object
 module.exports = { add };      // Right: replaces what require() returns
 ```
 
-#### Resolution
+#### Resolution ⭐
 When you call `require('x')`, Node checks in this order:
 
 1. Core modules such as `fs`. The `node:` prefix makes this explicit.
@@ -514,7 +525,7 @@ console.log(module.paths);               // shows the node_modules search list
 // import { x } from './utils.js'; // ESM: works
 ```
 
-#### Caching
+#### Caching ⭐⭐
 A module runs **once**. Later `require` calls return the same cached `module.exports`, keyed by resolved file path. This gives you a free singleton, and also shared mutable state.
 
 ```javascript
@@ -535,7 +546,7 @@ delete require.cache[require.resolve('./config')];
 
 Two copies of a package in different `node_modules` folders are **different** cache entries, so an `instanceof` check can fail across them.
 
-#### Circular dependencies
+#### Circular dependencies ⭐⭐
 If A requires B and B requires A, one of them receives the other's **partially filled** exports.
 
 ```javascript
@@ -595,14 +606,14 @@ CJS is sync, dynamic and copies values. ESM is static, has live bindings and top
 
 ---
 
-## 4. npm and Package Management
+## 4. npm and Package Management ⭐⭐
 
 ### Why it matters
 Most production Node code is dependencies. Senior engineers are expected to understand reproducible builds, version ranges and package manager trade-offs.
 
 ### Explanation
 
-#### `package.json`
+#### `package.json` ⭐⭐
 The project's manifest. It holds metadata, scripts, dependencies and entry points.
 
 ```json
@@ -629,7 +640,7 @@ The project's manifest. It holds metadata, scripts, dependencies and entry point
 | `peerDependencies` | The host project must provide it | A React plugin needs `react` |
 | `optionalDependencies` | Install failure is allowed | Native speed-ups |
 
-#### Semver
+#### Semver ⭐⭐⭐
 Versions are `MAJOR.MINOR.PATCH`: breaking change, new feature, bug fix.
 
 ```text
@@ -641,7 +652,7 @@ Versions are `MAJOR.MINOR.PATCH`: breaking change, new feature, bug fix.
 Special case for 0.x: ^0.4.2 allows only >=0.4.2 and <0.5.0
 ```
 
-#### Lockfiles
+#### Lockfiles ⭐⭐
 `package.json` holds ranges. `package-lock.json` records the **exact** version, source and integrity hash of every package in the tree, including transitive ones.
 
 ```text
@@ -651,7 +662,7 @@ package-lock.json:  "express": "5.1.0"        the exact version, plus integrity 
 
 Always commit the lockfile for applications. Without it, two builds on different days can install different code.
 
-#### `npm ci`
+#### `npm ci` ⭐⭐
 `npm install` may update the lockfile. `npm ci` installs exactly what the lockfile says, deletes `node_modules` first, and fails if the lockfile and `package.json` disagree.
 
 ```bash
@@ -662,7 +673,7 @@ npm outdated               # see available updates
 npm ls lodash              # see why a package is installed
 ```
 
-#### npm vs pnpm vs yarn
+#### npm vs pnpm vs yarn ⭐
 
 | Tool | How it stores packages | Strength | Weakness |
 |---|---|---|---|
@@ -741,7 +752,7 @@ Copy `package*.json` first, run `npm ci`, then copy the source. Dependency layer
 
 # Part 2: Runtime Internals
 
-## 5. ⭐ Node.js Architecture
+## 5. Node.js Architecture ⭐⭐⭐
 
 ### Why it matters
 "What happens when you call `fs.readFile`?" tests whether you can trace a call through every layer. It's the base for event loop, performance and debugging questions.
@@ -758,7 +769,7 @@ flowchart TD
     E --> G["Thread pool, 4 threads by default<br/>(file I/O, dns.lookup, some crypto, zlib)"]
 ```
 
-#### V8
+#### V8 ⭐⭐
 V8 parses and compiles JavaScript, manages the heap and runs garbage collection. It knows nothing about files or sockets. Node exposes some of its data directly:
 
 ```javascript
@@ -768,7 +779,7 @@ console.log(process.versions.v8);                  // V8 version in this Node bu
 console.log(v8.getHeapStatistics().heap_size_limit); // max heap in bytes
 ```
 
-#### libuv
+#### libuv ⭐⭐⭐
 libuv runs the event loop and gives Node one async API across operating systems. Network I/O uses the OS's non-blocking mechanisms, so it needs no pool thread.
 
 ```javascript
@@ -783,7 +794,7 @@ server.listen(4000);
 console.log(process.versions.uv); // libuv version
 ```
 
-#### C++ bindings
+#### C++ bindings ⭐
 Bindings connect JavaScript to native code. When you call `fs.readFile`, the JS function calls a C++ function, which calls into libuv.
 
 ```javascript
@@ -796,7 +807,7 @@ Bindings connect JavaScript to native code. When you call `fs.readFile`, the JS 
 // 6. V8       runs your callback on the main thread
 ```
 
-#### Call stack
+#### Call stack ⭐⭐
 The call stack tracks which function is running. A callback can run only when the stack is empty, because the main thread does one thing at a time.
 
 ```javascript
@@ -814,7 +825,7 @@ function recurse() { recurse(); }
 // recurse(); // RangeError: Maximum call stack size exceeded
 ```
 
-#### Thread pool
+#### Thread pool ⭐⭐⭐
 libuv's pool handles work without a usable async OS API. The default size is 4, set with `UV_THREADPOOL_SIZE`.
 
 | Uses the pool | Doesn't use the pool |
@@ -872,14 +883,14 @@ JS → bindings → V8 + libuv. Network uses OS async APIs. Files, `dns.lookup`,
 
 ---
 
-## 6. ⭐ Event Loop
+## 6. Event Loop ⭐⭐⭐
 
 ### Why it matters
 This is the most asked Node topic. Interviewers often ask you to predict output, so you need the order of phases and microtasks from memory.
 
 ### Explanation
 
-#### The six phases
+#### The six phases ⭐⭐⭐
 
 ```mermaid
 flowchart TD
@@ -913,7 +924,7 @@ fs.readFile(__filename, () => {            // poll phase
 
 The loop exits when nothing keeps it alive. `timer.unref()` tells it not to wait for that timer.
 
-#### Microtasks
+#### Microtasks ⭐⭐⭐
 Two queues are drained **after each callback**, since Node 11:
 
 1. The `process.nextTick` queue
@@ -946,7 +957,7 @@ setTimeout(() => console.log('timer 2'), 0);
 // Node 11+: timer 1, promise in timer 1, timer 2
 ```
 
-#### `nextTick` vs `setImmediate`
+#### `nextTick` vs `setImmediate` ⭐⭐⭐
 
 | | `process.nextTick` | `setImmediate` |
 |---|---|---|
@@ -977,7 +988,7 @@ function processBatch(items, i = 0) {
 }
 ```
 
-#### Starvation
+#### Starvation ⭐⭐
 Microtask queues must be empty before the loop moves on. If callbacks keep adding to them, the loop never reaches I/O or timers.
 
 ```javascript
@@ -996,7 +1007,7 @@ function safe() { setImmediate(safe); }
 
 Blocking also happens through ordinary sync work: a large `JSON.parse`, `fs.readFileSync` in a handler, or a slow regex.
 
-#### Event loop lag
+#### Event loop lag ⭐⭐
 Lag is how late the loop runs compared to when it should. It's the most direct health metric for a Node service.
 
 ```javascript
@@ -1053,14 +1064,14 @@ Timers → pending → idle → poll → check → close. After each callback: `
 
 ---
 
-## 7. V8 Engine
+## 7. V8 Engine ⭐
 
 ### Why it matters
 For most services, you don't tune V8 directly. But V8 knowledge explains why some code is much slower than similar code, and it's a strong signal in senior interviews.
 
 ### Explanation
 
-#### JIT compilation
+#### JIT compilation ⭐
 V8 starts by interpreting code, then compiles **hot** functions to faster machine code, based on observed types.
 
 ```text
@@ -1082,7 +1093,7 @@ for (let i = 0; i < 1_000_000; i++) add(i, 1);
 // This is why benchmarks need a warm-up: early runs measure slower code.
 ```
 
-#### Hidden classes
+#### Hidden classes ⭐
 Objects have no fixed layout in JS, so V8 assigns internal **hidden classes** (also called shapes or maps). Objects built with the same properties in the same order share a shape.
 
 ```javascript
@@ -1177,14 +1188,14 @@ Ignition → Sparkplug → Maglev → TurboFan. Keep object shapes and types sta
 
 ---
 
-## 8. ⭐ Memory and Garbage Collection
+## 8. Memory and Garbage Collection ⭐⭐⭐
 
 ### Why it matters
 Memory leaks are common production incidents. Senior candidates are expected to explain how V8 manages memory, why processes get OOM-killed and what leaks look like. Topic 53 covers the debugging steps.
 
 ### Explanation
 
-#### Heap vs stack
+#### Heap vs stack ⭐⭐
 - **Stack:** function frames and primitive locals. Fast, small, automatically released.
 - **Heap:** objects, arrays and closures. Managed by the garbage collector.
 
@@ -1207,7 +1218,7 @@ console.log({
 
 Buffers live **outside** the V8 heap, so `rss` can grow while `heapUsed` stays flat.
 
-#### Generational GC
+#### Generational GC ⭐⭐⭐
 Most objects die young, so V8 splits the heap:
 
 | Space | Holds | Algorithm | Cost |
@@ -1241,7 +1252,7 @@ metadata.set(req, { startedAt: Date.now() });
 req = null; // key and metadata can both be collected
 ```
 
-#### Heap limits
+#### Heap limits ⭐⭐
 V8 has a maximum old-space size, based on available memory. Reaching it crashes with `FATAL ERROR: JavaScript heap out of memory`.
 
 ```bash
@@ -1259,7 +1270,7 @@ console.log(v8.getHeapStatistics().heap_size_limit / 1024 / 1024, 'MB');
 
 In a container with a 2 GB limit, leave room for Buffers, stacks and native memory. A limit near 75% of the container is a common starting point.
 
-#### Memory leaks
+#### Memory leaks ⭐⭐⭐
 A leak is memory that's still reachable but will never be used again.
 
 ```javascript
@@ -1332,14 +1343,14 @@ Young objects are scavenged, survivors go to old space and mark-sweep-compact. G
 
 # Part 3: Async Programming
 
-## 9. Callbacks
+## 9. Callbacks ⭐⭐
 
 ### Why it matters
 Callbacks are the base of Node's async model, and many APIs and old codebases still use them. You need to convert and handle them safely.
 
 ### Explanation
 
-#### Error-first pattern
+#### Error-first pattern ⭐⭐
 Node's convention puts the error first. Check it before using the result.
 
 ```javascript
@@ -1374,7 +1385,7 @@ try {
 }
 ```
 
-#### Callback hell
+#### Callback hell ⭐⭐⭐
 Nesting grows with each dependent step, and error handling is repeated everywhere.
 
 ```javascript
@@ -1398,7 +1409,7 @@ async function loadInvoice(id) {
 }
 ```
 
-#### `util.promisify`
+#### `util.promisify` ⭐
 It converts an error-first callback function into one that returns a Promise.
 
 ```javascript
@@ -1457,14 +1468,14 @@ A function that sometimes calls back synchronously and sometimes asynchronously,
 
 ---
 
-## 10. ⭐ Promises
+## 10. Promises ⭐⭐⭐
 
 ### Why it matters
 Promises are the core of modern async JS. Interviews test states, chaining, combinators and rejection handling, and they often ask you to implement `Promise.all`.
 
 ### Explanation
 
-#### States and creation
+#### States and creation ⭐⭐⭐
 A Promise is `pending`, then settles once as `fulfilled` or `rejected`.
 
 ```javascript
@@ -1477,7 +1488,7 @@ const p = new Promise((resolve, reject) => {
 });
 ```
 
-#### Chaining
+#### Chaining ⭐⭐
 `.then` returns a new Promise. Returning a value passes it on, and returning a Promise waits for it. Throwing jumps to the next `.catch`.
 
 ```javascript
@@ -1495,7 +1506,7 @@ fetchUser(1)
   .finally(() => console.log('cleanup'));    // always runs
 ```
 
-#### `Promise.all`
+#### `Promise.all` ⭐⭐⭐
 Runs together and resolves with all results in input order. It rejects on the **first** rejection. Other operations aren't cancelled.
 
 ```javascript
@@ -1518,7 +1529,7 @@ function promiseAll(items) {
 }
 ```
 
-#### `Promise.allSettled`
+#### `Promise.allSettled` ⭐⭐⭐
 Waits for everything and never rejects. Use it when partial success is fine.
 
 ```javascript
@@ -1530,7 +1541,7 @@ results.forEach((r) => {
 });
 ```
 
-#### `Promise.race`
+#### `Promise.race` ⭐⭐
 Settles with the first Promise to settle, success or failure. It's a classic way to add a timeout.
 
 ```javascript
@@ -1544,7 +1555,7 @@ function withTimeout(promise, ms) {
 // Note: the losing operation still runs. Use AbortController to stop it (Topic 13).
 ```
 
-#### `Promise.any`
+#### `Promise.any` ⭐⭐
 Resolves with the first **success**. It rejects with `AggregateError` only if all fail.
 
 ```javascript
@@ -1566,7 +1577,7 @@ try {
 | `race` | First settles with success | First settles with failure |
 | `any` | First succeeds | All fail |
 
-#### Unhandled rejections
+#### Unhandled rejections ⭐⭐
 Since Node 15, an unhandled rejection crashes the process by default.
 
 ```javascript
@@ -1624,14 +1635,14 @@ Return a Promise, keep a results array by index and a remaining counter, resolve
 
 ---
 
-## 11. ⭐ Async/Await
+## 11. Async/Await ⭐⭐⭐
 
 ### Why it matters
 This is how most modern Node code is written. Interviews focus on the mistakes that cost performance or lose errors.
 
 ### Explanation
 
-#### How it works
+#### How it works ⭐⭐⭐
 `async` functions always return a Promise. `await` pauses that function only, not the thread. Code after it runs as a microtask.
 
 ```javascript
@@ -1646,7 +1657,7 @@ demo();
 console.log('3 the thread was not blocked');
 ```
 
-#### Error handling
+#### Error handling ⭐⭐⭐
 A rejected `await` throws, so `try/catch` works. Remember to `await` inside the `try`.
 
 ```javascript
@@ -1678,7 +1689,7 @@ async function chargeOrder(order) {
 }
 ```
 
-#### Sequential vs parallel
+#### Sequential vs parallel ⭐⭐⭐
 
 ```javascript
 // Sequential: about 300 ms. Right only if b needs the result of a.
@@ -1698,7 +1709,7 @@ for (const id of ids) {
 await Promise.all(ids.map((id) => sendEmail(id)));
 ```
 
-#### Common mistakes
+#### Common mistakes ⭐⭐
 
 ```javascript
 // 1. forEach doesn't wait
@@ -1731,7 +1742,7 @@ await p;
 emitter.on('job', async () => { throw new Error('x'); });
 ```
 
-#### Concurrency limits
+#### Concurrency limits ⭐⭐
 `Promise.all` on 100,000 items starts them all at once, which can exhaust sockets, pools or remote rate limits. Use a bounded pool.
 
 ```javascript
@@ -1793,14 +1804,14 @@ A Promise that's neither awaited nor caught. Its failure becomes an unhandled re
 
 ---
 
-## 12. ⭐ EventEmitter
+## 12. EventEmitter ⭐⭐⭐
 
 ### Why it matters
 Streams, HTTP servers, sockets and `process` are all built on EventEmitter. "Implement your own EventEmitter" is also a popular coding question (see Topic 72).
 
 ### Explanation
 
-#### Observer pattern
+#### Observer pattern ⭐⭐
 Emitters publish named events, and listeners subscribe. The emitter doesn't need to know who listens, which decouples components.
 
 ```javascript
@@ -1820,7 +1831,7 @@ orders.on('order:placed', (o) => analytics.track('order', o));
 orders.once('order:placed', () => console.log('first order today'));
 ```
 
-#### Synchronous emit
+#### Synchronous emit ⭐⭐⭐
 `emit` calls listeners **synchronously**, in registration order, before returning. Nothing here is async by default.
 
 ```javascript
@@ -1842,7 +1853,7 @@ bus.on('task', () => console.log('skipped'));
 bus.on('order', (o) => setImmediate(() => buildReport(o)));
 ```
 
-#### Listener leaks
+#### Listener leaks ⭐⭐
 Listeners are strong references. Adding one per request without removal leaks memory. Node warns after 10 listeners on one event: `MaxListenersExceededWarning`.
 
 ```javascript
@@ -1875,7 +1886,7 @@ const ac = new AbortController();
 ac.abort();   // ends the loop and removes the listener
 ```
 
-#### `error` events
+#### `error` events ⭐⭐
 The `error` event is special. If it's emitted with no listener, the emitter **throws** and the process can crash.
 
 ```javascript
@@ -1936,14 +1947,14 @@ Observer pattern. `emit` is synchronous. Unhandled `error` throws. Remove listen
 
 ---
 
-## 13. Cancellation and Timeouts
+## 13. Cancellation and Timeouts ⭐
 
 ### Why it matters
 Every outgoing call needs a time limit. Without one, a slow dependency ties up your resources until the whole service degrades.
 
 ### Explanation
 
-#### `AbortController`
+#### `AbortController` ⭐⭐
 The standard way to cancel async work. The controller triggers, and the `signal` goes to the operation.
 
 ```javascript
@@ -1977,7 +1988,7 @@ async function processAll(items, { signal }) {
 }
 ```
 
-#### Timers
+#### Timers ⭐
 `AbortSignal.timeout` is the shortest route to a timeout, and `AbortSignal.any` combines signals. `timers/promises` gives awaitable timers.
 
 ```javascript
@@ -2006,7 +2017,7 @@ setInterval(reportMetrics, 10_000).unref();
 
 Use a **deadline budget** for chains: if the caller allows 2 s and 1.5 s is gone, pass 500 ms to the next call.
 
-#### Retries with backoff
+#### Retries with backoff ⭐⭐
 Retry only transient failures. Use **exponential backoff** with **jitter**, so failed clients don't all retry at once.
 
 ```javascript
@@ -2066,14 +2077,14 @@ Runs can overlap if a task takes longer than the interval. A loop that awaits an
 
 ---
 
-## 14. Async Context
+## 14. Async Context ⭐
 
 ### Why it matters
 In a multi-threaded server, per-request data can live in thread-local storage. Node serves many requests on one thread, so it needs another way to track request context across `await`.
 
 ### Explanation
 
-#### `AsyncLocalStorage`
+#### `AsyncLocalStorage` ⭐
 It stores a value that follows the async chain, with no need to pass it through every function.
 
 ```javascript
@@ -2093,7 +2104,7 @@ storage.run({ userId: 'B' }, repository);
 
 `storage.getStore()` returns `undefined` outside `run()`. Prefer `run` to `enterWith`, because it has a clear scope.
 
-#### Request tracing
+#### Request tracing ⭐
 Create context once in middleware, then read it anywhere. Loggers can add the ID automatically.
 
 ```javascript
@@ -2165,14 +2176,14 @@ It came from `async_hooks`. Use `AsyncLocalStorage`, because raw `async_hooks` i
 
 # Part 4: Core Modules and Data Handling
 
-## 15. ⭐ Buffers and Binary Data
+## 15. Buffers and Binary Data ⭐⭐
 
 ### Why it matters
 Files, sockets, crypto and images all deal in bytes. Buffers are how Node handles them, and misuse leads to corrupted text and even leaked memory contents.
 
 ### Explanation
 
-#### What a Buffer is
+#### What a Buffer is ⭐⭐
 A Buffer is a fixed-size chunk of raw bytes, stored outside the V8 heap.
 
 ```javascript
@@ -2186,7 +2197,7 @@ buf[0] = 0x4a;              // Buffers are mutable
 console.log(buf.toString()); // 'Ji'
 ```
 
-#### Encoding
+#### Encoding ⭐
 Encoding maps bytes to text. Characters and bytes aren't the same count.
 
 ```javascript
@@ -2219,7 +2230,7 @@ console.log(decoder.write(part1) + decoder.write(part2)); // '₹'
 // stream.setEncoding('utf8');
 ```
 
-#### Allocation
+#### Allocation ⭐
 
 ```javascript
 const safe = Buffer.alloc(1024);          // zero-filled, safe
@@ -2310,7 +2321,7 @@ Bytes outside the V8 heap. `alloc` is safe, `allocUnsafe` is fast. `subarray` sh
 
 ---
 
-## 16. ⭐ Streams
+## 16. Streams ⭐⭐⭐
 
 ### Why it matters
 Streams process data piece by piece, so memory stays flat regardless of file size. They're behind HTTP, files, compression and sockets, and they're a staple of senior interviews.
@@ -2335,7 +2346,7 @@ app.get('/video', (req, res) => {
 });
 ```
 
-#### The four stream types
+#### The four stream types ⭐⭐⭐
 
 | Type | Purpose | Examples |
 |---|---|---|
@@ -2372,7 +2383,7 @@ const duplex = new Duplex({
 });
 ```
 
-#### `pipeline`
+#### `pipeline` ⭐⭐
 `.pipe()` doesn't forward errors or clean up. `pipeline` does both, so use it in production.
 
 ```javascript
@@ -2400,7 +2411,7 @@ await pipeline(
 );
 ```
 
-#### Object mode
+#### Object mode ⭐
 By default, streams carry Buffers or strings. With `objectMode: true`, each chunk is a JS object, and `highWaterMark` counts objects, not bytes.
 
 ```javascript
@@ -2429,7 +2440,7 @@ await pipeline(
 );
 ```
 
-#### Async iteration
+#### Async iteration ⭐
 Readable streams are async iterables. `for await` is the simplest way to consume one, and it respects backpressure.
 
 ```javascript
@@ -2496,7 +2507,7 @@ Readable, Writable, Duplex, Transform. Use `pipeline`, not `.pipe()`. Object mod
 
 ---
 
-## 17. ⭐ Backpressure
+## 17. Backpressure ⭐⭐
 
 ### Why it matters
 When a producer is faster than a consumer, data piles up in memory. Backpressure is how the consumer says "slow down". It's what separates a demo stream from a production one.
@@ -2511,7 +2522,7 @@ flowchart LR
     C -. "drain event: continue" .-> A
 ```
 
-#### `highWaterMark`
+#### `highWaterMark` ⭐⭐
 A threshold for a stream's internal buffer. It's a **signal**, not a hard limit, and a producer that ignores it can go far past it. Defaults depend on the stream and Node version. It's bytes in normal mode and objects in object mode.
 
 ```javascript
@@ -2530,7 +2541,7 @@ console.log(slow.writableHighWaterMark);
 console.log(slow.writableLength);   // bytes currently buffered
 ```
 
-#### `drain`
+#### `drain` ⭐⭐
 `write()` returns `false` when the buffer reaches the threshold. Stop writing and wait for `drain`.
 
 ```javascript
@@ -2565,7 +2576,7 @@ source.on('data', (chunk) => {
 dest.on('drain', () => source.resume());
 ```
 
-#### Real-world handling
+#### Real-world handling ⭐⭐
 The same idea applies far outside Node streams.
 
 ```javascript
@@ -2641,14 +2652,14 @@ Limit in-flight messages with prefetch or a concurrency limit. Pause consumption
 
 ---
 
-## 18. File System and Path
+## 18. File System and Path ⭐⭐
 
 ### Why it matters
 Files are used for config, uploads, logs and exports. The API you pick decides whether one request blocks everyone else.
 
 ### Explanation
 
-#### Sync vs async vs streams
+#### Sync vs async vs streams ⭐⭐⭐
 
 ```javascript
 const fs = require('node:fs');
@@ -2672,7 +2683,7 @@ fs.createReadStream('huge.log').pipe(process.stdout);
 | `fs/promises` | No | Yes | Small files in servers |
 | `createReadStream` | No | No | Large files, HTTP responses |
 
-#### Path handling
+#### Path handling ⭐
 Build paths with `path`, never by joining strings. It handles separators across operating systems.
 
 ```javascript
@@ -2724,7 +2735,7 @@ const ac = new AbortController();
 });
 ```
 
-#### Large files
+#### Large files ⭐⭐
 Stream them, and write safely. Readers should never see half-written files.
 
 ```javascript
@@ -2794,14 +2805,14 @@ Sync only at startup. Promises for small files. Streams for large ones. `path` f
 
 ---
 
-## 19. HTTP and Networking
+## 19. HTTP and Networking ⭐⭐
 
 ### Why it matters
 Frameworks hide this layer, but production issues such as socket hangs, DNS delays, keep-alive resets and connection limits live here.
 
 ### Explanation
 
-#### `http`
+#### `http` ⭐⭐
 Every Node web framework sits on this module. `req` is a Readable stream, and `res` is a Writable stream.
 
 ```javascript
@@ -2828,7 +2839,7 @@ server.requestTimeout = 30_000;
 server.headersTimeout = 10_000;
 ```
 
-#### `https`
+#### `https` ⭐
 Same API plus TLS. In production, TLS is usually handled at a load balancer, but Node can do it directly.
 
 ```javascript
@@ -2843,7 +2854,7 @@ https.createServer({
 }).listen(443);
 ```
 
-#### `net`
+#### `net` ⭐
 TCP without HTTP. Useful for custom protocols. TCP is a byte stream, so one `data` event doesn't equal one message. You need framing.
 
 ```javascript
@@ -2868,7 +2879,7 @@ net.createServer((socket) => {
 }).listen(5000);
 ```
 
-#### `dns`
+#### `dns` ⭐
 
 ```javascript
 const dns = require('node:dns');
@@ -2884,7 +2895,7 @@ const mx = await dnsp.resolveMx('gmail.com');
 // Node doesn't cache DNS itself. Each new connection can look up again.
 ```
 
-#### Keep-alive
+#### Keep-alive ⭐⭐
 Each new HTTPS connection costs TCP and TLS handshakes. Keep-alive reuses connections. Recent Node versions enable it by default in the global agent, but set it explicitly for important clients.
 
 ```javascript
@@ -2906,7 +2917,7 @@ server.headersTimeout = 66_000;
 
 Keep `keepAliveTimeout` **longer** than the load balancer's idle timeout. If Node closes first, the load balancer can reuse a dead socket, which shows up as random 502 errors.
 
-#### HTTP/2
+#### HTTP/2 ⭐
 One connection carries many parallel streams, with header compression. Browsers require TLS for it.
 
 ```javascript
@@ -2933,7 +2944,7 @@ server.listen(8443);
 | Header compression | No | Yes (HPACK) |
 | Common use | Everywhere | gRPC, browsers via proxy |
 
-#### Native `fetch`
+#### Native `fetch` ⭐
 Node includes `fetch`, built on Undici. No `axios` needed for most calls.
 
 ```javascript
@@ -2995,14 +3006,14 @@ TCP is a byte stream with no message boundaries. You need framing, such as a del
 
 ---
 
-## 20. Crypto
+## 20. Crypto ⭐
 
 ### Why it matters
 Mistakes here cause real breaches. Interviewers want to see that you know which primitive fits which job.
 
 ### Explanation
 
-#### Hashing
+#### Hashing ⭐⭐
 A one-way fingerprint for integrity checks. Use SHA-256 or stronger. Use **HMAC** when you also need to prove the sender knows a secret.
 
 ```javascript
@@ -3024,7 +3035,7 @@ function verifyWebhook(rawBody, signatureHex, secret) {
 
 Use the **raw** body for webhook checks. Parsed-then-reserialized JSON can differ by a byte, and the check will fail.
 
-#### Encryption
+#### Encryption ⭐
 Encryption is reversible with a key. Use **AES-256-GCM**, which gives confidentiality and tamper detection. Never reuse an IV with the same key.
 
 ```javascript
@@ -3054,7 +3065,7 @@ function decrypt(payload) {
 console.log(decrypt(encrypt('card token')));
 ```
 
-#### Password storage
+#### Password storage ⭐⭐
 Passwords need a **slow, salted** hash: Argon2id, scrypt or bcrypt. SHA-256 is far too fast, so attackers can try billions of guesses.
 
 ```javascript
@@ -3128,14 +3139,14 @@ Hash for integrity, HMAC for authenticity, AES-GCM for secrets, Argon2/scrypt/bc
 
 ---
 
-## 21. Process and Environment
+## 21. Process and Environment ⭐⭐
 
 ### Why it matters
 The way a process starts, reads config, handles signals and exits decides how it behaves in Docker, Kubernetes and CI.
 
 ### Explanation
 
-#### `process`
+#### `process` ⭐⭐
 
 ```javascript
 console.log(process.pid, process.ppid);
@@ -3156,7 +3167,7 @@ process.stdout.write('output\n');
 process.stderr.write('errors go here\n');
 ```
 
-#### Signals
+#### Signals ⭐⭐
 The OS uses signals to talk to a process. `SIGTERM` is a polite stop. `SIGKILL` can't be caught.
 
 | Signal | Meaning | Sent by | Can you catch it? |
@@ -3179,7 +3190,7 @@ process.on('SIGINT', () => shutdown('SIGINT'));
 
 Topic 48 covers this in full.
 
-#### Environment variables
+#### Environment variables ⭐⭐
 Config that changes between environments lives in env vars. All values are **strings**, so validate them at startup.
 
 ```javascript
@@ -3222,7 +3233,7 @@ console.log(os.tmpdir());
 
 In a container, `os.cpus()` can show the host's CPU count, not your container's quota, so a worker pool can end up oversized. Set pool sizes through config.
 
-#### Exit codes
+#### Exit codes ⭐
 `0` means success. Anything else means failure. CI and orchestrators read this value.
 
 ```javascript
@@ -3285,14 +3296,14 @@ So bad config fails the deploy right away, rather than surfacing later on a rare
 
 # Part 5: Concurrency and Parallelism
 
-## 22. ⭐ Worker Threads
+## 22. Worker Threads ⭐⭐⭐
 
 ### Why it matters
 Worker threads are Node's answer to CPU-bound work. Interviewers often ask how to run heavy computation without blocking users.
 
 ### Explanation
 
-#### CPU-bound work
+#### CPU-bound work ⭐⭐⭐
 A worker has its own V8 instance, event loop and heap, inside the same process. It runs JS in parallel with the main thread.
 
 ```javascript
@@ -3331,7 +3342,7 @@ worker.postMessage(data, [data]);   // moved, not copied
 console.log(data.byteLength);       // 0: no longer usable in the sender
 ```
 
-#### `SharedArrayBuffer`
+#### `SharedArrayBuffer` ⭐
 Lets threads share the same memory with no copying. Plain reads and writes aren't safe, so you need atomics.
 
 ```javascript
@@ -3368,7 +3379,7 @@ Atomics.compareExchange(view, 0, 5, 9);   // set to 9 only if it's still 5
 // Main:    Atomics.store(view, 1, 1); Atomics.notify(view, 1);
 ```
 
-#### Worker pools
+#### Worker pools ⭐⭐
 Creating a worker costs real time and memory. Keep a fixed pool, and queue jobs. Libraries like **Piscina** do this well.
 
 ```javascript
@@ -3453,14 +3464,14 @@ Workers = CPU parallelism in one process. Separate heaps. Messages are copied. `
 
 ---
 
-## 23. ⭐ Child Processes
+## 23. Child Processes ⭐⭐⭐
 
 ### Why it matters
 Sometimes you need another program: `ffmpeg`, `git` or a Python script. Child processes also come with a classic security topic: command injection.
 
 ### Explanation
 
-#### `spawn`
+#### `spawn` ⭐⭐⭐
 Starts a process and streams its output. Use it for long-running commands or big output.
 
 ```javascript
@@ -3473,7 +3484,7 @@ ffmpeg.on('error', (err) => console.error('failed to start:', err.message));
 ffmpeg.on('close', (code) => console.log('exited with', code));
 ```
 
-#### `exec`
+#### `exec` ⭐⭐⭐
 Runs a command **in a shell** and buffers all output. It's convenient but has an output limit, and it's dangerous with user input.
 
 ```javascript
@@ -3489,7 +3500,7 @@ console.log(stdout.trim());
 // exec(`cat ${file}`);          // the shell runs both commands
 ```
 
-#### `execFile`
+#### `execFile` ⭐
 Runs a program **without a shell** by default. Arguments aren't interpreted by a shell, so this is the safer option.
 
 ```javascript
@@ -3508,7 +3519,7 @@ async function fileInfo(userInput) {
 // `--` stops input that starts with a dash from being read as a flag.
 ```
 
-#### `fork`
+#### `fork` ⭐⭐⭐
 A special `spawn` for Node scripts, with a built-in IPC channel.
 
 ```javascript
@@ -3532,7 +3543,7 @@ process.on('message', async ({ reportId }) => {
 });
 ```
 
-#### IPC
+#### IPC ⭐
 Inter-process communication: messages are serialized over a channel. Processes share no memory, so big payloads are slow. Pass file paths or IDs instead.
 
 ```javascript
@@ -3591,14 +3602,14 @@ It usually keeps running as an orphan unless it detects the disconnect. Children
 
 ---
 
-## 24. ⭐ Cluster Module
+## 24. Cluster Module ⭐⭐⭐
 
 ### Why it matters
 One Node process uses one main thread, so one core. Cluster shows how Node scales on a machine, and the modern follow-up is whether you still need it in Kubernetes.
 
 ### Explanation
 
-#### Multi-core scaling
+#### Multi-core scaling ⭐⭐⭐
 The primary process forks workers, and each is a full Node process with its own heap and event loop. They share the listening port.
 
 ```javascript
@@ -3635,7 +3646,7 @@ app.get('/hits', (req, res) => res.json({ hits: ++hits }));
 app.get('/hits', async (req, res) => res.json({ hits: await redis.incr('hits') }));
 ```
 
-#### Load distribution
+#### Load distribution ⭐⭐
 On Linux and macOS, the primary accepts connections and hands them out **round-robin**. On Windows, the OS decides by default. Note that this balances **connections**, not requests. A long-lived keep-alive connection stays on one worker.
 
 ```javascript
@@ -3656,7 +3667,7 @@ async function rollingRestart() {
 process.on('SIGUSR2', rollingRestart);
 ```
 
-#### Cluster vs PM2 vs Kubernetes
+#### Cluster vs PM2 vs Kubernetes ⭐⭐
 
 | | `cluster` | PM2 | Kubernetes |
 |---|---|---|---|
@@ -3724,14 +3735,14 @@ Cluster = multi-process on one machine. No shared memory. Round-robin by default
 
 ---
 
-## 25. Concurrency Comparison
+## 25. Concurrency Comparison ⭐⭐
 
 ### Why it matters
 This topic ties Part 5 together. Senior interviews often ask: "You have this workload. Which tool do you pick, and why?" Race conditions in a "single-threaded" runtime also surprise many candidates.
 
 ### Explanation
 
-#### When to use each approach
+#### When to use each approach ⭐⭐⭐
 
 ```mermaid
 flowchart TD
@@ -3764,7 +3775,7 @@ app.post('/photos', async (req, res) => {
 });
 ```
 
-#### Race conditions in Node
+#### Race conditions in Node ⭐⭐
 The JS thread is single, but any `await` is a point where other requests can run. **Check-then-act** across an `await` isn't atomic.
 
 ```javascript
@@ -3854,14 +3865,14 @@ I/O → async. CPU JS → workers. Other programs → child process. Capacity �
 
 # Part 6: Building APIs and Web Apps
 
-## 26. ⭐ Express
+## 26. Express ⭐⭐⭐
 
 ### Why it matters
 Express is still the most common Node framework. Interviews test how middleware works, not just how to define a route.
 
 ### Explanation
 
-#### Routing
+#### Routing ⭐⭐
 Routes map a method and path to handlers. `Router` groups related routes into modules.
 
 ```javascript
@@ -3882,7 +3893,7 @@ app.get('/users/me', getCurrentUser);         // must come before /:id
 app.get('/users/:id', getUser);
 ```
 
-#### Request lifecycle
+#### Request lifecycle ⭐⭐
 
 ```mermaid
 flowchart LR
@@ -3916,7 +3927,7 @@ app.use((err, req, res, next) => {   // 6. error handler: four arguments
 });
 ```
 
-#### How middleware works internally
+#### How middleware works internally ⭐⭐⭐
 Express holds a list of layers. `next()` moves to the next matching layer, and `next(err)` skips to error handlers. Here's a small version:
 
 ```javascript
@@ -4012,14 +4023,14 @@ A stack of layers in order. `next()` continues, `next(err)` jumps to four-argume
 
 ---
 
-## 27. Framework Comparison
+## 27. Framework Comparison ⭐
 
 ### Why it matters
 "Why this framework?" is a common architecture question. Good answers compare structure, speed and team fit, rather than popularity.
 
 ### Explanation
 
-#### Express
+#### Express ⭐
 Minimal and unopinionated, with the largest ecosystem.
 
 ```javascript
@@ -4029,7 +4040,7 @@ app.get('/users/:id', (req, res) => res.json({ id: req.params.id }));
 app.listen(3000);
 ```
 
-#### Fastify
+#### Fastify ⭐
 Built for speed. Schema-based validation and serialization, plus a plugin system with encapsulation. Pino logging is built in.
 
 ```javascript
@@ -4055,7 +4066,7 @@ fastify.get('/users/:id', {
 fastify.listen({ port: 3000 });
 ```
 
-#### NestJS
+#### NestJS ⭐⭐
 An opinionated framework with modules, dependency injection and decorators. It runs on Express or Fastify underneath.
 
 ```typescript
@@ -4142,14 +4153,14 @@ Express = minimal and popular. Fastify = fast and schema-based. NestJS = structu
 
 ---
 
-## 28. ⭐ REST API Design
+## 28. REST API Design ⭐⭐⭐
 
 ### Why it matters
 Most senior roles include API design. Pagination and idempotency questions show whether you've run APIs at scale.
 
 ### Explanation
 
-#### Resource design
+#### Resource design ⭐⭐
 Use nouns for resources and HTTP methods for actions.
 
 ```text
@@ -4163,7 +4174,7 @@ POST   /orders/42/cancel    action that doesn't map to CRUD
 GET    /users/7/orders      related resource
 ```
 
-#### Versioning
+#### Versioning ⭐⭐
 
 | Strategy | Example | Pros | Cons |
 |---|---|---|---|
@@ -4185,7 +4196,7 @@ app.use('/v1', (req, res, next) => {
 
 Avoid new versions when you can: adding an optional field isn't a breaking change.
 
-#### Pagination
+#### Pagination ⭐⭐⭐
 **Offset** pagination is simple but slow on deep pages, and it can skip or repeat rows when data changes. **Cursor** pagination stays fast and stable.
 
 ```javascript
@@ -4222,7 +4233,7 @@ app.get('/feed', async (req, res) => {
 });
 ```
 
-#### Idempotency
+#### Idempotency ⭐⭐⭐
 An operation is idempotent if repeating it has the same effect as doing it once. `GET`, `PUT` and `DELETE` should be. `POST` isn't, so a retry on a timeout can charge a card twice. Use an **idempotency key**.
 
 ```javascript
@@ -4254,7 +4265,7 @@ app.post('/payments', async (req, res) => {
 
 For strong guarantees, also use a database unique constraint on the key.
 
-#### Status codes
+#### Status codes ⭐⭐⭐
 
 | Code | Meaning | Use |
 |---|---|---|
@@ -4323,14 +4334,14 @@ Nouns + methods. Version on breaking changes only. Cursors for scale. Idempotenc
 
 ---
 
-## 29. GraphQL
+## 29. GraphQL ⭐⭐
 
 ### Why it matters
 GraphQL is common in product companies and BFF layers. Expect questions on N+1, DataLoader and when REST is better.
 
 ### Explanation
 
-#### Schema and resolvers
+#### Schema and resolvers ⭐
 The schema defines what clients can ask for. A **resolver** is a function that returns the data for one field.
 
 ```javascript
@@ -4382,7 +4393,7 @@ query {
 }
 ```
 
-#### N+1 problem
+#### N+1 problem ⭐⭐
 Field resolvers run per item, so a list of 100 users triggers 100 more queries.
 
 ```javascript
@@ -4395,7 +4406,7 @@ const resolvers = {
 };
 ```
 
-#### DataLoader
+#### DataLoader ⭐⭐
 DataLoader collects all `load()` calls made in the same tick, makes **one** batched call, and caches results within a request.
 
 ```javascript
@@ -4428,7 +4439,7 @@ const resolvers = {
 // 101 queries become 2.
 ```
 
-#### GraphQL vs REST
+#### GraphQL vs REST ⭐⭐⭐
 
 | | REST | GraphQL |
 |---|---|---|
@@ -4487,14 +4498,14 @@ One schema, field resolvers, client picks fields. DataLoader fixes N+1. Limit de
 
 ---
 
-## 30. gRPC
+## 30. gRPC ⭐
 
 ### Why it matters
 gRPC is common for internal service calls. It shows up in microservices and performance discussions.
 
 ### Explanation
 
-#### Protobuf
+#### Protobuf ⭐
 Protocol Buffers define the contract in a `.proto` file and encode messages in compact binary. Field numbers, not names, go on the wire, so never reuse them.
 
 ```protobuf
@@ -4588,7 +4599,7 @@ stream.on('data', (event) => console.log(event.quantity));
 stream.on('error', (err) => console.error(err.details));
 ```
 
-#### gRPC vs REST
+#### gRPC vs REST ⭐⭐
 
 | | REST | gRPC |
 |---|---|---|
@@ -4635,14 +4646,14 @@ Protobuf + HTTP/2. Strong contracts, streaming, always use deadlines. Great inte
 
 ---
 
-## 31. ⭐ Real-Time Communication
+## 31. Real-Time Communication ⭐⭐⭐
 
 ### Why it matters
 Chat, live scores and notifications are common design questions. You need to choose the right transport and explain how it scales past one server.
 
 ### Explanation
 
-#### WebSockets
+#### WebSockets ⭐⭐⭐
 One persistent, two-way TCP connection, upgraded from HTTP.
 
 ```javascript
@@ -4692,7 +4703,7 @@ server.on('upgrade', (req, socket, head) => {
 });
 ```
 
-#### Socket.IO
+#### Socket.IO ⭐⭐
 A library on top of WebSockets. It adds reconnection, rooms, acknowledgements and fallback to HTTP polling. It uses its own protocol, so a plain WebSocket client can't connect.
 
 ```javascript
@@ -4709,7 +4720,7 @@ io.on('connection', (socket) => {
 });
 ```
 
-#### SSE
+#### SSE ⭐⭐
 Server-Sent Events are one-way, server to client, over plain HTTP. Browsers reconnect automatically. They're great for live updates, and common for LLM token streaming.
 
 ```javascript
@@ -4737,7 +4748,7 @@ app.get('/events', (req, res) => {
 // source.onmessage = (e) => console.log(JSON.parse(e.data));
 ```
 
-#### Long polling
+#### Long polling ⭐⭐
 The client sends a request, and the server holds it until there's data or a timeout. It works everywhere, but with more overhead.
 
 ```javascript
@@ -4764,7 +4775,7 @@ app.get('/poll', async (req, res) => {
 | Binary | Yes | No | Yes |
 | Best for | Chat, games | Feeds, AI tokens | Legacy fallback |
 
-#### Scaling connections
+#### Scaling connections ⭐⭐
 Connections stay on one server, so users on different servers can't reach each other directly. Use a **pub/sub backplane**.
 
 ```mermaid
@@ -4832,14 +4843,14 @@ WebSocket = two-way. SSE = server push. Long polling = fallback. Scale with Redi
 
 ---
 
-## 32. File Uploads and Large Payloads
+## 32. File Uploads and Large Payloads ⭐⭐
 
 ### Why it matters
 Uploads combine streams, memory, security and cloud storage. A naive version can take down a server.
 
 ### Explanation
 
-#### Multipart
+#### Multipart ⭐⭐
 `multipart/form-data` sends files and fields separated by boundaries. `multer` and `busboy` are the usual tools. Memory storage is only safe for small files.
 
 ```javascript
@@ -4869,7 +4880,7 @@ const { fileTypeFromFile } = await import('file-type');
 const type = await fileTypeFromFile(req.file.path);
 ```
 
-#### Streaming
+#### Streaming ⭐⭐
 Stream directly to storage, so the file never sits in memory or on local disk.
 
 ```javascript
@@ -4896,7 +4907,7 @@ app.post('/upload', (req, res, next) => {
 });
 ```
 
-#### S3 presigned URLs
+#### S3 presigned URLs ⭐⭐
 The best option for large files: the client uploads straight to S3, so your API never handles the bytes.
 
 ```mermaid
@@ -4982,14 +4993,14 @@ Small: Multer to disk. Big: stream or, better, presigned S3. Always limit size, 
 
 ---
 
-## 33. Validation and Config
+## 33. Validation and Config ⭐
 
 ### Why it matters
 Every outside input is untrusted, and TypeScript types vanish at runtime. Validating at the edge prevents many bugs and attacks.
 
 ### Explanation
 
-#### Zod
+#### Zod ⭐
 A TypeScript-first schema library. One schema gives runtime validation and a static type.
 
 ```typescript
@@ -5028,7 +5039,7 @@ const ListQuery = z.object({
 });
 ```
 
-#### Joi
+#### Joi ⭐
 A mature, JS-first schema library with a similar purpose.
 
 ```javascript
@@ -5059,7 +5070,7 @@ if (error) {
 
 Fastify users often use JSON Schema, with Ajv underneath, since it's compiled for speed.
 
-#### Env configuration
+#### Env configuration ⭐
 Parse and validate config once at boot, and export a typed object. Fail fast if anything is wrong.
 
 ```typescript
@@ -5118,14 +5129,14 @@ Validate at the boundary. Zod gives types and checks. Parse config once at boot.
 
 ---
 
-## 34. TypeScript with Node.js
+## 34. TypeScript with Node.js ⭐⭐
 
 ### Why it matters
 Most new backend Node services use TypeScript. Interviews ask about setup, safe API typing and how TS runs in production.
 
 ### Explanation
 
-#### Project setup
+#### Project setup ⭐
 
 ```json
 {
@@ -5158,7 +5169,7 @@ Most new backend Node services use TypeScript. Interviews ask about setup, safe 
 
 With `NodeNext`, relative ESM imports need the output extension: `import { x } from './utils.js'`, even when the source is `utils.ts`.
 
-#### Typing APIs
+#### Typing APIs ⭐
 
 ```typescript
 import type { Request, Response, NextFunction } from 'express';
@@ -5267,14 +5278,14 @@ A union with a shared literal field, such as `status`. TypeScript narrows the ty
 
 # Part 7: Data Layer
 
-## 35. ⭐ Database Access
+## 35. Database Access ⭐⭐⭐
 
 ### Why it matters
 Most Node services are thin layers over a database. Your choices here have more effect on latency and correctness than the framework does.
 
 ### Explanation
 
-#### SQL vs NoSQL from Node
+#### SQL vs NoSQL from Node ⭐⭐⭐
 
 | | SQL (PostgreSQL, MySQL) | NoSQL (MongoDB, DynamoDB) |
 |---|---|---|
@@ -5311,7 +5322,7 @@ const result = await ddb.send(new QueryCommand({
 }));
 ```
 
-#### ORM vs query builder vs raw SQL
+#### ORM vs query builder vs raw SQL ⭐⭐⭐
 
 | Option | What it does | Pros | Cons |
 |---|---|---|---|
@@ -5319,7 +5330,7 @@ const result = await ddb.send(new QueryCommand({
 | Query builder | Builds SQL in code | Flexible, close to SQL | Little type safety on its own |
 | ORM | Maps rows to objects | Fast to build with | Hidden queries, N+1 risks |
 
-#### Prisma
+#### Prisma ⭐⭐
 A schema file generates a fully typed client. Excellent developer experience.
 
 ```prisma
@@ -5349,7 +5360,7 @@ const user = await prisma.user.findUnique({
 const raw = await prisma.$queryRaw`SELECT count(*) FROM "User"`;
 ```
 
-#### TypeORM
+#### TypeORM ⭐
 Decorator-based entities. It's well known in NestJS projects, and supports Active Record and Data Mapper styles.
 
 ```typescript
@@ -5440,14 +5451,14 @@ SQL for consistency, NoSQL for scale patterns. Always parameterize. Check genera
 
 ---
 
-## 36. ⭐ Connection Pooling
+## 36. Connection Pooling ⭐⭐
 
 ### Why it matters
 Connections are expensive and limited. Pool problems often cause outages that look like "the database is slow".
 
 ### Explanation
 
-#### What pooling does
+#### What pooling does ⭐⭐
 A pool keeps open connections and lends them to requests. It avoids the setup cost of TCP, TLS and authentication on every query.
 
 ```javascript
@@ -5468,7 +5479,7 @@ pool.on('error', (err) => logger.error({ err }, 'idle client error'));
 const { rows } = await pool.query('SELECT now()');
 ```
 
-#### Pool sizing
+#### Pool sizing ⭐⭐
 The important figure is the **total** across all instances:
 
 ```text
@@ -5493,7 +5504,7 @@ For many short-lived clients, such as serverless, put **PgBouncer** or **RDS Pro
 Lambda × 1000 → RDS Proxy / PgBouncer → 50 real connections → PostgreSQL
 ```
 
-#### Leaks
+#### Leaks ⭐
 A leak is a checked-out connection that's never released. Always release in `finally`.
 
 ```javascript
@@ -5543,7 +5554,7 @@ await withTransaction(async (tx) => {
 });
 ```
 
-#### Exhaustion
+#### Exhaustion ⭐
 When all connections are in use, new requests queue up. Latency climbs while the database itself looks idle.
 
 ```javascript
@@ -5598,14 +5609,14 @@ Total = pods × pool size. Release in `finally`. Monitor waiting clients. Use a 
 
 ---
 
-## 37. Transactions and Migrations
+## 37. Transactions and Migrations ⭐⭐
 
 ### Why it matters
 Correctness under concurrency and zero-downtime schema changes are how senior engineers show they've operated real systems.
 
 ### Explanation
 
-#### Transactions and isolation
+#### Transactions and isolation ⭐⭐⭐
 A transaction makes a group of changes all-or-nothing (ACID). Isolation levels control what concurrent transactions can see.
 
 | Level | Prevents | Still allows |
@@ -5650,7 +5661,7 @@ async function serializable(fn, attempts = 3) {
 
 **Optimistic vs pessimistic:** `FOR UPDATE` is pessimistic and suits high contention. A `version` column is optimistic and suits low contention.
 
-#### Zero-downtime migrations
+#### Zero-downtime migrations ⭐
 During a rolling deploy, old and new code run together, so each schema change must work with both. Use **expand and contract**.
 
 ```text
@@ -5689,7 +5700,7 @@ SET lock_timeout = '3s';
 
 Run migrations as a separate deployment step, not at each pod's startup. Otherwise, many pods race to apply them.
 
-#### N+1 queries
+#### N+1 queries ⭐⭐⭐
 One query fetches a list, then one more runs per row.
 
 ```javascript
@@ -5751,21 +5762,21 @@ Short transactions, consistent lock order. Expand → backfill → switch → co
 
 ---
 
-## 38. ⭐ Caching
+## 38. Caching ⭐⭐⭐
 
 ### Why it matters
 Caching is the fastest way to improve latency and protect a database, and it's a source of tricky bugs. "Cache invalidation" questions test your depth.
 
 ### Explanation
 
-#### Cache layers
+#### Cache layers ⭐⭐
 
 ```text
 Browser → CDN → API in-memory → Redis → Database
 Fastest, least shared                 Slowest, source of truth
 ```
 
-#### Redis
+#### Redis ⭐⭐⭐
 An in-memory store with TTLs and rich data types. It's shared, so all instances see the same data.
 
 ```javascript
@@ -5781,7 +5792,7 @@ await redis.zAdd('leaderboard', { score: 100, value: 'asha' }); // sorted set
 await redis.sAdd('online', 'user-1');                          // set
 ```
 
-#### Cache-aside
+#### Cache-aside ⭐⭐⭐
 The application checks the cache, loads on a miss, then fills the cache. It's the most common pattern.
 
 ```javascript
@@ -5816,7 +5827,7 @@ async function safeGet(key) {
 | Write-through | Write cache and DB together | Reads right after writes |
 | Write-behind | Write cache, DB later | Write-heavy, some loss acceptable |
 
-#### Invalidation
+#### Invalidation ⭐⭐⭐
 Stale data is the main risk. Options include TTL, deleting on write, and versioned keys.
 
 ```javascript
@@ -5842,7 +5853,7 @@ const ttl = 300 + Math.floor(Math.random() * 60);
 
 Delete rather than update the cached value. Two concurrent updates can write stale values in the wrong order. With several instances that hold in-process caches, broadcast invalidations with Pub/Sub.
 
-#### Cache stampede
+#### Cache stampede ⭐⭐
 When a hot key expires, many requests miss together and all hit the database.
 
 ```javascript
@@ -5930,14 +5941,14 @@ Cache-aside + TTL + delete on write. Stampede: lock, coalesce, jitter, serve sta
 
 ---
 
-## 39. Background Jobs
+## 39. Background Jobs ⭐⭐
 
 ### Why it matters
 Slow work like emails, reports and media processing shouldn't run in requests. Jobs need retries, scheduling and failure handling.
 
 ### Explanation
 
-#### BullMQ
+#### BullMQ ⭐⭐
 A Redis-based job queue. Producers add jobs, and workers process them with concurrency limits.
 
 ```javascript
@@ -5967,7 +5978,7 @@ process.on('SIGTERM', async () => {
 });
 ```
 
-#### Cron
+#### Cron ⭐
 Scheduled recurring jobs. With several instances, an in-process cron runs on **every** one.
 
 ```javascript
@@ -6005,7 +6016,7 @@ cron.schedule('0 2 * * *', async () => {
 0 2 * * 1       2 AM every Monday
 ```
 
-#### Retries
+#### Retries ⭐⭐
 Use limited attempts with backoff. Jobs can run more than once, so handlers must be idempotent.
 
 ```javascript
@@ -6027,7 +6038,7 @@ new Worker('payment', async (job) => {
 }, { connection });
 ```
 
-#### Dead-letter queues
+#### Dead-letter queues ⭐
 Jobs that fail all attempts go to a **DLQ**, so they aren't lost and don't block others. BullMQ keeps them in the failed set, and you can move them to a separate queue.
 
 ```javascript
@@ -6088,14 +6099,14 @@ BullMQ on Redis. Separate worker processes. Attempts + exponential backoff. Idem
 
 ---
 
-## 40. ⭐ Message Queues
+## 40. Message Queues ⭐⭐
 
 ### Why it matters
 Queues decouple services and absorb spikes. "Kafka vs RabbitMQ" and "exactly-once" are standard senior questions.
 
 ### Explanation
 
-#### Kafka vs RabbitMQ vs SQS
+#### Kafka vs RabbitMQ vs SQS ⭐⭐⭐
 
 | | Kafka | RabbitMQ | SQS |
 |---|---|---|---|
@@ -6176,7 +6187,7 @@ while (running) {
 }
 ```
 
-#### Delivery guarantees
+#### Delivery guarantees ⭐⭐
 
 | Guarantee | Meaning | How | Risk |
 |---|---|---|---|
@@ -6196,7 +6207,7 @@ channel.ack(msg);
 
 End-to-end **exactly-once delivery** across systems isn't practical. In practice, you combine **at-least-once delivery** with **idempotent processing**.
 
-#### Idempotent consumers
+#### Idempotent consumers ⭐⭐
 Record processed message IDs, in the **same transaction** as the business change.
 
 ```javascript
@@ -6260,14 +6271,14 @@ Kafka = log and replay. RabbitMQ = routing. SQS = managed. At-least-once + idemp
 
 # Part 8: Security
 
-## 41. ⭐ Authentication
+## 41. Authentication ⭐⭐⭐
 
 ### Why it matters
 Authentication answers "who are you?". The usual interview question is sessions vs JWT, followed by how you revoke a token.
 
 ### Explanation
 
-#### Sessions
+#### Sessions ⭐⭐⭐
 The server stores login state, and the browser holds only a random session ID in a cookie. Logging out is simple: delete the record.
 
 ```javascript
@@ -6305,7 +6316,7 @@ app.post('/logout', (req, res) => {
 });
 ```
 
-#### JWT
+#### JWT ⭐⭐⭐
 A signed token that holds claims. Servers verify it without a database lookup. It's **signed, not encrypted**, so anyone can read the payload.
 
 ```text
@@ -6348,7 +6359,7 @@ function requireAuth(req, res, next) {
 | Lookup per request | Yes | No |
 | Best for | Browser apps | Service-to-service, mobile, distributed APIs |
 
-#### Refresh tokens
+#### Refresh tokens ⭐⭐⭐
 Access tokens are short-lived. A long-lived **refresh token** gets new ones. Rotate on every use, and treat reuse as theft.
 
 ```javascript
@@ -6390,7 +6401,7 @@ app.post('/token/refresh', async (req, res) => {
 
 For instant revocation of an access token, keep a short denylist of `jti` values in Redis.
 
-#### OAuth2
+#### OAuth2 ⭐⭐
 OAuth2 is for **delegated authorization**: letting an app access a resource for a user, without seeing their password. For web and mobile apps, use **Authorization Code + PKCE**.
 
 ```mermaid
@@ -6445,7 +6456,7 @@ app.get('/callback', async (req, res) => {
 });
 ```
 
-#### OIDC
+#### OIDC ⭐
 OpenID Connect adds **authentication** on top of OAuth2. It introduces an **ID token**, a JWT describing the user. "Log in with Google" is OIDC.
 
 ```javascript
@@ -6500,14 +6511,14 @@ Sessions are stateful and revocable. JWTs are stateless and signed, not encrypte
 
 ---
 
-## 42. Authorization
+## 42. Authorization ⭐⭐
 
 ### Why it matters
 Authorization answers "what can you do?". **Broken access control** tops the OWASP Top 10, so this is a critical area.
 
 ### Explanation
 
-#### RBAC
+#### RBAC ⭐⭐
 Role-Based Access Control assigns permissions through roles. Simple and widely used.
 
 ```javascript
@@ -6525,7 +6536,7 @@ const can = (permission) => (req, res, next) => {
 app.delete('/orders/:id', requireAuth, can('order:delete'), deleteOrder);
 ```
 
-#### ABAC
+#### ABAC ⭐
 Attribute-Based Access Control decides using attributes of the user, resource and environment. It handles rules that RBAC can't express.
 
 ```javascript
@@ -6547,7 +6558,7 @@ function canApproveExpense(user, expense, context) {
 | Fine-grained | Limited | Very |
 | Risk | Role explosion | Rule complexity |
 
-#### Policy checks
+#### Policy checks ⭐
 Centralize rules in one place, and always check **ownership** at the object level. Missing this creates **IDOR** bugs.
 
 ```javascript
@@ -6624,14 +6635,14 @@ RBAC = roles. ABAC = attributes. Check ownership on every object. Enforce on the
 
 ---
 
-## 43. ⭐ OWASP for Node.js
+## 43. OWASP for Node.js ⭐⭐⭐
 
 ### Why it matters
 Senior engineers should recognize common vulnerabilities in Node code and know how to prevent them. Each section below shows the vulnerable pattern and the fix.
 
 ### Explanation
 
-#### Injection
+#### Injection ⭐⭐⭐
 Untrusted input is treated as code or a query. This includes SQL, NoSQL and command injection.
 
 ```javascript
@@ -6653,7 +6664,7 @@ exec(`ping ${req.query.host}`);                 // vulnerable
 execFile('ping', ['-c', '1', req.query.host]);  // no shell, plus validate the host
 ```
 
-#### XSS
+#### XSS ⭐⭐⭐
 Cross-Site Scripting: an attacker's script runs in another user's browser, usually through unescaped output.
 
 ```javascript
@@ -6677,7 +6688,7 @@ app.use(helmet.contentSecurityPolicy({
 }));
 ```
 
-#### CSRF
+#### CSRF ⭐⭐⭐
 Cross-Site Request Forgery: a malicious site makes the victim's browser send a request with their cookies. It matters for cookie auth, not for `Authorization` header tokens.
 
 ```javascript
@@ -6705,7 +6716,7 @@ app.use((req, res, next) => {
 });
 ```
 
-#### SSRF
+#### SSRF ⭐
 Server-Side Request Forgery: your server is tricked into calling internal addresses, such as the cloud metadata service at `169.254.169.254`.
 
 ```javascript
@@ -6738,7 +6749,7 @@ const safe = await assertPublicUrl(req.body.url);
 const page = await fetch(safe, { redirect: 'error', signal: AbortSignal.timeout(3000) });
 ```
 
-#### Prototype pollution
+#### Prototype pollution ⭐⭐
 Setting `__proto__` through unsafe merges changes `Object.prototype`, which then affects every object.
 
 ```javascript
@@ -6780,7 +6791,7 @@ const settings = new Map();           // Map for user-controlled keys
 // node --disable-proto=delete app.js
 ```
 
-#### ReDoS
+#### ReDoS ⭐
 Regular expression Denial of Service: a bad pattern causes catastrophic backtracking. In Node, that blocks the event loop for **everyone**.
 
 ```javascript
@@ -6840,14 +6851,14 @@ Parameterize, validate types, escape output, use `SameSite`, block private IPs, 
 
 ---
 
-## 44. API Hardening
+## 44. API Hardening ⭐⭐
 
 ### Why it matters
 Hardening is the layer of default protections every production API needs. Misconfigured CORS and leaked secrets are very common findings.
 
 ### Explanation
 
-#### CORS
+#### CORS ⭐⭐⭐
 Browsers block cross-origin reads unless the server allows them. CORS is a **browser** rule, not server authentication. `curl` ignores it.
 
 ```javascript
@@ -6872,7 +6883,7 @@ app.use(cors({
 
 A **preflight** is an `OPTIONS` request the browser sends before non-simple requests, such as JSON POSTs or those with custom headers.
 
-#### Helmet
+#### Helmet ⭐⭐
 Sets security headers with a single line.
 
 ```javascript
@@ -6914,7 +6925,7 @@ app.use((err, req, res, next) => {
 });
 ```
 
-#### Secrets management
+#### Secrets management ⭐⭐
 Secrets must not be in code, images or logs. Use a manager, rotate them, and use short-lived credentials if you can.
 
 ```javascript
@@ -6977,14 +6988,14 @@ CORS is browser-only, and allow-list your origins. Helmet sets headers. Cap bodi
 
 ---
 
-## 45. Supply Chain Security
+## 45. Supply Chain Security ⭐
 
 ### Why it matters
 A typical Node app runs hundreds of third-party packages, and each one can execute code on your machine. Several npm packages have been compromised in real attacks.
 
 ### Explanation
 
-#### `npm audit`
+#### `npm audit` ⭐
 Checks installed packages against a database of known vulnerabilities.
 
 ```bash
@@ -7007,7 +7018,7 @@ Force a safe version of a nested dependency with `overrides`:
 }
 ```
 
-#### Lockfiles
+#### Lockfiles ⭐
 The lockfile pins versions and integrity hashes. If the downloaded package doesn't match the hash, install fails.
 
 ```json
@@ -7099,14 +7110,14 @@ Check reachability, then use `overrides`, replace the package or add a compensat
 
 ---
 
-## 46. ⭐ Rate Limiting
+## 46. Rate Limiting ⭐⭐⭐
 
 ### Why it matters
 Rate limiting protects services from abuse, brute force and overload. It's also a common design and coding question (see Topic 72).
 
 ### Explanation
 
-#### Token bucket
+#### Token bucket ⭐⭐⭐
 A bucket holds tokens that refill at a steady rate. Each request takes one. It **allows bursts** up to capacity, and enforces a long-term average.
 
 ```javascript
@@ -7133,7 +7144,7 @@ class TokenBucket {
 const bucket = new TokenBucket(10, 5);   // burst of 10, 5 per second afterwards
 ```
 
-#### Sliding window
+#### Sliding window ⭐⭐
 A **fixed window** can allow double traffic at a boundary: 100 requests at 12:00:59 and 100 more at 12:01:00. A sliding window fixes this.
 
 ```javascript
@@ -7174,7 +7185,7 @@ function estimate(previousCount, currentCount, elapsedInWindow, windowMs) {
 | Token bucket | Allowed by design | Low | Good |
 | Leaky bucket | Smoothed | Low | Good |
 
-#### Distributed limits with Redis
+#### Distributed limits with Redis ⭐⭐
 An in-memory limiter works per instance, so 10 pods give 10× the limit. Keep counts in Redis, and use a **Lua script** so that read and update stay atomic.
 
 ```javascript
@@ -7275,14 +7286,14 @@ Token bucket allows bursts. Sliding window fixes boundaries. Use Redis + Lua for
 
 # Part 9: Reliability and Testing
 
-## 47. ⭐ Error Handling
+## 47. Error Handling ⭐⭐⭐
 
 ### Why it matters
 Node's async model gives errors many escape routes. Knowing what to catch, what to log and when to crash is a clear senior signal.
 
 ### Explanation
 
-#### Operational vs programmer errors
+#### Operational vs programmer errors ⭐⭐⭐
 
 | | Operational | Programmer |
 |---|---|---|
@@ -7323,7 +7334,7 @@ async function getStock(sku) {
 }
 ```
 
-#### `uncaughtException`
+#### `uncaughtException` ⭐⭐⭐
 Fires when an error reaches the top of the stack. The process is in an **unknown state**, so log, clean up quickly and exit. Don't continue.
 
 ```javascript
@@ -7345,7 +7356,7 @@ function shutdown(code) {
 
 Why not just continue? A bug may have left locks held, transactions open or data partly updated. Restarting gives a clean state.
 
-#### Centralized handlers
+#### Centralized handlers ⭐⭐⭐
 Handlers throw. One piece of middleware decides the response.
 
 ```javascript
@@ -7432,14 +7443,14 @@ Handle operational errors, crash on bugs. Use `AppError` + central middleware. E
 
 ---
 
-## 48. ⭐ Graceful Shutdown
+## 48. Graceful Shutdown ⭐⭐
 
 ### Why it matters
 Every deploy stops processes. Without graceful shutdown, each release causes failed requests and interrupted work.
 
 ### Explanation
 
-#### `SIGTERM`
+#### `SIGTERM` ⭐⭐
 Kubernetes and Docker send `SIGTERM`, wait for a grace period (30 s by default in Kubernetes), and then send `SIGKILL`.
 
 ```mermaid
@@ -7454,7 +7465,7 @@ sequenceDiagram
     Note over K,A: SIGKILL if the grace period runs out
 ```
 
-#### Draining connections
+#### Draining connections ⭐⭐
 `server.close()` stops new connections and waits for existing ones. Idle keep-alive sockets can hold it open, so close those as well.
 
 ```javascript
@@ -7502,7 +7513,7 @@ The `sleep` matters. Removal from load balancers isn't instant, so without it, t
 
 For WebSockets and SSE, notify clients and close the connections, because they never finish on their own.
 
-#### Health checks
+#### Health checks ⭐⭐
 Different probes answer different questions.
 
 | Probe | Question | On failure |
@@ -7575,14 +7586,14 @@ Stop fetching, finish or requeue current jobs, close connections and exit.
 
 ---
 
-## 49. Resilience Patterns
+## 49. Resilience Patterns ⭐⭐
 
 ### Why it matters
 Dependencies fail. Resilience patterns stop one slow service from taking down everything that calls it.
 
 ### Explanation
 
-#### Timeouts
+#### Timeouts ⭐⭐
 The first and most important pattern. Every network call needs one. See Topic 13.
 
 ```javascript
@@ -7597,7 +7608,7 @@ Set timeouts at each layer, with the inner ones shorter:
 Client 5 s > API gateway 4 s > Service 3 s > Database 2 s
 ```
 
-#### Retries
+#### Retries ⭐⭐
 Use limits, backoff and jitter, and only for idempotent work (Topic 13). A **retry budget** caps the extra load.
 
 ```javascript
@@ -7621,7 +7632,7 @@ class RetryBudget {
 
 During an outage, this stops retries from multiplying traffic on a struggling service.
 
-#### Circuit breakers
+#### Circuit breakers ⭐⭐⭐
 A breaker stops calling a failing dependency for a while, so requests fail fast rather than waiting.
 
 ```mermaid
@@ -7684,7 +7695,7 @@ breaker.on('open', () => logger.warn('recommendations circuit open'));
 const result = await breaker.fire(userId);
 ```
 
-#### Bulkheads
+#### Bulkheads ⭐
 Isolate resources so that one failing dependency can't use up everything, like compartments in a ship.
 
 ```javascript
@@ -7760,7 +7771,7 @@ Timeout first. Retries with budgets. Breaker fails fast: closed → open → hal
 
 ---
 
-## 50. ⭐ Testing Strategy
+## 50. Testing Strategy ⭐⭐
 
 ### Why it matters
 Senior engineers are asked what to test and at which level, not only how. A good strategy gives confidence without slow, flaky pipelines.
@@ -7779,7 +7790,7 @@ Senior engineers are asked what to test and at which level, not only how. A good
 
 For API services, many teams use more integration tests than the classic pyramid suggests, since most bugs live at the edges.
 
-#### Unit tests
+#### Unit tests ⭐⭐
 Test one piece of logic, with no I/O. Fast and focused.
 
 ```javascript
@@ -7804,7 +7815,7 @@ test('rejects negative totals', () => {
 });
 ```
 
-#### Integration tests
+#### Integration tests ⭐⭐
 Test how parts work together: routes, validation, repository and a real database.
 
 ```javascript
@@ -7825,7 +7836,7 @@ test('POST /orders rejects bad input', async () => {
 });
 ```
 
-#### E2E tests
+#### E2E tests ⭐
 Test a real user journey through the deployed system. Slow, so keep them few.
 
 ```javascript
@@ -7842,7 +7853,7 @@ test('customer can check out', async ({ page }) => {
 });
 ```
 
-#### Contract tests
+#### Contract tests ⭐
 Verify that a consumer and a provider agree on an API, with no need to run both together. **Pact** is the common tool.
 
 ```javascript
@@ -7912,7 +7923,7 @@ Unit for logic, integration for wiring, contract for APIs, E2E for key journeys.
 
 ---
 
-## 51. Testing Tools
+## 51. Testing Tools ⭐
 
 ### Why it matters
 Tool choice affects speed and reliability. Interviews look for practical knowledge of mocking, time control and isolated test databases.
@@ -7947,7 +7958,7 @@ node --test --watch                      # re-run on changes
 node --test --experimental-test-coverage # coverage report
 ```
 
-#### Jest
+#### Jest ⭐⭐
 The long-time standard: runner, assertions, mocks and snapshots in a single package.
 
 ```javascript
@@ -7969,7 +7980,7 @@ describe('signup', () => {
 });
 ```
 
-#### Vitest
+#### Vitest ⭐
 Jest-like API, fast, with excellent TypeScript and ESM support.
 
 ```typescript
@@ -7993,7 +8004,7 @@ describe('getRate', () => {
 | Jest | Medium | Needs config | Largest |
 | Vitest | Low | Excellent | Large |
 
-#### Supertest
+#### Supertest ⭐
 Sends HTTP requests to an app without opening a real port. For this to work, export `app` separately from `app.listen()`.
 
 ```javascript
@@ -8022,7 +8033,7 @@ test('returns orders', async () => {
 });
 ```
 
-#### Mocking
+#### Mocking ⭐⭐
 Mock what you don't own and can't run: external APIs, clocks, randomness. Prefer real implementations for your own code. Dependency injection makes this simple.
 
 ```javascript
@@ -8115,14 +8126,14 @@ Run each test in a rolled-back transaction, truncate tables, or use a separate s
 
 # Part 10: Performance and Debugging
 
-## 52. ⭐ Profiling
+## 52. Profiling ⭐⭐
 
 ### Why it matters
 Good engineers measure before they optimize. Interviewers want to hear which tool you'd use, and how to read its output.
 
 ### Explanation
 
-#### `--inspect`
+#### `--inspect` ⭐⭐
 Connects Chrome DevTools or VS Code to a running Node process, for breakpoints and CPU and memory profiling.
 
 ```bash
@@ -8160,7 +8171,7 @@ node --cpu-prof --cpu-prof-dir=./profiles app.js
 node --prof app.js && node --prof-process isolate-*.log > report.txt
 ```
 
-#### Flame graphs
+#### Flame graphs ⭐
 A picture of where CPU time goes. **Width** is time spent. **Height** is call depth. Look for wide bars at the top of a stack.
 
 ```text
@@ -8178,7 +8189,7 @@ npx 0x app.js                       # produces an interactive flame graph
 
 On Linux, `perf` with `--perf-basic-prof` captures native and JS frames together.
 
-#### Clinic.js
+#### Clinic.js ⭐
 A suite that diagnoses common Node problems. It isn't as actively developed as it was, but its tools are still widely known.
 
 ```bash
@@ -8259,7 +8270,7 @@ Measure first. `--inspect` + DevTools, `--cpu-prof`, flame graphs (width = time)
 
 ---
 
-## 53. ⭐ Debugging Memory Leaks
+## 53. Debugging Memory Leaks ⭐⭐⭐
 
 ### Why it matters
 "Your Node service's memory keeps growing. What do you do?" is one of the most common senior scenarios. You need a clear process.
@@ -8291,7 +8302,7 @@ setInterval(() => {
 | `heapUsed` flat, `rss` rising | Buffers, native addons, fragmentation |
 | Rises then levels off | Cache warming up, probably fine |
 
-#### Heap snapshots
+#### Heap snapshots ⭐⭐⭐
 A snapshot records all live objects and their references. **Warning:** it pauses the process and needs lots of memory. Take it from a pod out of the load balancer if you can.
 
 ```javascript
@@ -8348,7 +8359,7 @@ await session.post('HeapProfiler.startSampling');
 const { profile } = await session.post('HeapProfiler.stopSampling');
 ```
 
-#### Common leak patterns
+#### Common leak patterns ⭐⭐⭐
 
 ```javascript
 // 1. Map that only grows
@@ -8427,7 +8438,7 @@ Rising floor = leak. Three snapshots, compare, follow retainers. Check `heapUsed
 
 ---
 
-## 54. Debugging Production Issues
+## 54. Debugging Production Issues ⭐⭐
 
 ### Why it matters
 Senior engineers are hired to resolve incidents. Interviewers look for a calm method: observe, narrow down, mitigate, then find the root cause.
@@ -8448,7 +8459,7 @@ flowchart TD
     F --> I["Thread pool saturation"]
 ```
 
-#### Blocked event loops
+#### Blocked event loops ⭐⭐⭐
 **Signs:** all routes get slower together, health checks time out, and event loop delay spikes.
 
 ```javascript
@@ -8477,7 +8488,7 @@ app.use((req, res, next) => {
 
 Typical causes: `JSON.parse` on big payloads, `*Sync` calls, slow regex, large sorts, and sync crypto.
 
-#### High CPU
+#### High CPU ⭐⭐
 **Signs:** CPU is near the limit and latency rises with traffic.
 
 ```bash
@@ -8506,7 +8517,7 @@ new PerformanceObserver((list) => {
 
 Container CPU limits can cause **throttling**: latency spikes while CPU graphs look normal.
 
-#### Slow requests
+#### Slow requests ⭐⭐
 **Signs:** a few routes are slow and the event loop is healthy, so the time is being spent waiting.
 
 ```javascript
@@ -8578,14 +8589,14 @@ Mitigate first. All routes slow → blocked loop. High CPU → profile. Low CPU,
 
 ---
 
-## 55. Performance Optimization
+## 55. Performance Optimization ⭐⭐
 
 ### Why it matters
 After measuring, you need to know what really helps. Interviews look for practical wins, and proof through load testing.
 
 ### Explanation
 
-#### JSON costs
+#### JSON costs ⭐
 `JSON.parse` and `JSON.stringify` are synchronous and run on the main thread. Big payloads block everyone.
 
 ```javascript
@@ -8624,7 +8635,7 @@ const body = await redis.get('catalog:json');    // no parse and re-stringify
 res.type('json').send(body);
 ```
 
-#### Compression
+#### Compression ⭐
 Reduces bytes, but costs CPU. Compress at the CDN or reverse proxy if you can.
 
 ```javascript
@@ -8653,7 +8664,7 @@ await pipeline(
 
 Don't compress images, video or zipped files. They're already compressed, so it only burns CPU.
 
-#### Keep-alive
+#### Keep-alive ⭐
 Reusing connections removes handshakes, often a big win for service-to-service traffic.
 
 ```javascript
@@ -8686,7 +8697,7 @@ Other wins, by impact:
 5. Micro-optimize last, and only in hot paths
 ```
 
-#### Load testing
+#### Load testing ⭐
 Proves whether a change helped, and finds limits before users do.
 
 ```bash
@@ -8764,14 +8775,14 @@ Remove work first. Big JSON blocks. Compress at the edge. Reuse connections. Pro
 
 # Part 11: Architecture and Scaling
 
-## 56. ⭐ Scaling Node.js
+## 56. Scaling Node.js ⭐⭐⭐
 
 ### Why it matters
 "How would you scale this service to 10× traffic?" comes up in nearly every senior interview. A strong answer finds the bottleneck first, then scales the right layer.
 
 ### Explanation
 
-#### Vertical vs horizontal
+#### Vertical vs horizontal ⭐⭐⭐
 **Vertical** means a bigger machine. **Horizontal** means more instances. One Node process uses one core for JS, so extra cores only help if you run more processes.
 
 | | Vertical | Horizontal |
@@ -8803,7 +8814,7 @@ Scaling the API doesn't help if the database is the bottleneck. More pods can ev
 6. Partition or shard data
 ```
 
-#### Statelessness
+#### Statelessness ⭐⭐
 Any instance must be able to serve any request. Move local state to shared services.
 
 ```javascript
@@ -8826,7 +8837,7 @@ await redis.incr('request:count');
 | Cron jobs | One scheduler or a queue |
 | WebSocket rooms | Redis Pub/Sub backplane |
 
-#### Load balancing
+#### Load balancing ⭐⭐
 A load balancer spreads traffic across healthy instances.
 
 | Algorithm | How it works | Good for |
@@ -8864,7 +8875,7 @@ app.set('trust proxy', 1);
 
 L4 balancers route TCP connections. L7 balancers read HTTP, so they can route by path and header, and they balance per request.
 
-#### Sticky sessions
+#### Sticky sessions ⭐⭐
 The load balancer sends a client to the same instance each time. It's a workaround for local state, and it causes uneven load and lost sessions when an instance dies.
 
 ```nginx
@@ -8912,7 +8923,7 @@ Find the bottleneck first. Stateless + horizontal. Cache, replicas, queues. Avoi
 
 ---
 
-## 57. ⭐ Monolith vs Microservices
+## 57. Monolith vs Microservices ⭐⭐⭐
 
 ### Why it matters
 This is a core architecture question. A senior answer doesn't favour microservices by default. It weighs team size, domain and operating cost.
@@ -8928,7 +8939,7 @@ This is a core architecture question. A senior answer doesn't favour microservic
 | Complexity | Low | Medium | High |
 | Best for | Early products | Growing teams | Large organizations |
 
-#### Monolith
+#### Monolith ⭐⭐
 One codebase and one deployment. Simple to build, test and debug. Problems appear when many teams change the same code.
 
 ```javascript
@@ -8942,7 +8953,7 @@ async function placeOrder(order) {
 }
 ```
 
-#### Modular monolith
+#### Modular monolith ⭐
 One deployment, with strict internal boundaries. Modules talk through public APIs only. It's often the best starting point, and it makes later extraction much easier.
 
 ```text
@@ -8969,7 +8980,7 @@ await inventory.reserve(items);
 
 Enforce this with ESLint `no-restricted-imports` or `dependency-cruiser`, so the rule survives deadlines.
 
-#### Service boundaries
+#### Service boundaries ⭐⭐
 Split by **business capability**, not by technical layer. Each service owns its data, and nobody else touches its tables.
 
 ```text
@@ -8987,7 +8998,7 @@ const stock = await inventoryClient.getStock(sku);
 
 Warning signs of a poor boundary: two services must always deploy together, or one request needs a chain of many synchronous calls. That's a **distributed monolith**: all the cost of microservices and none of the benefit.
 
-#### API gateway
+#### API gateway ⭐⭐
 One entry point in front of services. It handles shared concerns like routing, auth, rate limiting and TLS.
 
 ```mermaid
@@ -9012,7 +9023,7 @@ app.use('/payments', createProxyMiddleware({ target: 'http://payments:3000', cha
 
 In production, teams usually use Kong, AWS API Gateway, Envoy or similar. Keep business logic out of the gateway.
 
-#### BFF
+#### BFF ⭐
 Backend for Frontend: a small server for one client type. It combines calls and shapes data to fit that client. Node is a natural fit because the work is mostly I/O.
 
 ```javascript
@@ -9070,14 +9081,14 @@ Start modular. Split by business capability. Database per service. Gateway for s
 
 ---
 
-## 58. Distributed Patterns
+## 58. Distributed Patterns ⭐⭐
 
 ### Why it matters
 Across services, you lose single database transactions. These patterns keep data correct when the system is split.
 
 ### Explanation
 
-#### Saga
+#### Saga ⭐⭐
 A saga is a chain of local transactions. If a step fails, **compensating actions** undo earlier steps.
 
 | | Orchestration | Choreography |
@@ -9132,7 +9143,7 @@ bus.on('payment.failed', (e) => inventory.release(e));
 
 For durable workflows, tools like **Temporal** or AWS Step Functions handle state and retries for you.
 
-#### Outbox
+#### Outbox ⭐
 The **dual-write problem**: saving to the database and publishing to a broker are two operations, and a crash between them loses the event.
 
 ```javascript
@@ -9168,7 +9179,7 @@ async function relay() {
 
 Delivery is at-least-once, so consumers must be idempotent (Topic 40). **Debezium** can replace the polling relay by reading the database's change log.
 
-#### CQRS
+#### CQRS ⭐⭐
 Command Query Responsibility Segregation separates the **write model** from the **read model**, so each can be optimized on its own.
 
 ```mermaid
@@ -9203,7 +9214,7 @@ const getOrders = (customer) =>
 
 The read side lags the write side. A user may not see their own change at once, so read from the write model right after a write, or update the UI optimistically.
 
-#### Event-driven architecture
+#### Event-driven architecture ⭐⭐
 Services announce facts, and others react, without the publisher knowing who's listening.
 
 ```javascript
@@ -9270,14 +9281,14 @@ Saga = local steps + compensation. Outbox = no lost events. CQRS = separate read
 
 ---
 
-## 59. ⭐ Design Patterns in Node
+## 59. Design Patterns in Node ⭐⭐
 
 ### Why it matters
 Interviewers want patterns tied to Node specifics, such as the module cache, rather than textbook definitions.
 
 ### Explanation
 
-#### Singleton via module cache
+#### Singleton via module cache ⭐⭐⭐
 Modules are cached, so exporting an instance gives one shared object per process, with no special class.
 
 ```javascript
@@ -9295,7 +9306,7 @@ Limits:
 - Different path casing can create separate cache entries on some file systems.
 - Global singletons make testing harder. Injection is a good alternative.
 
-#### Factory
+#### Factory ⭐⭐
 A function that picks or builds an object, so callers don't depend on the concrete class.
 
 ```javascript
@@ -9326,7 +9337,7 @@ function createCounter() {
 }
 ```
 
-#### Dependency injection
+#### Dependency injection ⭐⭐
 A module receives what it needs, rather than importing it. That makes testing and swapping simple.
 
 ```javascript
@@ -9368,7 +9379,7 @@ const service = createUserService({
 
 Containers such as `awilix`, or NestJS's built-in one, automate this for bigger apps.
 
-#### Repository
+#### Repository ⭐
 Hides data access behind a business-friendly interface. Services don't know about SQL.
 
 ```javascript
@@ -9404,7 +9415,7 @@ function createFakeOrderRepo(seed = []) {
 }
 ```
 
-#### Middleware
+#### Middleware ⭐⭐
 A **chain of responsibility**: each step handles a request and passes it on. It isn't only for HTTP.
 
 ```javascript
@@ -9478,14 +9489,14 @@ Singleton = module cache. Factory = choose at runtime. DI = pass dependencies in
 
 ---
 
-## 60. Project Structure
+## 60. Project Structure ⭐⭐
 
 ### Why it matters
 Structure decides how easily a codebase grows. Interviewers ask this to see how you think about dependencies and separation of concerns.
 
 ### Explanation
 
-#### Layered architecture
+#### Layered architecture ⭐⭐
 Each layer has one job, and calls go downward only.
 
 ```mermaid
@@ -9538,7 +9549,7 @@ function create(order) {
 
 If a service takes `req`, you can't reuse it in a job or CLI. That's the usual sign of a leaking layer.
 
-#### Clean architecture
+#### Clean architecture ⭐
 Dependencies point **inward**. Business logic knows nothing about Express or PostgreSQL. Also called Hexagonal or Ports and Adapters.
 
 ```mermaid
@@ -9633,14 +9644,14 @@ Group by feature. Controller → service → repository. Services never see `req
 
 ---
 
-## 61. Serverless Node.js
+## 61. Serverless Node.js ⭐
 
 ### Why it matters
 Lambda changes assumptions about state, connections and startup time. Node is one of its most used runtimes, so this comes up often.
 
 ### Explanation
 
-#### Lambda
+#### Lambda ⭐
 You deploy a handler. AWS runs it per event and bills per use. One execution environment handles **one request at a time**, and scaling means more environments.
 
 ```javascript
@@ -9693,7 +9704,7 @@ Things to remember:
 | Scheduled tasks | WebSocket servers holding state |
 | Webhooks | Very latency-sensitive paths |
 
-#### Cold starts
+#### Cold starts ⭐⭐
 A new environment must download code, start Node and run your top-level code. Later calls on that environment are **warm**.
 
 ```text
@@ -9723,7 +9734,7 @@ npx esbuild src/handler.js --bundle --minify --platform=node \
 
 Other options: **provisioned concurrency** keeps environments warm at a cost. Raising memory speeds up init, because it gives more CPU.
 
-#### Connection handling
+#### Connection handling ⭐
 Each environment holds its own connection, so 1,000 concurrent functions means 1,000 database connections.
 
 ```javascript
@@ -9785,14 +9796,14 @@ Init outside the handler. Small bundles fight cold starts. One request per envir
 
 # Part 12: Deployment and Observability
 
-## 62. Docker for Node.js
+## 62. Docker for Node.js ⭐
 
 ### Why it matters
 Most Node services ship as containers. Interviewers look for small, secure images and correct signal handling.
 
 ### Explanation
 
-#### Multi-stage builds
+#### Multi-stage builds ⭐⭐
 One stage builds, and a smaller one runs. Compilers and dev dependencies stay out of the final image.
 
 ```dockerfile
@@ -9824,7 +9835,7 @@ CMD ["node", "dist/server.js"]
 
 **Layer caching:** copying `package*.json` before the source means `npm ci` only re-runs when dependencies change.
 
-#### PID 1
+#### PID 1 ⭐
 The first process in a container is PID 1, which has special rules. The kernel doesn't apply default signal behaviour to it, and it must reap zombie child processes. Node isn't built to do that job.
 
 ```bash
@@ -9840,7 +9851,7 @@ ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["node", "dist/server.js"]
 ```
 
-#### Signals
+#### Signals ⭐
 `docker stop` sends `SIGTERM`, waits 10 seconds, and then sends `SIGKILL`. The form of `CMD` decides whether Node receives the signal.
 
 ```dockerfile
@@ -9863,7 +9874,7 @@ process.on('SIGTERM', () => {
 
 Test it: `docker stop` should finish in well under 10 seconds with exit code 0. A result of 137 means it was killed.
 
-#### Image size
+#### Image size ⭐
 Smaller images pull faster and have fewer vulnerabilities.
 
 | Base | Rough size | Notes |
@@ -9926,7 +9937,7 @@ Multi-stage, slim, `npm ci --omit=dev`, `USER node`, exec-form `CMD`, `--init`, 
 
 ---
 
-## 63. Kubernetes Basics
+## 63. Kubernetes Basics ⭐
 
 ### Why it matters
 Most large Node deployments run on Kubernetes. You should be able to discuss how probes, limits and autoscaling work with Node's single-threaded model.
@@ -9960,7 +9971,7 @@ spec:
                 secretKeyRef: { name: orders-db, key: url }
 ```
 
-#### Probes
+#### Probes ⭐
 Topic 48 covers the handlers. Here's the config.
 
 ```yaml
@@ -10007,7 +10018,7 @@ env:
 - Over the **memory limit**, it's killed with exit code 137.
 - A single Node process rarely uses much more than 1 CPU for JS, so a pod with a limit of 4 CPUs wastes capacity.
 
-#### Autoscaling
+#### Autoscaling ⭐
 The **Horizontal Pod Autoscaler** adds pods based on metrics. CPU is a poor signal for I/O-heavy services.
 
 ```yaml
@@ -10091,14 +10102,14 @@ Probes: startup, liveness, readiness. Heap ≈ 75% of memory limit. CPU throttle
 
 ---
 
-## 64. CI/CD
+## 64. CI/CD ⭐
 
 ### Why it matters
 Teams that release safely can release often. Interviewers ask how you ship with low risk, and how quickly you can undo a bad deploy.
 
 ### Explanation
 
-#### Pipelines
+#### Pipelines ⭐
 
 ```mermaid
 flowchart LR
@@ -10161,7 +10172,7 @@ Key rules:
 - Fail fast: put the quick checks first.
 - Prefer short-lived cloud credentials through OIDC to stored keys.
 
-#### Blue-green deployments
+#### Blue-green deployments ⭐⭐
 Two identical environments. Deploy to the idle one, test it, then switch traffic all at once.
 
 ```yaml
@@ -10181,7 +10192,7 @@ spec:
 
 Rollback is a quick switch back. The cost is twice the capacity during the release, and both versions must work with the same database.
 
-#### Canary deployments
+#### Canary deployments ⭐
 Send a small share of traffic to the new version, watch metrics, then increase it gradually.
 
 ```yaml
@@ -10219,7 +10230,7 @@ if (await flags.isEnabled('new-checkout', { userId: req.user.id })) {
 return oldCheckout(req, res);
 ```
 
-#### Rollbacks
+#### Rollbacks ⭐
 Plan the way back before you go forward.
 
 ```bash
@@ -10266,7 +10277,7 @@ Lint → test → scan → build once → staging → canary → full rollout. T
 
 ---
 
-## 65. ⭐ Observability
+## 65. Observability ⭐⭐
 
 ### Why it matters
 You can't fix what you can't see. Senior engineers design services that explain themselves during an incident, using logs, metrics and traces.
@@ -10279,7 +10290,7 @@ You can't fix what you can't see. Senior engineers design services that explain 
 | Metrics | How much, how often, how slow? | p99 latency = 400 ms |
 | Traces | Where did the time go across services? | 300 ms in inventory call |
 
-#### Structured logging with Pino
+#### Structured logging with Pino ⭐⭐
 Log JSON, not sentences, so that tools can search it. Pino is one of the fastest Node loggers, and it uses very little main-thread time.
 
 ```javascript
@@ -10324,7 +10335,7 @@ app.get('/orders/:id', (req, res) => {
 
 Write logs to stdout in containers, and let the platform ship them.
 
-#### Metrics
+#### Metrics ⭐
 Numbers over time, used for dashboards and alerts. Prometheus with `prom-client` is the common choice.
 
 ```javascript
@@ -10375,7 +10386,7 @@ Keep label **cardinality** low: no user IDs or raw URLs. Each unique label set c
 
 Alert on what users feel (SLOs), not on every internal metric.
 
-#### OpenTelemetry tracing
+#### OpenTelemetry tracing ⭐
 A **trace** follows one request across services. Each step is a **span**. OpenTelemetry is the vendor-neutral standard, and it auto-instruments many libraries.
 
 ```javascript
@@ -10470,14 +10481,14 @@ Logs = events. Metrics = trends. Traces = path. Pino to stdout, Prometheus with 
 
 # Part 13: Modern Node.js
 
-## 66. Recent Built-In Features
+## 66. Recent Built-In Features ⭐
 
 ### Why it matters
 Interviewers use this topic to see whether your Node knowledge is current. Many packages you once installed are now built in. Exact version numbers change, so check the docs for your target version.
 
 ### Explanation
 
-#### `node:test`
+#### `node:test` ⭐
 A built-in test runner with mocks, watch mode and coverage. Topic 51 has more detail.
 
 ```javascript
@@ -10497,7 +10508,7 @@ test('async work', async () => {
 // node --test
 ```
 
-#### `--watch`
+#### `--watch` ⭐
 Restarts the process when files change. It replaces `nodemon` for most development.
 
 ```bash
@@ -10509,7 +10520,7 @@ node --watch-path=./src --watch-path=./config src/server.js
 { "scripts": { "dev": "node --watch --env-file=.env src/server.js" } }
 ```
 
-#### `--env-file`
+#### `--env-file` ⭐
 Loads a `.env` file with no `dotenv` package.
 
 ```bash
@@ -10564,7 +10575,7 @@ try {
 
 It's a seat belt for trusted code, not a sandbox for hostile code. Which resources it covers, including network access, depends on the Node version.
 
-#### Native TypeScript support
+#### Native TypeScript support ⭐
 Recent Node versions run `.ts` files by stripping types. See Topic 34.
 
 ```bash
@@ -10650,7 +10661,7 @@ Yes, in most cases, with `node --watch`.
 
 ---
 
-## 67. Runtime Comparison
+## 67. Runtime Comparison ⭐
 
 ### Why it matters
 "Why not Bun or Deno?" is a common question. A good answer compares maturity, compatibility and team risk, instead of quoting benchmarks.
@@ -10877,14 +10888,14 @@ N-API = stable native addons. Wasm = portable and sandboxed. Profile first. Long
 
 ---
 
-## 69. AI in Node.js Backends
+## 69. AI in Node.js Backends ⭐
 
 ### Why it matters
 Node is a natural fit for AI features, because LLM calls are slow, I/O-bound and streamed. Teams now ask about streaming, tool calling, limits and cost. The examples use Anthropic's TypeScript SDK, and the same ideas apply to other providers. Model names and SDK details change quickly, so check the current docs.
 
 ### Explanation
 
-#### Streaming LLM responses
+#### Streaming LLM responses ⭐
 A full answer can take many seconds. Streaming shows tokens as they're generated, so users see progress immediately. SSE fits well (Topic 31).
 
 ```typescript
@@ -11117,7 +11128,7 @@ Stream with SSE, abort on disconnect. Tools: validate and authorize, model outpu
 
 # Part 14: Interview Revision Kit
 
-## 70. Must-Know Top 30 Questions
+## 70. Must-Know Top 30 Questions ⭐⭐⭐
 
 Ranked by how often they tend to appear and how much they reveal. Practise saying each answer aloud in under a minute.
 
@@ -11213,11 +11224,11 @@ Unit tests for logic, integration tests with real databases, contract tests betw
 
 ---
 
-## 71. Output-Based Questions
+## 71. Output-Based Questions ⭐⭐⭐
 
 Predict the output before reading it. Examples run as CommonJS. For each, say **why** out loud.
 
-### Puzzle 1: Basic ordering
+### Puzzle 1: Basic ordering ⭐⭐⭐
 
 ```javascript
 console.log('start');
@@ -11237,7 +11248,7 @@ timeout
 
 **Why:** Sync code runs first, then `nextTick`, then Promises, then timers.
 
-### Puzzle 2: async/await
+### Puzzle 2: async/await ⭐⭐⭐
 
 ```javascript
 async function first() {
@@ -11267,7 +11278,7 @@ then
 
 **Why:** Async functions run synchronously up to the first `await`. The rest of `first` was queued before the `.then` callback.
 
-### Puzzle 3: Inside an I/O callback
+### Puzzle 3: Inside an I/O callback ⭐⭐
 
 ```javascript
 const fs = require('node:fs');
@@ -11287,7 +11298,7 @@ timeout
 
 **Why:** `nextTick` runs right after the callback. Then the loop moves from poll to check, so immediate runs before the next timers phase.
 
-### Puzzle 4: `nextTick` inside a Promise
+### Puzzle 4: `nextTick` inside a Promise ⭐⭐
 
 ```javascript
 Promise.resolve()
@@ -11306,7 +11317,7 @@ tick
 
 **Why:** Once the Promise queue is draining, it empties fully, including newly added microtasks, before the `nextTick` queue is checked again.
 
-### Puzzle 5: Microtasks between timers
+### Puzzle 5: Microtasks between timers ⭐⭐
 
 ```javascript
 setTimeout(() => {
@@ -11325,7 +11336,7 @@ t2
 
 **Why:** Since Node 11, microtasks drain after each timer callback, not after the whole phase.
 
-### Puzzle 6: `var` vs `let` in a loop
+### Puzzle 6: `var` vs `let` in a loop ⭐⭐⭐
 
 ```javascript
 for (var i = 0; i < 3; i++) {
@@ -11348,7 +11359,7 @@ let 2
 
 **Why:** `var` has one shared binding, which is 3 by the time timers run. `let` makes a new binding on each iteration.
 
-### Puzzle 7: The Promise executor
+### Puzzle 7: The Promise executor ⭐⭐⭐
 
 ```javascript
 console.log(1);
@@ -11373,7 +11384,7 @@ console.log(4);
 
 **Why:** The executor is synchronous, and `resolve` doesn't stop it. `.then` always runs later.
 
-### Puzzle 8: EventEmitter is synchronous
+### Puzzle 8: EventEmitter is synchronous ⭐⭐
 
 ```javascript
 const { EventEmitter } = require('node:events');
@@ -11396,7 +11407,7 @@ after
 
 **Why:** `emit` calls listeners synchronously, in order.
 
-### Puzzle 9: `forEach` with async
+### Puzzle 9: `forEach` with async ⭐⭐⭐
 
 ```javascript
 async function run() {
@@ -11418,7 +11429,7 @@ item 2
 
 **Why:** `forEach` ignores returned Promises.
 
-### Puzzle 10: try/catch and Promises
+### Puzzle 10: try/catch and Promises ⭐⭐
 
 ```javascript
 process.on('unhandledRejection', (err) => console.log('unhandled:', err.message));
@@ -11442,7 +11453,7 @@ unhandled: boom
 
 **Why:** The rejection isn't a synchronous throw, and nothing awaited it, so `catch` never runs.
 
-### Puzzle 11: `return` in `finally`
+### Puzzle 11: `return` in `finally` ⭐
 
 ```javascript
 function test() {
@@ -11463,7 +11474,7 @@ try
 
 **Why:** `finally` runs before the function returns. A `return` in `finally` would override the value.
 
-### Puzzle 12: `Promise.all` doesn't cancel
+### Puzzle 12: `Promise.all` doesn't cancel ⭐⭐
 
 ```javascript
 const wait = (ms, label) => new Promise((resolve) =>
@@ -11485,7 +11496,7 @@ finished slow
 
 **Why:** `Promise.all` rejects early, but the other operation keeps running.
 
-### Puzzle 13: Chained `.then` and `.catch`
+### Puzzle 13: Chained `.then` and `.catch` ⭐⭐
 
 ```javascript
 Promise.reject(new Error('x'))
@@ -11504,7 +11515,7 @@ then 2 recovered
 
 **Why:** A rejection skips `.then` until a `.catch`. A `.catch` that returns recovers the chain.
 
-### Puzzle 14: Module cache
+### Puzzle 14: Module cache ⭐
 
 ```javascript
 const fs = require('node:fs');
@@ -11527,7 +11538,7 @@ loading
 
 **Why:** The file runs once. Later `require` calls return the same cached object.
 
-### Puzzle 15: `this` in callbacks
+### Puzzle 15: `this` in callbacks ⭐⭐
 
 ```javascript
 const counter = {
@@ -11557,11 +11568,11 @@ arrow true
 
 ---
 
-## 72. Coding Tasks
+## 72. Coding Tasks ⭐⭐⭐
 
 These are the classic Node machine-coding tasks. For each one: state the requirements, write the simplest version, then discuss edge cases. All of them run as they are.
 
-### Task 1: Rate limiter
+### Task 1: Rate limiter ⭐⭐
 
 **Requirements:** allow N requests per key, permit short bursts, don't leak memory, and tell callers when to retry.
 
@@ -11640,7 +11651,7 @@ console.log(limiter.check('a').allowed);   // true, one token has refilled
 - *Sliding window instead?* Store timestamps in a sorted set.
 - *Why lazy refill?* A timer per key doesn't scale. Elapsed time gives the same result.
 
-### Task 2: Retry wrapper
+### Task 2: Retry wrapper ⭐⭐
 
 **Requirements:** limited attempts, exponential backoff with jitter, retry only suitable errors, per-attempt timeout and cancellation.
 
@@ -11718,7 +11729,7 @@ retry(async ({ attempt }) => {
 - *Why jitter?* It spreads retries out, so clients don't all return at the same moment.
 - *What about `Retry-After`?* Respect it: use that delay in place of the calculated one.
 
-### Task 3: Promise pool
+### Task 3: Promise pool ⭐⭐⭐
 
 **Requirements:** run async tasks with at most N at once, keep results in input order, and handle errors.
 
@@ -11813,7 +11824,7 @@ limit(async () => 'a').then(console.log);   // a
 - *Millions of items?* Pull from an async iterator and write results as you go.
 - *`queue.shift()` is O(n)?* True for large arrays. Use a head index or linked list.
 
-### Task 4: LRU cache
+### Task 4: LRU cache ⭐⭐⭐
 
 **Requirements:** `get` and `put` in O(1), remove the least recently used item at capacity, and optional TTL.
 
@@ -11955,7 +11966,7 @@ console.log(linked.get(1));      // one
 - *What's the difference between LRU and LFU?* LRU evicts the oldest use, while LFU evicts the least frequent use.
 - *Can several processes share it?* No. Use Redis for that.
 
-### Task 5: Custom EventEmitter
+### Task 5: Custom EventEmitter ⭐⭐⭐
 
 **Requirements:** `on`, `off`, `once`, `emit`, synchronous calls in order, and special handling of `error`.
 
@@ -12042,11 +12053,11 @@ try {
 
 ---
 
-## 73. Production Scenarios
+## 73. Production Scenarios ⭐⭐
 
 Use one structure for all of these: **clarify → mitigate → investigate → fix → prevent**.
 
-### Scenario 1: "The API is slow"
+### Scenario 1: "The API is slow" ⭐⭐⭐
 
 **Clarify:** All routes, or one? Since when? After a deploy? p50, or only p99?
 
@@ -12067,7 +12078,7 @@ Use one structure for all of these: **clarify → mitigate → investigate → f
 
 **Prevent:** Per-route p99 alerts, timeouts on all calls, load tests in CI.
 
-### Scenario 2: "Memory keeps growing"
+### Scenario 2: "Memory keeps growing" ⭐⭐⭐
 
 **Clarify:** Is it a sawtooth with a rising floor? Is it `heapUsed` or `rss`? Does it follow traffic?
 
@@ -12089,7 +12100,7 @@ Use one structure for all of these: **clarify → mitigate → investigate → f
 
 **Prevent:** Bound every cache and queue, and run soak tests before big releases.
 
-### Scenario 3: "The service keeps crashing"
+### Scenario 3: "The service keeps crashing" ⭐⭐
 
 **Clarify:** What's the exit code? Is it all pods or some? Is there a pattern?
 
@@ -12122,7 +12133,7 @@ node --report-uncaught-exception --report-on-fatalerror \
 
 **Prevent:** Lint for floating promises, error listeners on streams and sockets, alerts on restart count.
 
-### Scenario 4: "We lost events"
+### Scenario 4: "We lost events" ⭐
 
 **Clarify:** Which events? Between which systems? Were they lost, or just late?
 
@@ -12130,7 +12141,7 @@ node --report-uncaught-exception --report-on-fatalerror \
 
 **Fix:** Use the outbox pattern and ack after processing (Topics 40, 58). Add a reconciliation job for critical data.
 
-### Scenario 5: "Latency spikes after every deploy"
+### Scenario 5: "Latency spikes after every deploy" ⭐
 
 **Clarify:** How long does it last? Is it only on new pods?
 
@@ -12140,11 +12151,11 @@ node --report-uncaught-exception --report-on-fatalerror \
 
 ---
 
-## 74. Node.js System Design
+## 74. Node.js System Design ⭐⭐
 
 Use this flow: **requirements → scale estimate → API → architecture → data → bottlenecks → failures → trade-offs.**
 
-### Design 1: Chat app
+### Design 1: Chat app ⭐⭐⭐
 
 **Requirements:** 1:1 and group chat, delivery status, offline messages, history, and presence.
 
@@ -12207,7 +12218,7 @@ async function deliver(userId, message) {
 
 **Trade-offs:** Large groups cause write amplification. Fan out on read for very big channels.
 
-### Design 2: Notification service
+### Design 2: Notification service ⭐⭐
 
 **Requirements:** email, SMS and push; user preferences; templates; retries; no duplicates; priorities; and rate limits per provider.
 
@@ -12272,7 +12283,7 @@ new Worker('high', async (job) => {
 
 **Trade-offs:** External providers can still double-send on a timeout, so aim for effectively-once with provider idempotency keys where they exist.
 
-### Design 3: File processing pipeline
+### Design 3: File processing pipeline ⭐
 
 **Requirements:** uploads up to 5 GB, virus scanning, format conversion, status tracking, retries and no blocking of API traffic.
 
